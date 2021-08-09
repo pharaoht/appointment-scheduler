@@ -1,10 +1,29 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { logout } from '../actions/auth';
+
+const Navbar = ({ logout, isAuthenticated }) => {
+    const guestLinks = () => {
+
+    }
+
+    const authLinks = () => {
+
+    }
 
 
-const Navbar = () => (
-    <div>
-        Navbar
-    </div>
-)
+    return (
+        <div>
+            <Link to="/signup">Sign up</Link>
+        </div>
+    )
 
-export default Navbar;
+
+}
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, { logout })(Navbar);
