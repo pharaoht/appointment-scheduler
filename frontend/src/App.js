@@ -7,12 +7,16 @@ import Signup from './containers/Signup'
 import Activate from './containers/Activate'
 import ResetPassword from './containers/ResetPassword'
 import ResetPasswordConfirm from './containers/ResetPasswordConfirm'
-const App = () => {
-    <Router>
-        <Switch>
+import Layout from './hocs/Layout';
 
-        </Switch>
+const App = () => (
+    <Router>
+        <Layout>
+            <Switch>
+                <Route exact path='/' component={Home}/>
+            </Switch>
+        </Layout>
     </Router>
-};
+);
 
 export default App;
