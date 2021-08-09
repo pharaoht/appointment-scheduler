@@ -90,7 +90,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'patitaslimpias57@gmail.com'
-EMAIL_HOST_PASSWORD = 'colpatitas57'
+EMAIL_HOST_PASSWORD = 'ypgitklltyffqitj'
 EMAIL_USE_TLS = True
 
 # Password validation
@@ -138,15 +138,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
+        'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT,'),
+    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 DJOSER = {
@@ -162,8 +162,10 @@ DJOSER = {
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
-
+        'user_create': 'accounts_app.serializers.UserCreateSerializer',
+        'user':  'accounts_app.serializers.UserCreateSerializer',
+        'user_delete':  'djoser.serializers.UserDeleteSerializer',
     }
 }
 
-AUTH_USER_MODEL = 'account_app.UserAccount'
+AUTH_USER_MODEL = 'accounts_app.UserAccount'

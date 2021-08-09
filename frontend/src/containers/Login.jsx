@@ -1,21 +1,22 @@
-import React, {useState} from 'react';
-import {Link, Redirect} from 'react-router-dom';
-import {connect} from 'react-redux'
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { login } from '../actions/auth';
 
-const Login = () => {
-    
+const Login = ({ login }) => {
+
     const [formData, setFormData] = useState({
-        email:"",
-        password:""
+        email: "",
+        password: ""
     });
 
-    const {email, password} = formData;
+    const { email, password } = formData;
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value});
-    
-    const onSubmit = e =>{
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const onSubmit = e => {
         e.preventDefault()
-        //login(email, password)
+        login(email, password)
     }
 
     //Is the user authenticated
@@ -26,7 +27,7 @@ const Login = () => {
             <div className='container mt-5'>
                 <h1>Sign In</h1>
                 <p>Sign into your account</p>
-                <form onSubmit={e=> onSubmit(e)}>
+                <form onSubmit={e => onSubmit(e)}>
                     <div className='form-group'>
                         <input
                             className='form-control'
@@ -36,7 +37,7 @@ const Login = () => {
                             value={email}
                             onChange={e => onChange(e)}
                             required
-                            
+
                         />
                     </div>
                     <div className='form-group'>
@@ -64,6 +65,6 @@ const mapStateToProps = state => ({
     //isauthenticated
 })
 
-export default Login;
+export default connect(null, { login })(Login);
 
 //ctrl + D 
