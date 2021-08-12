@@ -27,6 +27,7 @@ const Login = ({ login, isAuthenticated }) => {
     return (
         <>
             <div className='container mt-5'>
+
                 <h1>Sign In</h1>
                 <p>Sign into your account</p>
                 <form onSubmit={e => onSubmit(e)}>
@@ -57,7 +58,7 @@ const Login = ({ login, isAuthenticated }) => {
                     <button className='btn btn-primary' type='submit'>Login</button>
                 </form>
                 <p>Don't have an account? <Link to='/signup'>Sign up</Link></p>
-                <p>Forgot your password <Link to='/rest-password'>Reset Password</Link></p>
+                <p>Forgot your password <Link to='/rest_password'>Reset Password</Link></p>
             </div>
         </>
     )
@@ -69,4 +70,4 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { login })(Login);
 
-//ctrl + D 
+//ctrl + D to select multiple keywords
