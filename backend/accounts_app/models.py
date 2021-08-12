@@ -37,3 +37,23 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Service(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    price = models.DecimalField(max_digits=8, decimal_places=3)
+    desc = models.TextField()
+    photo1 = models.ImageField(upload_to='media/', blank=True)
+    photo2 = models.ImageField(upload_to='media/', blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Appointment(models.Model):
+    client = models.ForeignKey(
+        UserAccount, related_name='user', on_delete=models.CASCADE)
+    service = models.ForeignKey(
+        Service, related_name='service', on_delete=models.CASCADE)
+    appointment_date = models.DateField(auto_now=False, auto_now_add=False)
+    appointment_time = models.TimeField(auto_now=False, auto_now_add=False)
