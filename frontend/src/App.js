@@ -11,19 +11,22 @@ import Layout from './hocs/Layout';
 
 import { Provider } from 'react-redux';
 import store from './store';
+import Signupv2 from './containers/SignUp/Signupv2';
 
 const App = () => (
     <Provider store={store}>
         <Router>
             <Layout>
                 <Switch>
+                    <div id="app-css-main-div" >
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/signup' component={Signup}/>
                     <Route exact path='/rest_password' component={ResetPassword}/>
                     <Route exact path='/password/reset/confirm/:uid/:token' component={ResetPasswordConfirm}/>
                     <Route exact path='/activate/:uid/:token' component={Activate}/>
-                    
+                    <Route exact path='/signupv2' component={Signupv2}/>
+                    </div>
                 </Switch>
             </Layout>
         </Router>

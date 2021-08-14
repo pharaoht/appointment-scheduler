@@ -57,3 +57,12 @@ class Appointment(models.Model):
         Service, related_name='service', on_delete=models.CASCADE)
     appointment_date = models.DateField(auto_now=False, auto_now_add=False)
     appointment_time = models.TimeField(auto_now=False, auto_now_add=False)
+
+
+class Reviews(models.Model):
+    client = models.ForeignKey(
+        UserAccount, related_name='author', on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    desc = models.TextField()
+    rating = models.IntegerField()
+    date_posted = models.DateField(auto_now_add=True)
