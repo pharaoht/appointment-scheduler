@@ -1,8 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
-import Home from './containers/Home'
-import Login from './containers/Login'
+import Home from './containers/Home/Home.jsx'
 import Signup from './containers/Signup'
 import Activate from './containers/Activate'
 import ResetPassword from './containers/ResetPassword'
@@ -20,12 +18,12 @@ const App = () => (
                 <Switch>
                     <div id="app-css-main-div" >
                     <Route exact path='/' component={Home}/>
-                    <Route exact path='/login' component={Login}/>
-                    <Route exact path='/signup' component={Signup}/>
+                    <Route exact path='/login' component={Signupv2}/>
+                    <Route exact path='/signup-old' component={Signup}/>
                     <Route exact path='/rest_password' component={ResetPassword}/>
                     <Route exact path='/password/reset/confirm/:uid/:token' component={ResetPasswordConfirm}/>
                     <Route exact path='/activate/:uid/:token' component={Activate}/>
-                    <Route exact path='/signupv2' component={Signupv2}/>
+                    <Route exact path='/signup' component={Signupv2}/>
                     </div>
                 </Switch>
             </Layout>

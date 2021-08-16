@@ -9,6 +9,7 @@ header {
   width: 100%;
   background: #fff;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+  z-index: 2;
   /* height: 60px; */
 }
 
@@ -79,7 +80,7 @@ header {
 }
 
 #navbar.active {
-  width: 500px;
+  width: 600px;
 }
 
 #navbar ul {

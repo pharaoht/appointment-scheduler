@@ -30,6 +30,7 @@ div ul.sidebar-ul li.sidebar-li:hover {
   background-color: #3e0748;
   transition: 0.5s;
   overflow: hidden;
+  z-index: 2;
 }
 
 .navigation:hover,
@@ -85,6 +86,7 @@ div ul.sidebar-ul li.sidebar-li:hover {
   height: 60px;
   background: #330748;
   cursor: pointer;
+  z-index: 3;
 }
 
 .toggle.active {

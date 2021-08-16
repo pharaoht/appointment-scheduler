@@ -1,0 +1,130 @@
+/* .home-container {
+  padding: 15px;
+  padding-right: 60px;
+}
+
+.paper {
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+} */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.page-layout {
+  position: relative;
+  z-index: 1;
+}
+
+.banner {
+  width: 100%;
+  height: 93.7vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+    url(../../media/dogpic.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.content {
+  width: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #fff;
+}
+
+.content h1 {
+  font-size: 70px;
+}
+
+.content p {
+  margin: 20px;
+  font-weight: 100;
+  line-height: 25px;
+}
+
+.sec {
+  background: #fff;
+  padding: 100px;
+  min-height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sec .content2 {
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.mxw800p {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.sec .content2 h3 {
+  font-size: 40px;
+  font-weight: 200;
+  margin-bottom: 10px;
+}
+
+.sec .content2 p {
+  position: relative;
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.sec .content2 .btn {
+  position: relative;
+  display: inline-block;
+  padding: 10px 30px;
+  background: #800080;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 0;
+}
+
+.services {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 30px;
+  max-width: 100%;
+  margin-top: 40px;
+}
+
+.services .box {
+  width: 300px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 15px 30px rgba(67, 47, 47, 0.15);
+}
+
+.services .box .iconBx {
+  margin-top: 25px;
+}
+
+.services .box .iconBx img {
+  max-width: 150px;
+  margin-bottom: 15px;
+}
+
+.services .box h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.stats {
+  background: #9051ff;
+  padding-top: 250px;
+  margin-top: -250px;
+}

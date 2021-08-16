@@ -1,29 +1,40 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { logout } from '../../actions/auth';
 import './NavBar.css'
 import photo1 from '../../media/petlogo.jpg'
 
-const Navbar = ({ logout, isAuthenticated }) => {
+const Navbar = ({ logout, isAuthenticated, user }) => {
+    const [userData, setUserData] = useState([])
+    useEffect(() => {
+        setUserData(user)
+    }, [user])
+
+
     const guestLinks = () => {
         return (
             <Fragment>
-                <div className="links">
+                <li className="links">
                     <Link className="nav-link" to='/login'>Login</Link>
-                </div>
-                <div className="links">
+                </li>
+                <li className="links">
                     <Link className="nav-link" to='/signup'>Sign Up</Link>
-                </div>
+                </li>
             </Fragment>
         )
     }
 
     const authLinks = () => {
         return (
-            <li className="nav-item">
-                <a className="nav-link" href="#!" onClick={logout}>Logout</a>
-            </li>
+            <Fragment>
+                <li className="links">
+                    <a> Welcome, {userData ? userData.first_name : ""} </a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#!" onClick={logoutHandler}>Logout</a>
+                </li>
+            </Fragment>
         )
     }
 
@@ -42,14 +53,13 @@ const Navbar = ({ logout, isAuthenticated }) => {
 
     return (
         <header id="header" >
-            <a href="#" className="logo">Patitas Limpias</a>
+            <a href="/" className="logo">Patitas Limpias</a>
             <div id="toggle" onClick={toggleBtn}></div>
             <div id="navbar">
                 <ul>
-                    <li><a>Login</a></li>
-                    <li><a>Sign Up</a></li>
                     <li><a>Contact</a></li>
                     <li><a>Translate</a></li>
+                    {isAuthenticated ? authLinks() : guestLinks()}
                 </ul>
             </div>
 
@@ -60,44 +70,9 @@ const Navbar = ({ logout, isAuthenticated }) => {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user
+
 })
 
 export default connect(mapStateToProps, { logout })(Navbar);
-
-
-        // <div className="bg-light">
-        //     <div className="logo-brand">
-        //         <img className="img-logo" src={photo1} />
-
-        //     </div>
-        //     <div className="info-nav">
-        //         <div className="trans-lang">
-        //             {isAuthenticated ? authLinks() : guestLinks()}
-
-        //         </div>
-        //         <div className="nav-links">
-        //             <div><Link className="links" to='/services'>Services</Link></div>
-        //             <div><Link className="links" to='/services'>Appointments</Link></div>
-        //             <div><Link className="links" to='/services'>About Us</Link></div>
-        //             <div><Link className="links" to='/services'>Reviews</Link></div>
-        //         </div>
-        //     </div>
-
-
-
-        // </div>
-
-
-
-
-        // <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        //     <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        //         <ul className="navbar-nav">
-        //             <li><Link className="nav-item nav-link active" to="/">Home </Link></li>
-        //             {isAuthenticated ? authLinks() : guestLinks()}
-
-
-        //         </ul>
-        //     </div>
-        // </nav> 
