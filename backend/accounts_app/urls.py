@@ -6,4 +6,5 @@ app_name = 'accounts_app'
 urlpatterns = [
     path('get-appointments/', views.get_appointments),
     path('create-appointment/', views.create_appointment),
+    path('delete-appointment/', views.delete_appointment),
 ]

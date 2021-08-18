@@ -24,7 +24,9 @@ def create_appointment(request):
     print(request.data)
     # get user object model
     user = UserAccount.objects.get(email=request.data['email'])
+    # get service object model
     service = Service.objects.get(name=request.data['service'])
+    # for foreign key constaints have to pass both service and user
     client = Appointment(client=user, service=service)
     if request.method == "POST":
         serializer = AppointmentCreateSerializer(
