@@ -68,7 +68,18 @@ const Home = () => (
             <div className="content2">
                 <div className="mxw800p">
                     <h3>Appointments</h3>
-                    <Link to="/about-us" className="btn">Read More</Link>
+                    <Link to="/about-us" className="btn">Schedule Today!</Link>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                </div>
+
+            </div>
+        </section>
+        <section className="sec" id="about">
+            <div className="content2">
+                <div className="mxw800p">
+                    <h3>Who we are</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                    <Link to='/about-us' className="btn">Read More</Link>
                 </div>
 
             </div>
