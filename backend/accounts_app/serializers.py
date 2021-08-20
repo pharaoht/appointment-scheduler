@@ -29,5 +29,5 @@ class ServiceCreateSerializer(ModelSerializer):
         model = Service
 
         fields = [
-            '__all__'
+            'id', 'name', 'price', 'desc', 'photo1', 'photo2'
         ]

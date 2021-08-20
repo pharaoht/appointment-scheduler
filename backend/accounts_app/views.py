@@ -1,7 +1,7 @@
 from rest_framework import status, generics
 from rest_framework.response import Response
 from .models import Appointment, UserAccount, Service
-from .serializers import AppointmentCreateSerializer
+from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer
 from rest_framework.decorators import api_view, permission_classes
 from django.db.models import Q
 from datetime import timedelta, datetime
@@ -16,6 +16,12 @@ def get_appointments(request):
     serializer = AppointmentCreateSerializer(Appointments, many=True)
 
     return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+@api_view(['POST'])
+def get_appointments(request):
+    print(request.body)
+    return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -54,3 +60,11 @@ def delete_appointment(request, id):
         else:
             data['failure'] = 'delete failed'
             return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
+
+
+@api_view(['GET'])
+def get_services(request):
+    services = Service.objects.all()
+    serializer = ServiceCreateSerializer(services, many=True)
+
+    return Response(status=status.HTTP_200_OK, data=serializer.data)

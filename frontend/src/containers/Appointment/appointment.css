@@ -1,0 +1,53 @@
+.paper {
+  outline: 1px solid red;
+  position: relative;
+  z-index: 1;
+  margin: 90px 60px 10px 15px;
+  padding: 10px;
+}
+
+.title-header {
+  text-align: center;
+}
+
+.form-info {
+  display: flex;
+}
+
+.times-left {
+  width: 50%;
+  outline: 1px solid blue;
+}
+
+.service-right {
+  width: 50%;
+  outline: 1px solid green;
+}
+
+.date-header {
+  text-align: center;
+}
+
+.times label {
+  display: inline-block;
+  width: 80px;
+  padding: 10px;
+  border: solid 2px #ccc;
+  transition: all 0.3s;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.times input[type="radio"] {
+  display: none;
+}
+
+.times input[type="radio"]:checked + label {
+  border: solid 2px dodgerblue;
+}
+
+@media (max-width: 767px) {
+  .paper {
+    margin: 0;
+  }
+}

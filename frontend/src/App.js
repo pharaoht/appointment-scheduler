@@ -10,6 +10,9 @@ import Appointment from './containers/Appointment/Appointment.jsx'
 import { Provider } from 'react-redux';
 import store from './store';
 import Signupv2 from './containers/SignUp/Signupv2';
+import Services from './containers/Services/Services.jsx';
+import About from './containers/AboutUs/AboutUs.jsx';
+import Reviews from './containers/Reviews/Reviews.jsx';
 
 const App = () => (
     <Provider store={store}>
@@ -25,6 +28,9 @@ const App = () => (
                     <Route exact path='/activate/:uid/:token' component={Activate}/>
                     <Route exact path='/signup' component={Signupv2}/>
                     <Route exact path='/appointments' component={Appointment}/>
+                    <Route expact path='/services' component={Services}/>
+                    <Route expact path='/about-us' component={About}/>
+                    <Route exact path='/reviews' component={Reviews}/>
                     </div>
                 </Switch>
             </Layout>
