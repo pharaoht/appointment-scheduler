@@ -1,8 +1,16 @@
 from django.contrib import admin
-
-# Register your models here.
 from .models import UserAccount, Service, Appointment
-# Register your models here.
-admin.site.register(UserAccount)
+
+
+class AppointmentCustom(admin.ModelAdmin):
+    list_display = ('client', 'appointment_time', 'service')
+    list_filter = ('appointment_date',)
+
+
+class UserAccountCustom(admin.ModelAdmin):
+    readonly_fields = ('password', 'first_name', 'last_name', 'email')
+
+
+admin.site.register(UserAccount, UserAccountCustom)
 admin.site.register(Service)
-admin.site.register(Appointment)
+admin.site.register(Appointment, AppointmentCustom)

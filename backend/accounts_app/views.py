@@ -6,22 +6,22 @@ from rest_framework.decorators import api_view, permission_classes
 from django.db.models import Q
 from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
-
-
-@api_view(['GET'])
-def get_appointments(request):
-    today = datetime.today()
-    Appointments = Appointment.objects.filter(
-        appointment_date__gte=today)
-    serializer = AppointmentCreateSerializer(Appointments, many=True)
-
-    return Response(status=status.HTTP_200_OK, data=serializer.data)
+import json
 
 
 @api_view(['POST'])
 def get_appointments(request):
-    print(request.body)
-    return Response(status=status.HTTP_200_OK)
+    # data coming back as byte, have to convert it.
+    body_unicode = request.body.decode('utf-8')
+    body_data = json.loads(body_unicode)
+    date_find = body_data
+
+    Appointments = Appointment.objects.filter(
+        appointment_date=date_find['dateSearch'])
+
+    serializer = AppointmentCreateSerializer(Appointments, many=True)
+
+    return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
 @api_view(['POST'])
@@ -35,6 +35,11 @@ def create_appointment(request):
     # for foreign key constaints have to pass both service and user
     client = Appointment(client=user, service=service)
     if request.method == "POST":
+        if Appointment.objects.filter(
+                appointment_date=request.data['appointment_date'], appointment_time=request.data['appointment_time']).exists():
+            data = {}
+            data['error'] = "That time is taken, this happens when two or more users submit at the same time."
+            return Response(status=status.HTTP_409_CONFLICT, data=data)
         serializer = AppointmentCreateSerializer(
             client, data=request.data)
         if serializer.is_valid():

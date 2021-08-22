@@ -1,9 +1,14 @@
+#outside {
+  position: relative;
+  padding-top: 20px;
+  background: #03a9f4;
+  height: 100vh;
+}
+
 .paper {
-  outline: 1px solid red;
   position: relative;
   z-index: 1;
   margin: 90px 60px 10px 15px;
-  padding: 10px;
 }
 
 .title-header {
@@ -16,7 +21,6 @@
 
 .times-left {
   width: 50%;
-  outline: 1px solid blue;
 }
 
 .service-right {
@@ -26,28 +30,55 @@
 
 .date-header {
   text-align: center;
+  margin-bottom: 20px;
 }
 
-.times label {
+#times label {
   display: inline-block;
   width: 80px;
   padding: 10px;
-  border: solid 2px #ccc;
+  background: #fff;
+  border: solid 3px #9051ff;
+  color: #9051ff;
   transition: all 0.3s;
   text-align: center;
   border-radius: 5px;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
 }
 
-.times input[type="radio"] {
+#times label:hover {
+  transform: scale(1.1);
+}
+
+#times input[type="radio"] {
   display: none;
 }
 
-.times input[type="radio"]:checked + label {
-  border: solid 2px dodgerblue;
+#times input[type="radio"]:checked + label {
+  border: solid 3px rgb(133, 140, 148);
+  color: dodgerblue;
+}
+
+.times {
+  display: grid;
+  grid-template-columns: 4fr 4fr 4fr 4fr;
+  grid-gap: 10px;
+}
+
+.disabled {
+  border: solid 2px #ccc !important;
+  color: #ccc !important;
+  cursor: not-allowed !important;
 }
 
 @media (max-width: 767px) {
   .paper {
     margin: 0;
+  }
+  .times {
+    display: grid;
+    grid-template-columns: 4fr 4fr;
+    grid-gap: 10px;
   }
 }
