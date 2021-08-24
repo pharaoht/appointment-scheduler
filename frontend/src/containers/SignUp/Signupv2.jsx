@@ -12,10 +12,11 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
         last_name: "",
         email: "",
         password: "",
-        re_password: ""
+        re_password: "",
+        is_staff: 0
     });
 
-    const { first_name, last_name, email, password, re_password } = formData;
+    const { first_name, last_name, email, password, re_password, is_staff } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -23,7 +24,7 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
         e.preventDefault()
 
         if (password === re_password) {
-            signup(email, first_name, last_name, password, re_password)
+            signup(email, first_name, last_name, password, re_password, is_staff)
             setAccountCreated(true)
         }
 

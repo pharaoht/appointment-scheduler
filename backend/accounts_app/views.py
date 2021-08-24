@@ -3,10 +3,12 @@ from rest_framework.response import Response
 from .models import Appointment, UserAccount, Service
 from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer
 from rest_framework.decorators import api_view, permission_classes
-from django.db.models import Q
 from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
 import json
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
 
 
 @api_view(['POST'])
@@ -44,6 +46,9 @@ def create_appointment(request):
             client, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            # logic for email confirmation
+            appointment_email_success_automation(request, user)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
@@ -73,3 +78,17 @@ def get_services(request):
     serializer = ServiceCreateSerializer(services, many=True)
 
     return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+# helper methods
+def appointment_email_success_automation(request, user):
+    template = render_to_string(
+        'accounts_app/email_template.html', {'name': user.first_name})
+    email = EmailMessage(
+        'Your Appointment has been confirmed!',
+        template,
+        settings.EMAIL_HOST_USER,
+        [request.data['email']],
+    )
+    email.fail.silently = False
+    email.send()

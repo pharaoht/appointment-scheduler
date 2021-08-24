@@ -50,11 +50,20 @@ class Service(models.Model):
         return self.name
 
 
+class AnimalType(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Appointment(models.Model):
     client = models.ForeignKey(
         UserAccount, related_name='user', on_delete=models.CASCADE)
     service = models.ForeignKey(
         Service, related_name='service', on_delete=models.CASCADE)
+    animal = models.ForeignKey(
+        AnimalType, related_name='animal', on_delete=models.CASCADE)
     appointment_date = models.DateField(auto_now=False, auto_now_add=False)
     appointment_time = models.TimeField(auto_now=False, auto_now_add=False)
 

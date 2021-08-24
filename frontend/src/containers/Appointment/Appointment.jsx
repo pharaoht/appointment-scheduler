@@ -207,19 +207,3 @@ const Appointment = () => {
 }
 
 export default Appointment;
-
-
-
-
-        // await axios.get('http://localhost:8000/api/get-appointments/')
-        //     .then((res) => {
-        //         console.log(res)
-        //         res.data.map((currentItem, index) => {
-        //             if (currentItem.appointment_date == today.toISOString().slice(0, 10)) {
-        //                 console.log('match')
-        //             }
-
-
-        //         })
-        //     })
-        //     .catch((err) => console.log(err))
