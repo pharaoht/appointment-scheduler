@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import './appointment.css'
-
+import photo1 from '../../media/dognail.jpg'
 const Appointment = () => {
     const date = new Date()
     const [today, setToday] = useState(new Date())
@@ -86,13 +86,12 @@ const Appointment = () => {
 
     const getServices = () => {
         axios.get(`${baseURL}get-services/`)
-            .then((res) => { setServices([res.data]) })
+            .then((res) => { setServices(res.data) })
             .catch((err) => console.log(err))
     }
 
     useEffect(() => {
         setRefresh(false)
-        console.log(today)
         getAppointments()
         getServices()
 
@@ -196,8 +195,33 @@ const Appointment = () => {
                             </div>
                         </div>
                         <div className="service-right">
-                            service
-                            <button>Make Appointment</button>
+                            <div className="services">
+                                {services.map((currentItem, idx) => {
+                                    return (
+                                        <>
+                                            <div className="cards" key={idx}>
+                                                <div className="service-image">
+                                                    <img src={`http://127.0.0.1:8000${currentItem.photo1}`} alt="" />
+                                                </div>
+                                                <h4>{currentItem.name}</h4>
+                                                <hr></hr>
+                                                <p className="card-text">{currentItem.desc}</p>
+                                                <hr />
+                                                <p>Price: ${currentItem.price}</p>
+                                                <div className="check-service">
+                                                    <input className="cbx" type="checkbox" name="" id={idx} />
+                                                </div>
+
+                                            </div>
+                                        </>
+
+                                    )
+                                })}
+
+                            </div>
+
+
+
                         </div>
                     </form>
                 </div>
