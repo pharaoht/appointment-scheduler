@@ -1,7 +1,7 @@
 from rest_framework import status, generics
 from rest_framework.response import Response
-from .models import Appointment, UserAccount, Service
-from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer
+from .models import Appointment, UserAccount, Service, AnimalType
+from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer
 from rest_framework.decorators import api_view, permission_classes
 from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
@@ -30,12 +30,15 @@ def get_appointments(request):
 @permission_classes([IsAuthenticated, ])
 def create_appointment(request):
     print(request.data)
+    print(request.data['client'])
     # get user object model
-    user = UserAccount.objects.get(email=request.data['email'])
+    user = UserAccount.objects.get(id=request.data['client'])
     # get service object model
-    service = Service.objects.get(name=request.data['service'])
+    service = Service.objects.get(id=request.data['service'])
+    # get animal object model
+    animal = AnimalType.objects.get(id=request.data['animal'])
     # for foreign key constaints have to pass both service and user
-    client = Appointment(client=user, service=service)
+    client = Appointment(client=user, service=service, animal=animal)
     if request.method == "POST":
         if Appointment.objects.filter(
                 appointment_date=request.data['appointment_date'], appointment_time=request.data['appointment_time']).exists():
@@ -47,7 +50,7 @@ def create_appointment(request):
         if serializer.is_valid():
             serializer.save()
             # logic for email confirmation
-            appointment_email_success_automation(request, user)
+            # appointment_email_success_automation(request, user)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
@@ -80,7 +83,16 @@ def get_services(request):
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
+@api_view(['GET'])
+def get_animals(request):
+    animals = AnimalType.objects.all()
+    serializer = AnimalCreateSerializer(animals, many=True)
+
+    return Response(status=status.HTTP_200_OK, data=serializer.data)
+
 # helper methods
+
+
 def appointment_email_success_automation(request, user):
     template = render_to_string(
         'accounts_app/email_template.html', {'name': user.first_name})

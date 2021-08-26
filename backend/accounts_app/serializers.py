@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from django.db import models
-from .models import Appointment, Service
+from .models import Appointment, Service, AnimalType
 from rest_framework.serializers import ModelSerializer
 User = get_user_model()
 
@@ -30,4 +30,13 @@ class ServiceCreateSerializer(ModelSerializer):
 
         fields = [
             'id', 'name', 'price', 'desc', 'photo1', 'photo2'
+        ]
+
+
+class AnimalCreateSerializer(ModelSerializer):
+    class Meta():
+        model = AnimalType
+
+        fields = [
+            'id', 'name'
         ]

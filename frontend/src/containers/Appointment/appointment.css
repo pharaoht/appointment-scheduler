@@ -25,7 +25,6 @@
 
 .service-right {
   width: 60%;
-  outline: 1px solid green;
 }
 
 .date-header {
@@ -77,6 +76,10 @@
   border-top-right-radius: 15px;
   padding: 5px;
   background: #fff;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+.service-right .services .cards:hover {
+  cursor: pointer;
 }
 
 .service-right .services .cards:hover {
@@ -86,7 +89,6 @@
 
 .service-right .services {
   margin: 0;
-  padding: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
@@ -112,11 +114,15 @@
   margin: -5px;
 }
 
+.cbx {
+}
+
 @media (max-width: 767px) {
   .paper {
-    margin: 0;
+    margin: 5px;
   }
   .times {
+    padding-left: 5px;
     display: grid;
     grid-template-columns: 4fr 4fr;
     grid-gap: 10px;
@@ -124,8 +130,9 @@
   .service-right .services {
     margin: 0;
     padding: 10px;
+    padding-left: 0%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 4fr 4fr;
     grid-gap: 10px;
   }
 }

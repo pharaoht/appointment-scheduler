@@ -2,29 +2,53 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import './appointment.css'
 import photo1 from '../../media/dognail.jpg'
-const Appointment = () => {
+import { connect } from 'react-redux';
+
+const Appointment = ({ isAuthenticated, user }) => {
     const date = new Date()
+    const [userData, setUserData] = useState([])
     const [today, setToday] = useState(new Date())
     const [refresh, setRefresh] = useState(false)
-    const [formData, setFormData] = useState([])
+    const [formData, setFormData] = useState({
+        client: "",
+        service: "",
+        animal: "",
+        appointment_time: "",
+        appointment_date: "",
+    })
     const [services, setServices] = useState([])
+    const [animals, setAnimals] = useState([])
     const baseURL = 'http://localhost:8000/api/'
 
-    const submitHandler = () => {
+    const submitHandler = (e) => {
+        e.preventDefault()
+        if (isAuthenticated) {
+            postFunction()
+        }
+        else {
+            alert("You must be logged in to make an appointment")
+        }
 
     }
 
-    const changeHandler = () => {
+    const changeHandler = (e) => {
 
+        setFormData({
+            ...formData,
+            client: userData.id,
+            [e.target.name]: e.target.value
+        })
     }
 
     const increaseDate = () => {
         today.setDate(today.getDate() + 1);
+        setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
         setRefresh(true)
     }
 
     const decreaseDate = () => {
         today.setDate(today.getDate() - 1);
+        setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
         setRefresh(true)
     }
 
@@ -53,7 +77,6 @@ const Appointment = () => {
         const element = document.getElementById('times')
         const labels = element.querySelectorAll('label')
         const radiobuttons = element.querySelectorAll('input[type=radio]')
-        console.log(data)
 
         for (let i = 0; i < radiobuttons.length; i++) {
             labels[i].classList.remove('disabled')
@@ -90,13 +113,39 @@ const Appointment = () => {
             .catch((err) => console.log(err))
     }
 
+    const getAnimals = () => {
+        axios.get(`${baseURL}get-animals/`)
+            .then((res) => { setAnimals(res.data) })
+            .catch(err => console.log(err))
+    }
+
+    const postFunction = () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json'
+            }
+        };
+
+        axios.post(`${baseURL}create-appointment/`, formData, config)
+            .then(res => {
+                alert("You appointment has been created!")
+                setRefresh(true)
+            })
+            .catch(err => {
+                console.log(err)
+                alert("Your appointment could not be created, please try again.")
+            })
+    }
+
     useEffect(() => {
         setRefresh(false)
         getAppointments()
         getServices()
-
-
-    }, [refresh])
+        getAnimals()
+        setUserData(user)
+    }, [refresh, user])
 
 
 
@@ -115,81 +164,98 @@ const Appointment = () => {
                             <button onClick={increaseDate}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
                         </h3>
                     </div>
-                    <form className="form-info">
+                    <form className="form-info" onSubmit={submitHandler}>
                         <div className="times-left">
                             <div className="time-holder">
                                 <div className="times" id="times">
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="08:00:00" id="1" />
+                                        <input type="radio" name="appointment_time" value="08:00:00" id="1" onChange={changeHandler} />
                                         <label for="1">08:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="08:30:00" id="2" />
+                                        <input type="radio" name="appointment_time" value="08:30:00" id="2" onChange={changeHandler} />
                                         <label for="2">08:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="09:00:00" id="3" />
+                                        <input type="radio" name="appointment_time" value="09:00:00" id="3" onChange={changeHandler} />
                                         <label for="3">09:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="09:30:00" id="4" />
+                                        <input type="radio" name="appointment_time" value="09:30:00" id="4" onChange={changeHandler} />
                                         <label for="4">09:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="10:00:00" id="5" />
+                                        <input type="radio" name="appointment_time" value="10:00:00" id="5" onChange={changeHandler} />
                                         <label for="5">10:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="10:30:00" id="6" />
+                                        <input type="radio" name="appointment_time" value="10:30:00" id="6" onChange={changeHandler} />
                                         <label for="6">10:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="11:00:00" id="7" />
+                                        <input type="radio" name="appointment_time" value="11:00:00" id="7" onChange={changeHandler} />
                                         <label for="7">11:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="11:30:00" id="8" />
+                                        <input type="radio" name="appointment_time" value="11:30:00" id="8" onChange={changeHandler} />
                                         <label for="8">11:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="12:00:00" id="9" />
+                                        <input type="radio" name="appointment_time" value="12:00:00" id="9" onChange={changeHandler} />
                                         <label for="9">12:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="12:30:00" id="10" />
+                                        <input type="radio" name="appointment_time" value="12:30:00" id="10" onChange={changeHandler} />
                                         <label for="10">12:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="13:00:00" id="11" />
+                                        <input type="radio" name="appointment_time" value="13:00:00" id="11" onChange={changeHandler} />
                                         <label for="11">1:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="13:30:00" id="12" />
+                                        <input type="radio" name="appointment_time" value="13:30:00" id="12" onChange={changeHandler} />
                                         <label for="12">1:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="14:00:00" id="13" />
+                                        <input type="radio" name="appointment_time" value="14:00:00" id="13" onChange={changeHandler} />
                                         <label for="13">2:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="14:30:00" id="14" />
+                                        <input type="radio" name="appointment_time" value="14:30:00" id="14" onChange={changeHandler} />
                                         <label for="14">2:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="15:00:00" id="15" />
+                                        <input type="radio" name="appointment_time" value="15:00:00" id="15" onChange={changeHandler} />
                                         <label for="15">3:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="15:30:00" id="16" />
+                                        <input type="radio" name="appointment_time" value="15:30:00" id="16" onChange={changeHandler} />
                                         <label for="16">3:30</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="16:00:00" id="17" />
+                                        <input type="radio" name="appointment_time" value="16:00:00" id="17" onChange={changeHandler} />
                                         <label for="17">4:00</label>
                                     </div>
                                     <div className="">
-                                        <input type="radio" name="timeslot" value="16:30:00" id="18" />
+                                        <input type="radio" name="appointment_time" value="16:30:00" id="18" onChange={changeHandler} />
                                         <label for="18">4:30</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ outline: '1px solid black' }}>
+                                <div>
+                                    {animals.map((currentItem, idx) => {
+                                        return (
+                                            <>
+                                                <div>
+                                                    <input type="radio" name="animal" id={`a${idx}`} value={currentItem.id} onChange={changeHandler} />
+                                                    <label for={`a${idx}`}>{currentItem.name}</label>
+                                                </div>
+                                            </>
+                                        )
+                                    })}
+                                    <div>
+                                        <button type="submit">Schedule</button>
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +275,7 @@ const Appointment = () => {
                                                 <hr />
                                                 <p>Price: ${currentItem.price}</p>
                                                 <div className="check-service">
-                                                    <input className="cbx" type="checkbox" name="" id={idx} />
+                                                    <input className="cbx" type="checkbox" name="service" id={`c${idx}`} value={currentItem.id} onChange={changeHandler} />
                                                 </div>
 
                                             </div>
@@ -230,4 +296,8 @@ const Appointment = () => {
     </>
 }
 
-export default Appointment;
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user
+})
+export default connect(mapStateToProps, {})(Appointment);
