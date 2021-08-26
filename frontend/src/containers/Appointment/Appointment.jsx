@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 const Appointment = ({ isAuthenticated, user }) => {
     const date = new Date()
     const [userData, setUserData] = useState([])
-    const [today, setToday] = useState(new Date())
+    const [today, setToday] = useState(date)
     const [refresh, setRefresh] = useState(false)
     const [formData, setFormData] = useState({
         client: "",
@@ -23,30 +23,45 @@ const Appointment = ({ isAuthenticated, user }) => {
     const submitHandler = (e) => {
         e.preventDefault()
         if (isAuthenticated) {
-            postFunction()
+            if (formData.client == "" || formData.service == "" || formData.animal == "" || formData.appointment_date == "" || formData.appointment_time == "") {
+                alert("Please make sure everything is filled out.")
+            }
+            else {
+                postFunction()
+            }
         }
         else {
             alert("You must be logged in to make an appointment")
+            document.getElementById('toggle').click()
         }
 
     }
 
     const changeHandler = (e) => {
+        if (user.id != null) {
+            setFormData({
+                ...formData,
+                client: userData.id,
+                [e.target.name]: e.target.value
+            })
+        } else {
+            setFormData({
+                ...formData,
+                [e.target.name]: e.target.value
+            })
+        }
 
-        setFormData({
-            ...formData,
-            client: userData.id,
-            [e.target.name]: e.target.value
-        })
     }
 
     const increaseDate = () => {
+        resetbuttons()
         today.setDate(today.getDate() + 1);
         setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
         setRefresh(true)
     }
 
     const decreaseDate = () => {
+        resetbuttons()
         today.setDate(today.getDate() - 1);
         setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
         setRefresh(true)
@@ -81,13 +96,19 @@ const Appointment = ({ isAuthenticated, user }) => {
         for (let i = 0; i < radiobuttons.length; i++) {
             labels[i].classList.remove('disabled')
             radiobuttons[i].classList.remove('disabled')
+            radiobuttons[i].disabled = false
             data.map((currentItem, index) => {
-                if (currentItem.appointment_time == radiobuttons[i].value) {
-                    radiobuttons[i].disabled = true
-                    radiobuttons[i].className = 'disabled'
-                    labels[i].className = 'disabled'
+                if (currentItem.appointment_date == today.toISOString().slice(0, 10)) {
+                    if (currentItem.appointment_time == radiobuttons[i].value) {
+                        radiobuttons[i].disabled = true
+                        radiobuttons[i].className = 'disabled'
+                        labels[i].className = 'disabled'
+                    }
                 }
             })
+
+            console.log(today.toLocaleDateString() + " - " + date.toLocaleDateString())
+
 
             const curhours = date.getHours()
             const appTime = radiobuttons[i].value.split(":")
@@ -97,7 +118,7 @@ const Appointment = ({ isAuthenticated, user }) => {
                 labels[i].className = 'disabled'
 
             } else if (today.toLocaleDateString() === date.toLocaleDateString()) {
-                console.log(today.toLocaleDateString())
+
                 if (parseInt(appTime[0]) <= curhours) {
                     radiobuttons[i].className = 'disabled'
                     labels[i].className = 'disabled'
@@ -105,6 +126,7 @@ const Appointment = ({ isAuthenticated, user }) => {
             }
 
         }
+
     }
 
     const getServices = () => {
@@ -131,12 +153,31 @@ const Appointment = ({ isAuthenticated, user }) => {
         axios.post(`${baseURL}create-appointment/`, formData, config)
             .then(res => {
                 alert("You appointment has been created!")
+                resetbuttons()
                 setRefresh(true)
             })
             .catch(err => {
                 console.log(err)
+                resetbuttons()
                 alert("Your appointment could not be created, please try again.")
             })
+    }
+
+    const cardHandler = (idx) => {
+        const cbx = document.getElementById(`c${idx}`)
+        if (cbx.checked) {
+            cbx.checked = false
+        } else {
+            cbx.checked = true
+        }
+
+    }
+    function resetbuttons() {
+        const element = document.getElementById('times')
+        const radiobuttons = element.querySelectorAll('input[type=radio]')
+        for (let i = 0; i < radiobuttons.length; i++) {
+            radiobuttons[i].checked = false
+        }
     }
 
     useEffect(() => {
@@ -145,7 +186,7 @@ const Appointment = ({ isAuthenticated, user }) => {
         getServices()
         getAnimals()
         setUserData(user)
-    }, [refresh, user])
+    }, [refresh])
 
 
 
@@ -265,7 +306,7 @@ const Appointment = ({ isAuthenticated, user }) => {
                                 {services.map((currentItem, idx) => {
                                     return (
                                         <>
-                                            <div className="cards" key={idx}>
+                                            <div className="cards" key={idx} onClick={(e) => cardHandler(idx)}>
                                                 <div className="service-image">
                                                     <img src={`http://127.0.0.1:8000${currentItem.photo1}`} alt="" />
                                                 </div>

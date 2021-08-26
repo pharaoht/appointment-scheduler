@@ -3,7 +3,8 @@ from .models import UserAccount, Service, Appointment, AnimalType
 
 
 class AppointmentCustom(admin.ModelAdmin):
-    list_display = ('client', 'appointment_time', 'service')
+    list_display = ('client', 'appointment_time',
+                    'service', 'appointment_date', 'animal')
     list_filter = ('appointment_date',)
 
 

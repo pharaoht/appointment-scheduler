@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
 import json
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 
@@ -30,7 +30,6 @@ def get_appointments(request):
 @permission_classes([IsAuthenticated, ])
 def create_appointment(request):
     print(request.data)
-    print(request.data['client'])
     # get user object model
     user = UserAccount.objects.get(id=request.data['client'])
     # get service object model
@@ -50,7 +49,7 @@ def create_appointment(request):
         if serializer.is_valid():
             serializer.save()
             # logic for email confirmation
-            # appointment_email_success_automation(request, user)
+            appointment_email_success_automation(request, user)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
@@ -90,17 +89,15 @@ def get_animals(request):
 
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
-# helper methods
 
-
+# helper methods translate date time
 def appointment_email_success_automation(request, user):
-    template = render_to_string(
-        'accounts_app/email_template.html', {'name': user.first_name})
-    email = EmailMessage(
+    day = request.data['appointment_date']
+    time = request.data['appointment_time']
+    send_mail(
         'Your Appointment has been confirmed!',
-        template,
+        f'Hello {user.first_name},\nYour appointment is scheduled for {day} at {time}. \nThank you, see you soon!',
         settings.EMAIL_HOST_USER,
-        [request.data['email']],
+        [user.email],
+        fail_silently=False
     )
-    email.fail.silently = False
-    email.send()

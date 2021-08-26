@@ -55,7 +55,7 @@
 }
 
 #times input[type="radio"]:checked + label {
-  border: solid 3px rgb(133, 140, 148);
+  border: solid 3px blue;
   color: dodgerblue;
 }
 
