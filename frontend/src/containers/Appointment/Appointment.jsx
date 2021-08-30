@@ -34,11 +34,11 @@ const Appointment = ({ isAuthenticated, user }) => {
             alert("You must be logged in to make an appointment")
             document.getElementById('toggle').click()
         }
-
     }
 
     const changeHandler = (e) => {
-        if (user.id != null) {
+
+        if (isAuthenticated) {
             setFormData({
                 ...formData,
                 client: userData.id,
@@ -106,9 +106,6 @@ const Appointment = ({ isAuthenticated, user }) => {
                     }
                 }
             })
-
-            console.log(today.toLocaleDateString() + " - " + date.toLocaleDateString())
-
 
             const curhours = date.getHours()
             const appTime = radiobuttons[i].value.split(":")

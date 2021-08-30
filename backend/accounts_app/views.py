@@ -90,7 +90,13 @@ def get_animals(request):
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
+@api_view(['GET'])
+def get_user_appointments(request):
+    pass
+
 # helper methods translate date time
+
+
 def appointment_email_success_automation(request, user):
     day = request.data['appointment_date']
     time = request.data['appointment_time']
