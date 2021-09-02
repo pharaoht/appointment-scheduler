@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import './appointment.css'
-import photo1 from '../../media/dognail.jpg'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+
 
 const Appointment = ({ isAuthenticated, user }) => {
     const date = new Date()
@@ -23,7 +25,7 @@ const Appointment = ({ isAuthenticated, user }) => {
     const submitHandler = (e) => {
         e.preventDefault()
         if (isAuthenticated) {
-            if (formData.client == "" || formData.service == "" || formData.animal == "" || formData.appointment_date == "" || formData.appointment_time == "") {
+            if (formData.client === "" || formData.service === "" || formData.animal === "" || formData.appointment_date === "" || formData.appointment_time === "") {
                 alert("Please make sure everything is filled out.")
             }
             else {
@@ -37,18 +39,17 @@ const Appointment = ({ isAuthenticated, user }) => {
     }
 
     const changeHandler = (e) => {
-
         if (isAuthenticated) {
-            setFormData({
-                ...formData,
-                client: userData.id,
-                [e.target.name]: e.target.value
-            })
+            if (e.target.type === 'checkbox') {
+                if (e.target.checked) setFormData({ ...formData, [e.target.name]: e.target.value })
+                else setFormData({ ...formData, [e.target.name]: "" })
+            }
+            else {
+                setFormData({ ...formData, client: userData.id, [e.target.name]: e.target.value })
+            }
+
         } else {
-            setFormData({
-                ...formData,
-                [e.target.name]: e.target.value
-            })
+            setFormData({ ...formData, [e.target.name]: e.target.value })
         }
 
     }
@@ -68,7 +69,6 @@ const Appointment = ({ isAuthenticated, user }) => {
     }
 
     const getAppointments = () => {
-        let date = new Date()
         let dateSearch = today.toISOString().slice(0, 10)
 
         const config = {
@@ -81,6 +81,7 @@ const Appointment = ({ isAuthenticated, user }) => {
 
         axios.post(`${baseURL}get-appointments/`, body, config)
             .then((res) => {
+                console.log(res)
                 radioButtonFilter(res.data)
             })
             .catch((err) => console.log(err))
@@ -98,13 +99,14 @@ const Appointment = ({ isAuthenticated, user }) => {
             radiobuttons[i].classList.remove('disabled')
             radiobuttons[i].disabled = false
             data.map((currentItem, index) => {
-                if (currentItem.appointment_date == today.toISOString().slice(0, 10)) {
-                    if (currentItem.appointment_time == radiobuttons[i].value) {
+                if (currentItem.appointment_date === today.toISOString().slice(0, 10)) {
+                    if (currentItem.appointment_time === radiobuttons[i].value) {
                         radiobuttons[i].disabled = true
                         radiobuttons[i].className = 'disabled'
                         labels[i].className = 'disabled'
                     }
                 }
+                return null
             })
 
             const curhours = date.getHours()
@@ -121,9 +123,7 @@ const Appointment = ({ isAuthenticated, user }) => {
                     labels[i].className = 'disabled'
                 }
             }
-
         }
-
     }
 
     const getServices = () => {
@@ -160,15 +160,36 @@ const Appointment = ({ isAuthenticated, user }) => {
             })
     }
 
-    const cardHandler = (idx) => {
-        const cbx = document.getElementById(`c${idx}`)
-        if (cbx.checked) {
-            cbx.checked = false
-        } else {
-            cbx.checked = true
+    const cardHandler = (e, idx) => {
+        const cbx = document.getElementById(idx)
+        const tab = document.getElementById(`tab${idx}`)
+        if (e.target.type == 'checkbox') {
+            if (cbx.checked) {
+                tab.style.border = 'solid 3px blue'
+                tab.style.borderRadius = '5px'
+
+            } else {
+                tab.style.border = 'none'
+                tab.style.borderRadius = '0px'
+            }
+        } else if (e.target.nodeName === "DIV") {
+            if (cbx.checked) {
+                cbx.checked = false
+                tab.style.border = 'none'
+                tab.style.borderRadius = '0px'
+
+            } else {
+
+                cbx.checked = true
+                tab.style.border = 'solid 3px blue'
+                tab.style.borderRadius = '5px'
+            }
+
         }
 
+
     }
+
     function resetbuttons() {
         const element = document.getElementById('times')
         const radiobuttons = element.querySelectorAll('input[type=radio]')
@@ -186,146 +207,143 @@ const Appointment = ({ isAuthenticated, user }) => {
     }, [refresh])
 
 
-
-
     return <>
         <div id="outside">
             <div className="paper">
                 <div className="title-header">
-                    <h2>Book Appointment</h2>
+                    <h2 id="header-app">Book Appointment</h2>
                 </div>
                 <div className="form-holder">
                     <div className="date-header">
                         <h3>
-                            {today.toLocaleDateString() < date.toLocaleDateString() ? null : <button onClick={decreaseDate}><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
+                            {today.toLocaleDateString() < date.toLocaleDateString() ? null : <button onClick={decreaseDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
                             {today.toISOString().slice(0, 10)}
-                            <button onClick={increaseDate}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                            <button onClick={increaseDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
                         </h3>
                     </div>
-                    <form className="form-info" onSubmit={submitHandler}>
-                        <div className="times-left">
-                            <div className="time-holder">
-                                <div className="times" id="times">
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="08:00:00" id="1" onChange={changeHandler} />
-                                        <label for="1">08:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="08:30:00" id="2" onChange={changeHandler} />
-                                        <label for="2">08:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="09:00:00" id="3" onChange={changeHandler} />
-                                        <label for="3">09:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="09:30:00" id="4" onChange={changeHandler} />
-                                        <label for="4">09:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="10:00:00" id="5" onChange={changeHandler} />
-                                        <label for="5">10:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="10:30:00" id="6" onChange={changeHandler} />
-                                        <label for="6">10:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="11:00:00" id="7" onChange={changeHandler} />
-                                        <label for="7">11:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="11:30:00" id="8" onChange={changeHandler} />
-                                        <label for="8">11:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="12:00:00" id="9" onChange={changeHandler} />
-                                        <label for="9">12:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="12:30:00" id="10" onChange={changeHandler} />
-                                        <label for="10">12:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="13:00:00" id="11" onChange={changeHandler} />
-                                        <label for="11">1:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="13:30:00" id="12" onChange={changeHandler} />
-                                        <label for="12">1:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="14:00:00" id="13" onChange={changeHandler} />
-                                        <label for="13">2:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="14:30:00" id="14" onChange={changeHandler} />
-                                        <label for="14">2:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="15:00:00" id="15" onChange={changeHandler} />
-                                        <label for="15">3:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="15:30:00" id="16" onChange={changeHandler} />
-                                        <label for="16">3:30</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="16:00:00" id="17" onChange={changeHandler} />
-                                        <label for="17">4:00</label>
-                                    </div>
-                                    <div className="">
-                                        <input type="radio" name="appointment_time" value="16:30:00" id="18" onChange={changeHandler} />
-                                        <label for="18">4:30</label>
+                    <form onSubmit={submitHandler}>
+                        <div className="form-info">
+                            <div className="times-left">
+                                <div className="time-holder">
+                                    <div className="times" id="times">
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="08:00:00" id="1r" onChange={changeHandler} />
+                                            <label for="1r">08:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="08:30:00" id="2r" onChange={changeHandler} />
+                                            <label for="2r">08:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="09:00:00" id="3r" onChange={changeHandler} />
+                                            <label for="3r">09:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="09:30:00" id="4r" onChange={changeHandler} />
+                                            <label for="4r">09:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="10:00:00" id="5r" onChange={changeHandler} />
+                                            <label for="5r">10:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="10:30:00" id="6r" onChange={changeHandler} />
+                                            <label for="6r">10:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="11:00:00" id="7r" onChange={changeHandler} />
+                                            <label for="7r">11:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="11:30:00" id="8r" onChange={changeHandler} />
+                                            <label for="8r">11:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="12:00:00" id="9r" onChange={changeHandler} />
+                                            <label for="9r">12:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="12:30:00" id="10r" onChange={changeHandler} />
+                                            <label for="10r">12:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="13:00:00" id="11r" onChange={changeHandler} />
+                                            <label for="11r">1:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="13:30:00" id="12r" onChange={changeHandler} />
+                                            <label for="12r">1:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="14:00:00" id="13r" onChange={changeHandler} />
+                                            <label for="13r">2:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="14:30:00" id="14r" onChange={changeHandler} />
+                                            <label for="14r">2:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="15:00:00" id="15r" onChange={changeHandler} />
+                                            <label for="15r">3:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="15:30:00" id="16r" onChange={changeHandler} />
+                                            <label for="16r">3:30</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="16:00:00" id="17r" onChange={changeHandler} />
+                                            <label for="17r">4:00</label>
+                                        </div>
+                                        <div className="">
+                                            <input type="radio" name="appointment_time" value="16:30:00" id="18r" onChange={changeHandler} />
+                                            <label for="18r">4:30</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style={{ outline: '1px solid black' }}>
+                                <hr></hr>
                                 <div>
-                                    {animals.map((currentItem, idx) => {
+                                    <div className="animal-type-holder">
+                                        {animals.map((currentItem, idx) => {
+                                            return (
+                                                <>
+                                                    <div>
+                                                        <label>
+                                                            <input type="radio" name="animal" id={`a${idx}`} value={currentItem.id} onChange={changeHandler} />
+                                                            <span for={`a${idx}`}>{currentItem.name}</span>
+                                                        </label>
+                                                    </div>
+
+                                                </>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div className="service-right">
+                                <div className="services" id="services-app">
+                                    {services.map((currentItem, idx) => {
                                         return (
                                             <>
-                                                <div>
-                                                    <input type="radio" name="animal" id={`a${idx}`} value={currentItem.id} onChange={changeHandler} />
-                                                    <label for={`a${idx}`}>{currentItem.name}</label>
+                                                {/* {onClick = {(e) => cardHandler(e, idx)} } */}
+                                                <div className="service" key={idx} id={`tab${idx}`} onClick={(e) => cardHandler(e, idx)}>
+                                                    <div className="service-tab" >
+                                                        <div>{currentItem.name} - ${currentItem.price}</div>
+                                                        <div className="more-info-holder"><i className="more-info-service"><Link to="/services">more-info</Link></i></div>
+                                                    </div>
+                                                    <div className="service-input">
+                                                        <input className="cbx" type="checkbox" name="service" id={idx} value={currentItem.id} onChange={changeHandler} />
+                                                    </div>
                                                 </div>
                                             </>
                                         )
                                     })}
-                                    <div>
-                                        <button type="submit">Schedule</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="service-right">
-                            <div className="services">
-                                {services.map((currentItem, idx) => {
-                                    return (
-                                        <>
-                                            <div className="cards" key={idx} onClick={(e) => cardHandler(idx)}>
-                                                <div className="service-image">
-                                                    <img src={`http://127.0.0.1:8000${currentItem.photo1}`} alt="" />
-                                                </div>
-                                                <h4>{currentItem.name}</h4>
-                                                <hr></hr>
-                                                <p className="card-text">{currentItem.desc}</p>
-                                                <hr />
-                                                <p>Price: ${currentItem.price}</p>
-                                                <div className="check-service">
-                                                    <input className="cbx" type="checkbox" name="service" id={`c${idx}`} value={currentItem.id} onChange={changeHandler} />
-                                                </div>
+                        <div className="submit-button">
 
-                                            </div>
-                                        </>
-
-                                    )
-                                })}
-
-                            </div>
-
-
-
+                            <button type="submit">Schedule <i class="fa fa-paw" aria-hidden="true"></i> </button>
                         </div>
                     </form>
                 </div>
@@ -339,3 +357,9 @@ const mapStateToProps = state => ({
     user: state.auth.user
 })
 export default connect(mapStateToProps, {})(Appointment);
+
+
+{/* <div>
+    <input type="radio" name="animal" id={`a${idx}`} value={currentItem.id} onChange={changeHandler} />
+    <label for={`a${idx}`}>{currentItem.name}</label>
+</div > */}

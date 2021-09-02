@@ -1,0 +1,24 @@
+.reviews-outline {
+  outline: 1px solid black;
+  height: 100vh;
+  background: #03a9f4;
+}
+.main-holder .header {
+  padding-top: 75px;
+  text-align: center;
+}
+
+.reviews-outline .reviews-holder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.review .title-star-holder {
+  display: flex;
+  justify-content: space-between;
+}
+
+.review {
+  outline: 1px solid black;
+}

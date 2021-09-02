@@ -68,7 +68,7 @@ class Appointment(models.Model):
     appointment_time = models.TimeField(auto_now=False, auto_now_add=False)
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     client = models.ForeignKey(
         UserAccount, related_name='author', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)

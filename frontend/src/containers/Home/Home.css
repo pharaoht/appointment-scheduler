@@ -90,7 +90,7 @@ html {
   border-radius: 0;
 }
 
-.services {
+.content2 .services {
   position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

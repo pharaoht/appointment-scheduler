@@ -1,7 +1,7 @@
 from rest_framework import status, generics
 from rest_framework.response import Response
-from .models import Appointment, UserAccount, Service, AnimalType
-from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer
+from .models import Appointment, UserAccount, Service, AnimalType, Review
+from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier
 from rest_framework.decorators import api_view, permission_classes
 from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
@@ -84,18 +84,30 @@ def get_services(request):
 
 @api_view(['GET'])
 def get_animals(request):
-    animals = AnimalType.objects.all()
-    serializer = AnimalCreateSerializer(animals, many=True)
+    try:
+        animals = AnimalType.objects.all()
+        serializer = AnimalCreateSerializer(animals, many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+@api_view(['GET'])
+def get_reviews(request):
+    try:
+        reviews = Review.objects.all()
+        serializer = ReviewsCreateSerializier(reviews, many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])
 def get_user_appointments(request):
     pass
 
-# helper methods translate date time
 
+# add helper methods translate date time
 
 def appointment_email_success_automation(request, user):
     day = request.data['appointment_date']

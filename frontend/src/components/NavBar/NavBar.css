@@ -143,6 +143,8 @@ header {
   .logo {
     margin-left: 0px !important;
   }
+}
+@media (max-width: 767px) {
   #app-css-main-div {
     margin-left: 0;
     margin-right: 0;

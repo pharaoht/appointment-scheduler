@@ -1,7 +1,8 @@
 from djoser.serializers import UserCreateSerializer
+from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.db import models
-from .models import Appointment, Service, AnimalType
+from .models import Appointment, Service, AnimalType, Review, UserAccount
 from rest_framework.serializers import ModelSerializer
 User = get_user_model()
 
@@ -40,3 +41,15 @@ class AnimalCreateSerializer(ModelSerializer):
         fields = [
             'id', 'name'
         ]
+
+
+class ReviewsCreateSerializier(serializers.ModelSerializer):
+
+    class Meta():
+        model = Review
+
+        fields = [
+            'id', 'client', 'title', 'desc', 'rating', 'date_posted'
+        ]
+
+        depth = 1
