@@ -44,12 +44,11 @@ class AnimalCreateSerializer(ModelSerializer):
 
 
 class ReviewsCreateSerializier(serializers.ModelSerializer):
-
     class Meta():
         model = Review
 
         fields = [
-            'id', 'client', 'title', 'desc', 'rating', 'date_posted'
+            'id', 'client', 'title', 'desc', 'rating', 'date_posted',
         ]
 
         depth = 1

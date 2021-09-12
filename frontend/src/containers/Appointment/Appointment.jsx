@@ -16,7 +16,7 @@ const Appointment = ({ isAuthenticated, user }) => {
         service: "",
         animal: "",
         appointment_time: "",
-        appointment_date: "",
+        appointment_date: today,
     })
     const [services, setServices] = useState([])
     const [animals, setAnimals] = useState([])
@@ -55,8 +55,10 @@ const Appointment = ({ isAuthenticated, user }) => {
     }
 
     const increaseDate = () => {
+        console.log(setToday())
         resetbuttons()
         today.setDate(today.getDate() + 1);
+
         setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
         setRefresh(true)
     }
@@ -342,7 +344,6 @@ const Appointment = ({ isAuthenticated, user }) => {
                             </div>
                         </div>
                         <div className="submit-button">
-
                             <button type="submit">Schedule <i class="fa fa-paw" aria-hidden="true"></i> </button>
                         </div>
                     </form>
