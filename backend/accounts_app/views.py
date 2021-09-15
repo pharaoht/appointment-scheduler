@@ -55,9 +55,7 @@ def create_appointment(request):
 
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated, ])
 def delete_appointment(request, id):
-    print(request)
     try:
         appointment = Appointment.objects.find(id=id)
     except:
@@ -105,15 +103,16 @@ def get_reviews(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['DELETE'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated, ])
-def delete_review(request, id):
+def delete_review(request):
+    id = request.data['id']
     try:
-        review = Review.objects.find(id=id)
+        review = Review.objects.get(id=id)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "DELETE":
+    if request.method == "POST":
         operation = review.delete()
         data = {}
         if operation:

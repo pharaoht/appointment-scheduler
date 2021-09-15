@@ -4,28 +4,20 @@ import './Reviews.css'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const Reviews = ({ isAuthenticated, user }) => {
+const Reviews = ({ user, isAuthenticated }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [reviews, setReviews] = useState([])
     const [prevPage, setPrevPage] = useState([])
     const [nextPage, setNextPage] = useState([])
     const [page, setPage] = useState(1)
-    const [userInfo, setUserInfo] = useState({ user })
-    const [userAuth, setUserAuth] = useState({ isAuthenticated })
+    const [isDelete, setIsDeleted] = useState(false)
+
+    console.log(user)
 
     useEffect(() => {
         getReviews();
-    }, [isAuthenticated])
-
-
-    const deleteReview = (config, body) => {
-        axios.delete(`${baseURL}delete-review/`, body, config)
-            .then(res => {
-                console.log(res)
-
-            })
-            .catch(err => console.log(err))
-    }
+        setIsDeleted(false)
+    }, [isAuthenticated, isDelete])
 
     const createReview = () => {
         axios.post(`${baseURL}`)
@@ -38,7 +30,7 @@ const Reviews = ({ isAuthenticated, user }) => {
                 setPrevPage(res.data.previous)
                 setNextPage(res.data.next)
                 setReviews(res.data.results)
-
+                console.log(res.data.results)
             })
             .catch(err => console.log(err))
 
@@ -53,11 +45,14 @@ const Reviews = ({ isAuthenticated, user }) => {
                 setPrevPage(res.data.previous)
                 setNextPage(res.data.next)
                 setReviews(res.data.results)
+
             }).catch(err => console.log(err))
 
     }
 
+
     const starAdd = (num) => {
+
         let stars = []
         for (let i = 0; i < num; i++) {
             stars.push(<span className="fa fa-star"></span>)
@@ -76,19 +71,29 @@ const Reviews = ({ isAuthenticated, user }) => {
     }
 
     const showDelete = (client, review) => {
+
+        if (!isAuthenticated) {
+            return false
+        }
         const deleteHandler = () => {
+
             if (localStorage.getItem('access')) {
                 try {
                     const config = {
                         headers: {
                             'Content-Type': 'application/json',
+                            'Authorization': `JWT ${localStorage.getItem('access')}`,
                             'Accept': 'application/json'
                         }
                     }
 
-                    let dt = localStorage.getItem('access')
-                    const body = JSON.stringify({ token: dt })
-                    deleteReview(config, body)
+                    const body = JSON.stringify({ id: review })
+                    axios.post(`${baseURL}delete-review/`, body, config)
+                        .then(res => {
+                            setIsDeleted(true)
+                        })
+                        .catch(err => console.log(err))
+
                 }
                 catch (err) {
                     console.log(err)
@@ -96,24 +101,22 @@ const Reviews = ({ isAuthenticated, user }) => {
             } else {
                 return null;
             }
-
-
         }
 
-        if (userAuth.isAuthenticated === null || false) {
+        if (isAuthenticated === null || false) {
             return (
                 <>
                     {null}
                 </>
             )
         } else {
-            if (userInfo.user === null) {
+            if (user.id === null) {
                 return (
                     <>
                         {null}
                     </>
                 )
-            } else if (client === userInfo.user.id) {
+            } else if (client === user.id) {
                 return (
                     <>
                         <div className="delete-holder">
@@ -150,6 +153,7 @@ const Reviews = ({ isAuthenticated, user }) => {
                                     <div className="desc-holder">
                                         <p>{currentItem.desc}</p>
                                     </div>
+
                                     {showDelete(currentItem.client.id, currentItem.id)}
                                 </div>
                             </>
@@ -162,7 +166,6 @@ const Reviews = ({ isAuthenticated, user }) => {
                 </div>
 
             </div>
-
         </div>
     </>
 }
