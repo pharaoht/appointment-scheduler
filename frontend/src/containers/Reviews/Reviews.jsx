@@ -3,8 +3,10 @@ import axios from 'axios';
 import './Reviews.css'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { load_user } from '../../actions/auth';
 
-const Reviews = ({ user, isAuthenticated }) => {
+
+const Reviews = ({ user, isAuthenticated, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [reviews, setReviews] = useState([])
     const [prevPage, setPrevPage] = useState([])
@@ -13,6 +15,8 @@ const Reviews = ({ user, isAuthenticated }) => {
     const [isDelete, setIsDeleted] = useState(false)
 
     console.log(user)
+    load_user()
+
 
     useEffect(() => {
         getReviews();
@@ -175,4 +179,4 @@ const mapStateToProps = state => ({
     user: state.auth.user
 })
 
-export default connect(mapStateToProps, {})(Reviews);
+export default connect(mapStateToProps, { load_user })(Reviews);

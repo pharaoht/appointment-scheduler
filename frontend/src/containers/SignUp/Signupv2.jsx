@@ -32,8 +32,6 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
             let regBtn = document.getElementById('reg-btn')
             regBtn.disabled = true
         }
-
-
     }
     //--------------------------------------------------------------------------------------------------------
     const [formData2, setFormData2] = useState({
