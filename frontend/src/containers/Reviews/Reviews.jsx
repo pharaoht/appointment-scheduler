@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Reviews.css'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Modal from 'react-modal'
 import { load_user } from '../../actions/auth';
 
 
@@ -11,17 +12,20 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
     const [reviews, setReviews] = useState([])
     const [prevPage, setPrevPage] = useState([])
     const [nextPage, setNextPage] = useState([])
-    const [page, setPage] = useState(1)
     const [isDelete, setIsDeleted] = useState(false)
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
-    console.log(user)
-    load_user()
-
+    if (!isAuthenticated) {
+        load_user()
+    }
 
     useEffect(() => {
-        getReviews();
+        getReviews()
         setIsDeleted(false)
-    }, [isAuthenticated, isDelete])
+    }, [isDelete])
+
+
+
 
     const createReview = () => {
         axios.post(`${baseURL}`)
@@ -34,11 +38,53 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                 setPrevPage(res.data.previous)
                 setNextPage(res.data.next)
                 setReviews(res.data.results)
-                console.log(res.data.results)
             })
-            .catch(err => console.log(err))
+            .catch((err) => console.log(err))
+    }
+
+    const showModal = () => {
+
+        return (
+            <>
+                <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={
+                    {
+                        overlay: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.55)'
+                        },
+                        content: {
+                            position: 'absolute',
+                            top: '20%',
+                            left: '20%',
+                            right: '20%',
+                            bottom: '20%',
+                            borderRadius: 0
+                        }
+                    }
+                }>
+                    <div >
+                        <div>
+                            <h3>Add a review</h3>
+                        </div>
+                        <div className="modal-holder">
+                            <form>
+                                <div>
+                                    <input type="text" />
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <button onClick={() => setModalIsOpen(false)}>Close</button>
+                        </div>
+                    </div>
+
+                </Modal>
+
+            </>
+        )
 
     }
+
+
 
     const pageincrementer = (pagetype, url) => {
         if (url === null || undefined) {
@@ -53,7 +99,6 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
             }).catch(err => console.log(err))
 
     }
-
 
     const starAdd = (num) => {
 
@@ -132,13 +177,16 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
         }
     }
 
+
     return <>
         <div className="reviews-outline">
             <div className="main-holder">
+                {showModal()}
                 <div className="header">
-                    <h2>Reviews</h2>
+                    <h2>Reviews <span className="fa fa-plus" onClick={(e) => setModalIsOpen(true)}></span></h2>
                 </div>
                 <div className="reviews-holder">
+
                     {reviews.map((currentItem, idx) => {
                         return (
                             <>

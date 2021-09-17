@@ -13,7 +13,9 @@ import Signupv2 from './containers/SignUp/Signupv2';
 import Services from './containers/Services/Services.jsx';
 import About from './containers/AboutUs/AboutUs.jsx';
 import Reviews from './containers/Reviews/Reviews.jsx';
+import Modal from 'react-modal'
 
+Modal.setAppElement('#root')
 const App = () => (
     <Provider store={store}>
         <Router>

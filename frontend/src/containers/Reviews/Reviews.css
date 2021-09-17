@@ -71,6 +71,19 @@
   transition: all 0.3s;
 }
 
+.fa-plus {
+  float: right;
+}
+
+.fa-plus:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+.modal-holder {
+}
+
 @media (max-width: 1050px) {
   .reviews-outline {
     height: auto;

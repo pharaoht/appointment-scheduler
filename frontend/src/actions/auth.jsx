@@ -67,6 +67,7 @@ export const load_user = () => async dispatch => {
 
         try {
             const res = await axios.get(`${url}auth/users/me/`, config)
+            console.log("2")
 
             dispatch({
                 type: LOAD_USER_SUCCESS,
