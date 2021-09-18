@@ -99,6 +99,7 @@ def get_reviews(request):
         paginator.page_size = 4
         result_page = paginator.paginate_queryset(reviews, request)
         serializer = ReviewsCreateSerializier(result_page, many=True)
+
         return paginator.get_paginated_response(serializer.data)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
