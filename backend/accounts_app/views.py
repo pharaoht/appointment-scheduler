@@ -1,7 +1,8 @@
 from rest_framework import status, generics
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 from .models import Appointment, UserAccount, Service, AnimalType, Review
-from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier
+from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier, User
 from rest_framework.decorators import api_view, permission_classes
 from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
@@ -101,6 +102,21 @@ def get_reviews(request):
         return paginator.get_paginated_response(serializer.data)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def create_review(request):
+    user = UserAccount.objects.get(id=request.data['client'])
+    client = Review(client=user)
+
+    if request.method == "POST":
+        serializer = ReviewsCreateSerializier(client, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+    print(serializer.errors)
+    return Response(status=status.HTTP_200_OK, data=serializer.errors)
 
 
 @api_view(['POST'])

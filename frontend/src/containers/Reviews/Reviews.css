@@ -81,8 +81,65 @@
   transition: all 0.3s;
 }
 
-.modal-holder {
+/* Modal CSS */
+.modal-top-1 {
+  height: 100%;
 }
+
+.modal-top-1 h3 {
+  text-align: center;
+}
+
+.modal-top-1 .modal-holder .modal-form-holder {
+  display: flex;
+  flex-direction: column;
+}
+
+.fa-times {
+  float: right;
+  color: darkgrey;
+  cursor: pointer;
+}
+
+.modal-holder .modal-form-holder .form-input {
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.modal-holder .modal-form-holder .form-input input[type="text"] {
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid #9051ff;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+
+.modal-holder .modal-form-holder .form-input input[type="number"] {
+  width: 10%;
+  border-radius: 5px;
+  border: 2px solid #9051ff;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+
+.modal-holder .modal-form-holder .form-input textarea {
+  width: 60%;
+  height: 100px;
+  border-radius: 5px;
+  border: 2px solid #9051ff;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+
+.modal-holder .modal-form-holder .form-input button[type="submit"] {
+  background: #9051ff;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 10px;
+  border: none;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+
+/* Modal CSS */
 
 @media (max-width: 1050px) {
   .reviews-outline {

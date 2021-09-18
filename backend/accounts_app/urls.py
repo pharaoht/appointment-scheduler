@@ -11,5 +11,6 @@ urlpatterns = [
     path('get-animals/', views.get_animals),
     path('get-reviews/', views.get_reviews),
     path('delete-review/', views.delete_review),
+    path('create-review/', views.create_review),
 
 ]

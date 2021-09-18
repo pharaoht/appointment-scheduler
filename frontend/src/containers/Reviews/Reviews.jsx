@@ -10,25 +10,67 @@ import { load_user } from '../../actions/auth';
 const Reviews = ({ user, isAuthenticated, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [reviews, setReviews] = useState([])
+    const [userData, setUserData] = useState([])
     const [prevPage, setPrevPage] = useState([])
     const [nextPage, setNextPage] = useState([])
     const [isDelete, setIsDeleted] = useState(false)
     const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [formData, setFormData] = useState({
+        client: "",
+        title: "",
+        desc: "",
+        rating: "",
+    })
+    const [errFormData, setErrFormData] = useState([])
 
-    if (!isAuthenticated) {
-        load_user()
-    }
 
     useEffect(() => {
+        load_user()
+        console.log("3")
         getReviews()
         setIsDeleted(false)
-    }, [isDelete])
 
+    }, [isDelete, isAuthenticated])
 
+    const changeHandler = (e) => {
+        if (isAuthenticated) {
+            setFormData({ ...formData, client: user.id, [e.target.name]: e.target.value })
+        }
+        else {
+            return null
+        }
 
+    }
 
-    const createReview = () => {
-        axios.post(`${baseURL}`)
+    const createReview = (e) => {
+        e.preventDefault()
+        if (isAuthenticated) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${localStorage.getItem('access')}`,
+                    'Accept': 'application/json'
+                }
+            }
+            axios.post(`${baseURL}create-review/`, formData, config)
+                .then(res => {
+                    console.log(res)
+                    if (res.status === 200) {
+                        setErrFormData(res.data)
+                        return null
+
+                    } else {
+                        alert("Your comment has been Added!")
+                        setModalIsOpen(false)
+                        setIsDeleted(true)
+                        setFormData("")
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+
 
     }
 
@@ -52,6 +94,7 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                             backgroundColor: 'rgba(0, 0, 0, 0.55)'
                         },
                         content: {
+                            backgroundColor: "aliceblue",
                             position: 'absolute',
                             top: '20%',
                             left: '20%',
@@ -61,30 +104,35 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                         }
                     }
                 }>
-                    <div >
-                        <div>
-                            <h3>Add a review</h3>
-                        </div>
+                    <div className="modal-top-1">
+                        <h3>Add a review <i class="fa fa-times" aria-hidden="true" onClick={() => setModalIsOpen(false)}></i></h3>
                         <div className="modal-holder">
-                            <form>
-                                <div>
-                                    <input type="text" />
+                            <form onSubmit={(e) => createReview(e)}>
+                                <div className="modal-form-holder">
+                                    <div className="form-input">
+                                        <input name="title" type="text" onChange={changeHandler} maxLength="25" placeholder="title *" />
+                                    </div>
+                                    <div className="form-input">
+                                        <input name="rating" type="number" onChange={changeHandler} placeholder="rating *" /><span>/5</span>
+                                    </div>
+                                    <div className="form-input">
+                                        <textarea name="desc" onChange={changeHandler} placeholder="describe your experience *"></textarea>
+                                    </div>
+                                    <div className="form-input">
+                                        <button type="submit">Create Review <i class="fa fa-paw" aria-hidden="true"></i></button>
+                                    </div>
                                 </div>
                             </form>
+
                         </div>
-                        <div>
-                            <button onClick={() => setModalIsOpen(false)}>Close</button>
-                        </div>
+
                     </div>
 
                 </Modal>
 
             </>
         )
-
     }
-
-
 
     const pageincrementer = (pagetype, url) => {
         if (url === null || undefined) {
@@ -111,7 +159,7 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                 {stars.map((curr, idx) => {
                     return (
                         <>
-                            <span className={curr.props.className} ></span>
+                            <span className={curr.props.className}></span>
                         </>
                     )
                 })}
@@ -186,7 +234,6 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                     <h2>Reviews <span className="fa fa-plus" onClick={(e) => setModalIsOpen(true)}></span></h2>
                 </div>
                 <div className="reviews-holder">
-
                     {reviews.map((currentItem, idx) => {
                         return (
                             <>
@@ -216,7 +263,6 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                     <div><Link className="pageinfo" to="#" onClick={(e) => pageincrementer(1, prevPage)}>Previous</Link></div>
                     <div><Link className="pageinfo" to="#" onClick={(e) => pageincrementer(2, nextPage)}>Next</Link></div>
                 </div>
-
             </div>
         </div>
     </>

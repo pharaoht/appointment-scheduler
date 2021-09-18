@@ -44,11 +44,24 @@ class AnimalCreateSerializer(ModelSerializer):
 
 
 class ReviewsCreateSerializier(serializers.ModelSerializer):
+
+    def validate(self, data):
+        rating = data['rating']
+
+        if(rating < 0 or rating > 5):
+            raise serializers.ValidationError("Rating must be between 0 and 5")
+
+        return data
+
     class Meta():
         model = Review
 
         fields = [
-            'id', 'client', 'title', 'desc', 'rating', 'date_posted',
+            'client', 'title', 'desc', 'rating', 'date_posted',
         ]
+
+        extra_kwargs = {'title': {'required': True}}
+        extra_kwargs = {'desc': {'required': True}}
+        extra_kwargs = {'rating': {'required': True}}
 
         depth = 1
