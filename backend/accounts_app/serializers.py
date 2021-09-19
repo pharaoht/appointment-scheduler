@@ -56,13 +56,16 @@ class ReviewsCreateSerializier(serializers.ModelSerializer):
 
     class Meta():
         model = Review
+        client = UserCreateSerializer()
 
         fields = [
-            'client', 'title', 'desc', 'rating', 'date_posted',
+            'id', 'client', 'title', 'desc', 'rating', 'date_posted',
         ]
 
-        extra_kwargs = {'title': {'required': True}}
-        extra_kwargs = {'desc': {'required': True}}
-        extra_kwargs = {'rating': {'required': True}}
+        extra_kwargs = {
+            'title': {'required': True},
+            'desc': {'required': True},
+            'rating': {'required': True},
+        }
 
         depth = 1

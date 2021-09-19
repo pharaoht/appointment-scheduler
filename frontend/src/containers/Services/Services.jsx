@@ -9,6 +9,7 @@ const Services = () => {
     const [services, setServices] = useState([])
     useEffect(() => {
         getServices()
+        window.scrollTo(0, 0);
     }, [])
 
     const getServices = () => {

@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import Modal from 'react-modal'
 import { load_user } from '../../actions/auth';
 
+//finish form errors
+//fix reload error when check for users
+//remove password from api call
 
 const Reviews = ({ user, isAuthenticated, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
@@ -25,11 +28,10 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
 
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         load_user()
-        console.log("3")
         getReviews()
         setIsDeleted(false)
-
     }, [isDelete, isAuthenticated])
 
     const changeHandler = (e) => {
@@ -69,6 +71,11 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                 .catch(err => {
                     console.log(err)
                 })
+        } else {
+            alert("Please login to Add a review")
+            setModalIsOpen(false)
+            setIsDeleted(true)
+            setFormData("")
         }
 
 
@@ -88,35 +95,43 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
 
         return (
             <>
-                <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={
-                    {
-                        overlay: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.55)'
-                        },
-                        content: {
-                            backgroundColor: "aliceblue",
-                            position: 'absolute',
-                            top: '20%',
-                            left: '20%',
-                            right: '20%',
-                            bottom: '20%',
-                            borderRadius: 0
+                <Modal isOpen={modalIsOpen}
+                    onRequestClose={() => {
+                        setModalIsOpen(false)
+                        setFormData("")
+                    }}
+                    style={
+                        {
+                            overlay: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.55)'
+                            },
+                            content: {
+                                backgroundColor: "aliceblue",
+                                position: 'absolute',
+                                top: '15%',
+                                left: '15%',
+                                right: '15%',
+                                bottom: '15%',
+                                borderRadius: 0
+                            }
                         }
-                    }
-                }>
+                    }>
                     <div className="modal-top-1">
-                        <h3>Add a review <i class="fa fa-times" aria-hidden="true" onClick={() => setModalIsOpen(false)}></i></h3>
+                        <h3>Add a review <i class="fa fa-times" aria-hidden="true" onClick={() => {
+                            setModalIsOpen(false)
+                            setFormData("")
+                        }}></i></h3>
                         <div className="modal-holder">
                             <form onSubmit={(e) => createReview(e)}>
                                 <div className="modal-form-holder">
                                     <div className="form-input">
-                                        <input name="title" type="text" onChange={changeHandler} maxLength="25" placeholder="title *" />
+                                        <input name="title" type="text" onChange={changeHandler} maxLength="25" placeholder=" title *" required />
                                     </div>
                                     <div className="form-input">
-                                        <input name="rating" type="number" onChange={changeHandler} placeholder="rating *" /><span>/5</span>
+                                        <input name="rating" type="number" onChange={changeHandler} placeholder=" rating *" required min='0' max='5' /><span className="num-max">/5</span>
                                     </div>
                                     <div className="form-input">
-                                        <textarea name="desc" onChange={changeHandler} placeholder="describe your experience *"></textarea>
+                                        <textarea name="desc" onChange={changeHandler} placeholder=" describe your experience *" required></textarea>
                                     </div>
                                     <div className="form-input">
                                         <button type="submit">Create Review <i class="fa fa-paw" aria-hidden="true"></i></button>
@@ -231,7 +246,7 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
             <div className="main-holder">
                 {showModal()}
                 <div className="header">
-                    <h2>Reviews <span className="fa fa-plus" onClick={(e) => setModalIsOpen(true)}></span></h2>
+                    <h2>Reviews {isAuthenticated ? <span className="fa fa-plus" onClick={(e) => setModalIsOpen(true)}></span> : null}</h2>
                 </div>
                 <div className="reviews-holder">
                     {reviews.map((currentItem, idx) => {

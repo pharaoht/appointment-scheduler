@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios'
 import './appointment.css'
 import { connect } from 'react-redux';
@@ -9,18 +9,19 @@ import { Link } from 'react-router-dom';
 const Appointment = ({ isAuthenticated, user }) => {
     const date = new Date()
     const [userData, setUserData] = useState([])
-    const [today, setToday] = useState(date)
     const [refresh, setRefresh] = useState(false)
+    const [dateUpdate, setDateUpdate] = useState(new Date())
     const [formData, setFormData] = useState({
         client: "",
         service: "",
         animal: "",
         appointment_time: "",
-        appointment_date: today,
+        appointment_date: dateUpdate.toISOString().slice(0, 10),
     })
     const [services, setServices] = useState([])
     const [animals, setAnimals] = useState([])
     const baseURL = 'http://localhost:8000/api/'
+    const [days, setDays] = useState(0)
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -49,29 +50,28 @@ const Appointment = ({ isAuthenticated, user }) => {
             }
 
         } else {
-            setFormData({ ...formData, [e.target.name]: e.target.value })
+            return null
         }
 
     }
 
-    const increaseDate = () => {
-        console.log(setToday())
-        resetbuttons()
-        today.setDate(today.getDate() + 1);
+    const incrementDate = (() => {
+        setDays(prevState => prevState + 1)
 
-        setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
-        setRefresh(true)
+    })
+
+    const decrementDate = (() => {
+        setDays(prevState => prevState - 1)
+
+
+    })
+
+    const updateDate = () => {
+        setDateUpdate(prevState => new Date(Date.now() + days * 24 * 60 * 60 * 1000))
     }
 
-    const decreaseDate = () => {
-        resetbuttons()
-        today.setDate(today.getDate() - 1);
-        setFormData({ ...formData, appointment_date: today.toISOString().slice(0, 10) })
-        setRefresh(true)
-    }
-
-    const getAppointments = () => {
-        let dateSearch = today.toISOString().slice(0, 10)
+    function getAppointments() {
+        let dateSearch = dateUpdate.toISOString().slice(0, 10)
 
         const config = {
             headers: {
@@ -91,7 +91,6 @@ const Appointment = ({ isAuthenticated, user }) => {
 
     const radioButtonFilter = (data) => {
         let date = new Date()
-
         const element = document.getElementById('times')
         const labels = element.querySelectorAll('label')
         const radiobuttons = element.querySelectorAll('input[type=radio]')
@@ -100,8 +99,9 @@ const Appointment = ({ isAuthenticated, user }) => {
             labels[i].classList.remove('disabled')
             radiobuttons[i].classList.remove('disabled')
             radiobuttons[i].disabled = false
+
             data.map((currentItem, index) => {
-                if (currentItem.appointment_date === today.toISOString().slice(0, 10)) {
+                if (currentItem.appointment_date === dateUpdate.toISOString().slice(0, 10)) {
                     if (currentItem.appointment_time === radiobuttons[i].value) {
                         radiobuttons[i].disabled = true
                         radiobuttons[i].className = 'disabled'
@@ -114,11 +114,11 @@ const Appointment = ({ isAuthenticated, user }) => {
             const curhours = date.getHours()
             const appTime = radiobuttons[i].value.split(":")
 
-            if (today.toLocaleDateString() < date.toLocaleDateString()) {
+            if (dateUpdate < date) {
                 radiobuttons[i].className = 'disabled'
                 labels[i].className = 'disabled'
 
-            } else if (today.toLocaleDateString() === date.toLocaleDateString()) {
+            } else if (dateUpdate.toLocaleDateString() === date.toLocaleDateString()) {
 
                 if (parseInt(appTime[0]) <= curhours) {
                     radiobuttons[i].className = 'disabled'
@@ -165,7 +165,8 @@ const Appointment = ({ isAuthenticated, user }) => {
     const cardHandler = (e, idx) => {
         const cbx = document.getElementById(idx)
         const tab = document.getElementById(`tab${idx}`)
-        if (e.target.type == 'checkbox') {
+        console.log(cbx)
+        if (e.target.type === 'checkbox') {
             if (cbx.checked) {
                 tab.style.border = 'solid 3px blue'
                 tab.style.borderRadius = '5px'
@@ -176,20 +177,20 @@ const Appointment = ({ isAuthenticated, user }) => {
             }
         } else if (e.target.nodeName === "DIV") {
             if (cbx.checked) {
+                setFormData({ ...formData, [cbx.name]: "" })
                 cbx.checked = false
                 tab.style.border = 'none'
                 tab.style.borderRadius = '0px'
 
-            } else {
 
+            } else {
+                setFormData({ ...formData, [cbx.name]: cbx.value })
                 cbx.checked = true
                 tab.style.border = 'solid 3px blue'
                 tab.style.borderRadius = '5px'
             }
 
         }
-
-
     }
 
     function resetbuttons() {
@@ -201,12 +202,18 @@ const Appointment = ({ isAuthenticated, user }) => {
     }
 
     useEffect(() => {
+        updateDate()
+    }, [days])
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
         setRefresh(false)
         getAppointments()
         getServices()
         getAnimals()
+        setFormData({ ...formData, appointment_date: dateUpdate.toISOString().slice(0, 10) })
         setUserData(user)
-    }, [refresh])
+    }, [dateUpdate, refresh])
 
 
     return <>
@@ -218,9 +225,9 @@ const Appointment = ({ isAuthenticated, user }) => {
                 <div className="form-holder">
                     <div className="date-header">
                         <h3>
-                            {today.toLocaleDateString() < date.toLocaleDateString() ? null : <button onClick={decreaseDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
-                            {today.toISOString().slice(0, 10)}
-                            <button onClick={increaseDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                            {dateUpdate < date ? null : <button className="arrow-btn" onClick={decrementDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
+                            {dateUpdate.toISOString().slice(0, 10)}
+                            <button className="arrow-btn" onClick={incrementDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
                         </h3>
                     </div>
                     <form onSubmit={submitHandler}>
@@ -233,72 +240,36 @@ const Appointment = ({ isAuthenticated, user }) => {
                                             <label for="1r">08:00</label>
                                         </div>
                                         <div className="">
-                                            <input type="radio" name="appointment_time" value="08:30:00" id="2r" onChange={changeHandler} />
-                                            <label for="2r">08:30</label>
-                                        </div>
-                                        <div className="">
                                             <input type="radio" name="appointment_time" value="09:00:00" id="3r" onChange={changeHandler} />
                                             <label for="3r">09:00</label>
-                                        </div>
-                                        <div className="">
-                                            <input type="radio" name="appointment_time" value="09:30:00" id="4r" onChange={changeHandler} />
-                                            <label for="4r">09:30</label>
                                         </div>
                                         <div className="">
                                             <input type="radio" name="appointment_time" value="10:00:00" id="5r" onChange={changeHandler} />
                                             <label for="5r">10:00</label>
                                         </div>
                                         <div className="">
-                                            <input type="radio" name="appointment_time" value="10:30:00" id="6r" onChange={changeHandler} />
-                                            <label for="6r">10:30</label>
-                                        </div>
-                                        <div className="">
                                             <input type="radio" name="appointment_time" value="11:00:00" id="7r" onChange={changeHandler} />
                                             <label for="7r">11:00</label>
-                                        </div>
-                                        <div className="">
-                                            <input type="radio" name="appointment_time" value="11:30:00" id="8r" onChange={changeHandler} />
-                                            <label for="8r">11:30</label>
                                         </div>
                                         <div className="">
                                             <input type="radio" name="appointment_time" value="12:00:00" id="9r" onChange={changeHandler} />
                                             <label for="9r">12:00</label>
                                         </div>
                                         <div className="">
-                                            <input type="radio" name="appointment_time" value="12:30:00" id="10r" onChange={changeHandler} />
-                                            <label for="10r">12:30</label>
-                                        </div>
-                                        <div className="">
                                             <input type="radio" name="appointment_time" value="13:00:00" id="11r" onChange={changeHandler} />
                                             <label for="11r">1:00</label>
-                                        </div>
-                                        <div className="">
-                                            <input type="radio" name="appointment_time" value="13:30:00" id="12r" onChange={changeHandler} />
-                                            <label for="12r">1:30</label>
                                         </div>
                                         <div className="">
                                             <input type="radio" name="appointment_time" value="14:00:00" id="13r" onChange={changeHandler} />
                                             <label for="13r">2:00</label>
                                         </div>
                                         <div className="">
-                                            <input type="radio" name="appointment_time" value="14:30:00" id="14r" onChange={changeHandler} />
-                                            <label for="14r">2:30</label>
-                                        </div>
-                                        <div className="">
                                             <input type="radio" name="appointment_time" value="15:00:00" id="15r" onChange={changeHandler} />
                                             <label for="15r">3:00</label>
                                         </div>
                                         <div className="">
-                                            <input type="radio" name="appointment_time" value="15:30:00" id="16r" onChange={changeHandler} />
-                                            <label for="16r">3:30</label>
-                                        </div>
-                                        <div className="">
                                             <input type="radio" name="appointment_time" value="16:00:00" id="17r" onChange={changeHandler} />
                                             <label for="17r">4:00</label>
-                                        </div>
-                                        <div className="">
-                                            <input type="radio" name="appointment_time" value="16:30:00" id="18r" onChange={changeHandler} />
-                                            <label for="18r">4:30</label>
                                         </div>
                                     </div>
                                 </div>
