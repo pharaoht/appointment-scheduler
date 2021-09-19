@@ -14,36 +14,28 @@ const Sidebar = (props) => {
             <div className="navigation">
                 <ul className="sidebar-ul">
                     <li className="sidebar-li">
-                        <a>
-                            <Link to='/services'>
-                                <span className="icon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
-                                <span className="title">Services</span>
-                            </Link>
-                        </a>
+                        <Link to='/services'>
+                            <span className="icon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
+                            <span className="title">Services</span>
+                        </Link>
                     </li>
                     <li className="sidebar-li">
-                        <a>
-                            <Link to='/appointments'>
-                                <span className="icon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                <span className="title">Appointments</span>
-                            </Link>
-                        </a>
+                        <Link to='/appointments'>
+                            <span className="icon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                            <span className="title">Appointments</span>
+                        </Link>
                     </li>
                     <li className="sidebar-li">
-                        <a>
-                            <Link to='/about-us'>
-                                <span className="icon"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
-                                <span className="title">About Us</span>
-                            </Link>
-                        </a>
+                        <Link to='/about-us'>
+                            <span className="icon"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
+                            <span className="title">About Us</span>
+                        </Link>
                     </li>
                     <li className="sidebar-li">
-                        <a>
-                            <Link to='/reviews'>
-                                <span className="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                <span className="title">Reviews</span>
-                            </Link>
-                        </a>
+                        <Link to='/reviews'>
+                            <span className="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+                            <span className="title">Reviews</span>
+                        </Link>
                     </li>
                 </ul>
             </div>

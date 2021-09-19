@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { logout } from '../../actions/auth';
 import './NavBar.css'
-import photo1 from '../../media/petlogo.jpg'
+
 
 const Navbar = ({ logout, isAuthenticated, user }) => {
     const [userData, setUserData] = useState([])
@@ -45,7 +45,6 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
     const toggleBtn = () => {
         const toggle = document.getElementById('toggle');
         const navbar = document.getElementById('navbar');
-        const header = document.getElementById('header')
         toggle.classList.toggle('active')
         navbar.classList.toggle('active')
 

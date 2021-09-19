@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, } from 'react';
 import axios from 'axios'
 import './appointment.css'
 import { connect } from 'react-redux';
@@ -279,7 +279,7 @@ const Appointment = ({ isAuthenticated, user }) => {
                                         {animals.map((currentItem, idx) => {
                                             return (
                                                 <>
-                                                    <div>
+                                                    <div key={idx}>
                                                         <label>
                                                             <input type="radio" name="animal" id={`a${idx}`} value={currentItem.id} onChange={changeHandler} />
                                                             <span for={`a${idx}`}>{currentItem.name}</span>
