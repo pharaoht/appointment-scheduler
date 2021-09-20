@@ -27,9 +27,9 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
     const [errFormData, setErrFormData] = useState([])
 
 
-    useEffect(() => {
+    useEffect(async () => {
         window.scrollTo(0, 0);
-        load_user()
+        await load_user()
         getReviews()
         setIsDeleted(false)
     }, [isDelete, isAuthenticated])

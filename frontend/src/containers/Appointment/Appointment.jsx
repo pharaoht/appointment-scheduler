@@ -226,7 +226,7 @@ const Appointment = ({ isAuthenticated, user }) => {
                     <div className="date-header">
                         <h3>
                             {dateUpdate < date ? null : <button className="arrow-btn" onClick={decrementDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
-                            {dateUpdate.toISOString().slice(0, 10)}
+                            {dateUpdate.toLocaleDateString().slice(0, 10)}
                             <button className="arrow-btn" onClick={incrementDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
                         </h3>
                     </div>
