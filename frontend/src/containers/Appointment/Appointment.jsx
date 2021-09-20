@@ -114,7 +114,7 @@ const Appointment = ({ isAuthenticated, user }) => {
             const curhours = date.getHours()
             const appTime = radiobuttons[i].value.split(":")
 
-            if (dateUpdate < date) {
+            if (dateUpdate.toLocaleDateString() < date.toLocaleDateString()) {
                 radiobuttons[i].className = 'disabled'
                 labels[i].className = 'disabled'
 

@@ -131,13 +131,14 @@
   font-weight: 500;
   color: #fff;
   background-color: #9051ff;
-  border-top: #9051ff 2px solid;
-  border-right: #9051ff 2px solid;
-  border-bottom: #9051ff 2px solid;
+  border-top: #9051ff 2.5px solid;
+  border-right: #9051ff 2.5px solid;
+  border-bottom: #9051ff 1.8px solid;
   padding: 2px;
   padding-top: 0%;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
 }
 
 .modal-holder .modal-form-holder .form-input textarea {
