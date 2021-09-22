@@ -4,6 +4,9 @@
   padding: 15px;
   height: 100vh;
 }
+.reviews-outline .main-holder {
+  animation: fadeIn 0.9s;
+}
 .main-holder .header {
   text-align: center;
 }
@@ -99,6 +102,7 @@
   float: right;
   color: darkgrey;
   cursor: pointer;
+  font-size: 40px;
 }
 
 .fa-times:hover {

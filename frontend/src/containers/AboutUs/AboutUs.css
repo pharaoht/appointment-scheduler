@@ -1,13 +1,19 @@
-.body {
-  min-height: 100vh;
-  background-color: #03a9f4;
+.body-about-us * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.about-us-text {
+  font-family: "Poppins", sans-serif;
 }
 
 section {
-  position: relative;
+  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: #03a9f4;
 }
 
 section::before {
@@ -15,43 +21,46 @@ section::before {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50%;
   height: 100%;
+  background: #03a9f4;
 }
-section .container {
+
+.body-about-us section .container {
   position: relative;
   min-width: 1100px;
   min-height: 550px;
   display: flex;
   z-index: 1;
+  animation: fadeIn 1s;
 }
 
-section .container .contactinfo {
+.body-about-us section .container .contactInfo {
   position: absolute;
   top: 40px;
   width: 350px;
   height: calc(100% - 80px);
-  background-color: #0f3959;
+  background-image: linear-gradient(#330748, #6f42c1);
   z-index: 1;
   padding: 40px;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 20px 20px 25px rgba(0, 0, 0, 0.15);
 }
 
-section .container .contactinfo h2 {
+.body-about-us section .container .contactInfo h2 {
   color: #fff;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 500;
 }
 
-section .container .contactinfo .info {
+.body-about-us section .container .contactInfo ul.info {
   position: relative;
   margin: 20px 0;
 }
 
-section .container .contactinfo .info li {
+.body-about-us section .container .contactInfo ul.info li {
   position: relative;
   list-style: none;
   display: flex;
@@ -60,13 +69,120 @@ section .container .contactinfo .info li {
   align-items: flex-start;
 }
 
-section .container .contactinfo .info li span:nth-child(1) {
+.body-about-us section .container .contactInfo ul.info li span:nth-child(1) {
   width: 30px;
   min-width: 30px;
 }
 
-section .container .contactinfo .info li span:nth-child(1) i {
+.body-about-us section .container .contactInfo ul.info li span:nth-child(1) i {
   max-width: 100%;
-  filter: invert(1);
-  opacity: 0.5;
+  color: #fff;
+  font-size: x-large;
+}
+
+.body-about-us section .container .contactInfo ul.info li span a {
+  text-decoration: none;
+  color: #fff;
+}
+.body-about-us section .container .contactInfo ul.info li span a:hover {
+  text-decoration: underline;
+}
+.body-about-us section .container .contactInfo ul.info li span:nth-child(2) {
+  color: #fff;
+  margin-left: 10px;
+  font-weight: 300;
+}
+
+.body-about-us section .container .contactInfo ul.sci {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.body-about-us section .container .contactInfo ul.sci li {
+  list-style: none;
+  margin-right: 15px;
+}
+
+.body-about-us section .container .contactInfo ul.sci li a {
+  text-decoration: none;
+}
+
+.body-about-us section .container .contactInfo ul.sci li a i {
+  color: #fff;
+  font-size: x-large;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Contact form css */
+
+.body-about-us section .container .contactForm {
+  position: absolute;
+  background: #fff;
+  padding: 70px 50px;
+  padding-left: 250px;
+  margin-left: 150px;
+  width: calc(100% - 150px);
+  height: 100%;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+.body-about-us section .container .contactForm .holder-info {
+  display: flex;
+}
+
+.body-about-us section .container .contactForm .holder-info .desc-holder {
+  width: 50%;
+}
+
+.body-about-us section .container .contactForm .holder-info .img-info-holder {
+  width: 50%;
+}
+.body-about-us
+  section
+  .container
+  .contactForm
+  .holder-info
+  .img-info-holder
+  .img-holder {
+  margin-left: 25%;
+}
+.body-about-us
+  section
+  .container
+  .contactForm
+  .holder-info
+  .img-info-holder
+  .img-holder
+  img {
+  width: 100%;
+}
+
+.body-about-us
+  section
+  .container
+  .contactForm
+  .holder-info
+  .img-info-holder
+  .info-holder {
+  margin-left: 25%;
+  border-left: 2px solid lightgrey;
+  padding-left: 5px;
+}
+
+.body-about-us section .container .contactForm .holder-info .desc-holder .des {
+  margin-bottom: 20px;
+}
+
+.desc-holder hr {
+  border: 1px solid grey;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
