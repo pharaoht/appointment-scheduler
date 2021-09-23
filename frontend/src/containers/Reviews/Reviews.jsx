@@ -13,7 +13,6 @@ import { load_user } from '../../actions/auth';
 const Reviews = ({ user, isAuthenticated, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [reviews, setReviews] = useState([])
-    const [userData, setUserData] = useState([])
     const [prevPage, setPrevPage] = useState([])
     const [nextPage, setNextPage] = useState([])
     const [isDelete, setIsDeleted] = useState(false)

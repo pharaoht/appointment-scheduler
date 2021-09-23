@@ -67,7 +67,6 @@ export const load_user = () => async dispatch => {
 
         try {
             const res = await axios.get(`${url}auth/users/me/`, config)
-            console.log("2")
 
             dispatch({
                 type: LOAD_USER_SUCCESS,
@@ -99,6 +98,8 @@ export const login = (email, password) => async dispatch => {
     try {
         const res = await axios.post(`${url}auth/jwt/create/`, body, config)
 
+        console.log(res.data)
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
@@ -106,6 +107,7 @@ export const login = (email, password) => async dispatch => {
 
         dispatch(load_user())
     } catch (err) {
+        console.log(err.errors)
         dispatch({
             type: LOGIN_FAIL
         })

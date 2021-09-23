@@ -55,8 +55,10 @@ def create_appointment(request):
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
 
-@api_view(['DELETE'])
-def delete_appointment(request, id):
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def delete_appointment(request):
+    id = request.data['appointment']
     try:
         appointment = Appointment.objects.find(id=id)
     except:
@@ -71,6 +73,26 @@ def delete_appointment(request, id):
         else:
             data['failure'] = 'delete failed'
             return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def get_user_appointments_past(request):
+
+    clientID = request.data['client']
+
+    try:
+        appointments_past = Appointment.objects.filter(
+            client=clientID, appointment_date__lt=datetime.today())
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "POST":
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        result_page = paginator.paginate_queryset(appointments_past, request)
+        serializer = AppointmentCreateSerializer(result_page, many=True)
+        return paginator.get_paginated_response(status=status.HTTP_200_OK, data=serializer.data)
 
 
 @api_view(['GET'])
@@ -140,14 +162,10 @@ def delete_review(request):
             return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
 
 
-@api_view(['GET'])
-def get_user_appointments(request):
-    pass
-
-# add helper methods translate date time
-
+# helper methods
 
 def appointment_email_success_automation(request, user):
+    # translate date time to local
     day = request.data['appointment_date']
     time = request.data['appointment_time']
     send_mail(
@@ -157,3 +175,11 @@ def appointment_email_success_automation(request, user):
         [user.email],
         fail_silently=False
     )
+
+
+def appointment_email_delete_owner(request):
+    pass
+
+
+def appointment_email_delete_user(request, user):
+    pass

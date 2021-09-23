@@ -80,7 +80,7 @@ header {
 }
 
 #navbar.active {
-  width: 600px;
+  width: 550px;
 }
 
 #navbar ul {
@@ -119,7 +119,7 @@ header {
     position: fixed;
     bottom: -100%;
     right: 0;
-    width: 100%;
+    width: 100% !important;
     transition: 0.5;
     display: flex;
     justify-content: center;

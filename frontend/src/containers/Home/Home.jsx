@@ -18,9 +18,9 @@ const Home = () => (
         <section className="sec" id="about">
             <div className="content2">
                 <div className="mxw800p">
-                    <h3>Who we are</h3>
+                    <h3>Quienes Somos</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
-                    <Link to='/about-us' className="btn">Read More</Link>
+                    <Link to='/about-us' className="btn">Lee Màs.</Link>
                 </div>
 
             </div>
@@ -29,9 +29,9 @@ const Home = () => (
         <section className="sec" id="services">
             <div className="content2">
                 <div className="mxw800p">
-                    <h3>What we offer</h3>
+                    <h3>Qué Ofrecemos</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
-                    <a href="#" className="btn">See Pricing</a>
+                    <a href="#" className="btn">Ver Precios</a>
                 </div>
                 <div className="services">
                     <div className="box">
@@ -67,9 +67,9 @@ const Home = () => (
         <section className="sec stats" id="appointments">
             <div className="content2">
                 <div className="mxw800p">
-                    <h3>Appointments</h3>
-                    <Link to="/about-us" className="btn">Schedule Today!</Link>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                    <h3 style={{ color: 'white' }}>Citas</h3>
+                    <Link to="/about-us" className="btn">Programar Cita Hoy!</Link>
+                    <p style={{ color: 'white', fontWeight: 400 }}>Con el uso de nuestro sitio web, puede programar una cita fácilmente y recibir una confirmación por correo electrónico.</p>
                 </div>
 
             </div>
@@ -77,9 +77,10 @@ const Home = () => (
         <section className="sec" id="about">
             <div className="content2">
                 <div className="mxw800p">
-                    <h3>Who we are</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
-                    <Link to='/about-us' className="btn">Read More</Link>
+                    <h3>Reseñas</h3>
+                    <p>Después de su visita, ¡Díganos qué tan bien lo hicimos!</p>
+                    <Link to='/reviews' className="btn">
+                        Escribe una reseña</Link>
                 </div>
 
             </div>

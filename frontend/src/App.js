@@ -13,7 +13,9 @@ import Signupv2 from './containers/SignUp/Signupv2';
 import Services from './containers/Services/Services.jsx';
 import About from './containers/AboutUs/AboutUs.jsx';
 import Reviews from './containers/Reviews/Reviews.jsx';
+
 import Modal from 'react-modal'
+import UserAppointments from './containers/UserAppointments/UserAppointments.jsx';
 
 Modal.setAppElement('#root')
 const App = () => (
@@ -33,6 +35,7 @@ const App = () => (
                     <Route expact path='/services' component={Services}/>
                     <Route expact path='/about-us' component={About}/>
                     <Route exact path='/reviews' component={Reviews}/>
+                    <Route expact path='/user-appointments' component={UserAppointments}/>
                     </div>
                 </Switch>
             </Layout>

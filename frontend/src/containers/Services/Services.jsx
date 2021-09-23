@@ -21,7 +21,7 @@ const Services = () => {
     return <>
         <div className="services-outline">
             <div className="service">
-                <h2 className="text-reflect">Services</h2>
+                <h2 className="text-reflect">Los Servicios</h2>
                 <div className="service-holder">
                     {services.map((currentItem, idx) => {
                         return (
@@ -36,7 +36,7 @@ const Services = () => {
                                             <p>{currentItem.desc}</p>
                                             <div className="service-price">
                                                 <div className="price">${currentItem.price}</div>
-                                                <div><Link to="/appointments"><button id="service-btn">Schedule <i class="fa fa-paw" aria-hidden="true"></i> </button> </Link></div>
+                                                <div><Link to="/appointments"><button id="service-btn">Calendario <i class="fa fa-paw" aria-hidden="true"></i> </button> </Link></div>
                                             </div>
                                         </div>
                                     </div>

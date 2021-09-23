@@ -6,6 +6,7 @@ const About = () => {
     return <>
         <div className="body-about-us">
             <section>
+
                 <div className="container">
                     <div className="contactInfo">
                         <div>
@@ -27,9 +28,9 @@ const About = () => {
                         </div>
 
                         <ul className="sci">
-                            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="https://instagram.com/patitaslimpias8" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.facebook.com/profile.php?id=100069432812865" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true" disabled></i></a></li>
                             <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
                         </ul>
 

@@ -12,5 +12,6 @@ urlpatterns = [
     path('get-reviews/', views.get_reviews),
     path('delete-review/', views.delete_review),
     path('create-review/', views.create_review),
+    path('get_user_appointments_past/', views.get_user_appointments_past),
 
 ]

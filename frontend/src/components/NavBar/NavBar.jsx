@@ -9,8 +9,8 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
     const [userData, setUserData] = useState([])
     useEffect(() => {
         setUserData(user)
-    }, [user])
 
+    }, [user])
 
     const guestLinks = () => {
         return (
@@ -56,12 +56,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
             <div id="toggle" onClick={toggleBtn}></div>
             <div id="navbar">
                 <ul>
-                    <li><a>Contact</a></li>
                     <li><a>Translate</a></li>
                     {isAuthenticated ? authLinks() : guestLinks()}
                 </ul>
             </div>
-
         </header>
     )
 
