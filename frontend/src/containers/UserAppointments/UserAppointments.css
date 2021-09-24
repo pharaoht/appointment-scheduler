@@ -5,7 +5,6 @@
 }
 
 .user-outline .holder-user-app {
-  outline: 1px solid red;
 }
 
 .user-outline .holder-user-app .title-holder h2 {
@@ -22,19 +21,176 @@
 .user-outline .holder-user-app .user-app {
   display: flex;
 }
+
+.user-outline .holder-user-app .user-app .past-user-apps {
+  background: #fff;
+  width: 50%;
+  margin: 1%;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+
+.user-outline .holder-user-app .user-app .past-user-apps h2 {
+  margin-top: 5px;
+  text-align: center;
+}
+.user-outline .holder-user-app .user-app .past-user-apps div {
+  padding: 2%;
+}
+
+.user-outline .holder-user-app .user-app .past-user-apps div ul {
+  padding: 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-outline .holder-user-app .user-app .past-user-apps div ul li {
+  list-style: none;
+  border: solid 3px #9051ff;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 25px;
+  background: #fff;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+  display: flex;
+}
+
+.user-outline .holder-user-app .user-app .past-user-apps div ul li:hover {
+  transform: scale(1.05);
+  transition: all 0.3s;
+}
+
+.user-outline .holder-user-app .user-app .past-user-apps div ul li p {
+  width: 50%;
+  padding: 5px;
+  font-weight: 300;
+  cursor: default;
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.user-outline
+  .holder-user-app
+  .user-app
+  .past-user-apps
+  div
+  ul
+  li
+  .check-review {
+  width: 6%;
+  height: 100%;
+  background-color: #9051ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-outline .holder-user-app .user-app .past-user-apps div ul li p i {
+  color: #fff;
+}
+
 .user-outline .holder-user-app .user-app .upcom-user-apps {
   background: #fff;
   width: 50%;
   text-align: center;
   margin: 1%;
   box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
-  height: 60vh;
+  height: 65vh;
 }
 
-.user-outline .holder-user-app .user-app .past-user-apps {
+.user-outline .holder-user-app .user-app .upcom-user-apps h2 {
+  margin-top: 5px;
   text-align: center;
+}
+
+.user-outline .holder-user-app .user-app .upcom-user-apps div {
+  padding: 2%;
+}
+
+.user-outline .holder-user-app .user-app .upcom-user-apps div ul {
+  padding: 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-outline .holder-user-app .user-app .upcom-user-apps div ul li {
+  list-style: none;
+  border: solid 3px #9051ff;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 25px;
   background: #fff;
-  width: 50%;
-  margin: 1%;
   box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+  display: flex;
+}
+
+.user-outline .holder-user-app .user-app .upcom-user-apps div ul li p {
+  width: 50%;
+  padding: 5px;
+  font-weight: 300;
+  cursor: default;
+  text-align: start;
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.user-outline
+  .holder-user-app
+  .user-app
+  .upcom-user-apps
+  div
+  ul
+  li
+  .check-review {
+  width: 6%;
+  height: 100%;
+  background-color: #9051ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-outline
+  .holder-user-app
+  .user-app
+  .upcom-user-apps
+  div
+  ul
+  li
+  .check-review
+  i {
+  color: red;
+  font-size: x-large;
+}
+
+.user-outline
+  .holder-user-app
+  .user-app
+  .upcom-user-apps
+  div
+  ul
+  li
+  .check-review
+  i:hover {
+  transform: scale(1);
+}
+
+@media (max-width: 767px) {
+  .user-outline .holder-user-app .user-app {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-outline .holder-user-app .user-app .past-user-apps {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .user-outline .holder-user-app .user-app .upcom-user-apps {
+    width: 100%;
+  }
+
+  .user-outline {
+    height: 100%;
+  }
 }

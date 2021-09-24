@@ -89,10 +89,30 @@ def get_user_appointments_past(request):
 
     if request.method == "POST":
         paginator = PageNumberPagination()
-        paginator.page_size = 10
+        paginator.page_size = 5
         result_page = paginator.paginate_queryset(appointments_past, request)
         serializer = AppointmentCreateSerializer(result_page, many=True)
-        return paginator.get_paginated_response(status=status.HTTP_200_OK, data=serializer.data)
+        return paginator.get_paginated_response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def get_user_appointments_future(request):
+
+    clientID = request.data['client']
+
+    try:
+        appointments_future = Appointment.objects.filter(
+            client=clientID, appointment_date__gte=datetime.today())
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "POST":
+        paginator = PageNumberPagination()
+        paginator.page_size = 5
+        result_page = paginator.paginate_queryset(appointments_future, request)
+        serializer = AppointmentCreateSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 @api_view(['GET'])
