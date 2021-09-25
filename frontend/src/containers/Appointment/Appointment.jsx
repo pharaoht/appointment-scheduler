@@ -16,7 +16,7 @@ const Appointment = ({ isAuthenticated, user }) => {
         service: "",
         animal: "",
         appointment_time: "",
-        appointment_date: dateUpdate.toISOString().slice(0, 10),
+        appointment_date: dateUpdate.toLocaleDateString().slice(0, 10),
     })
     const [services, setServices] = useState([])
     const [animals, setAnimals] = useState([])
@@ -208,7 +208,11 @@ const Appointment = ({ isAuthenticated, user }) => {
         getAppointments()
         getServices()
         getAnimals()
-        setFormData({ ...formData, appointment_date: dateUpdate.toISOString().slice(0, 10) })
+        let yourDate = dateUpdate
+        const offset = yourDate.getTimezoneOffset()
+        yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000))
+        let dateNew = yourDate.toISOString().split('T')[0]
+        setFormData({ ...formData, appointment_date: dateNew })
         setUserData(user)
     }, [dateUpdate, refresh])
 

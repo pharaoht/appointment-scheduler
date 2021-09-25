@@ -198,11 +198,10 @@ def appointment_email_success_automation(request, user):
     # translate date time to local
     day = request.data['appointment_date']
     time = request.data['appointment_time']
-    timeStr = time.strftime("%H:%M:%S")
-    d = datetime.strptime(timeStr, "%H:%M:%S")
+
     send_mail(
         'Your Appointment has been confirmed!',
-        f'Hello {user.first_name},\nYour appointment is scheduled for {day} at {d.strftime("%I:%M %p")}. \nThank you, see you soon!',
+        f'Hello {user.first_name},\nYour appointment is scheduled for {day} at {time}. \nThank you, see you soon!',
         settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False
