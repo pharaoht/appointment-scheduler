@@ -26,6 +26,8 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
         if (password === re_password) {
             signup(email, first_name, last_name, password, re_password, is_staff)
             setAccountCreated(true)
+        } else {
+            alert("Las contraseñas no coinciden")
         }
 
         if (isAuthenticated) {

@@ -5,21 +5,23 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { load_user } from '../../actions/auth';
 
-const UserAppointments = ({ isAuthenticated, user, load_user }) => {
+const UserAppointments = ({ isAuthenticated, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [pastApps, setPastApps] = useState([])
     const [futureApps, setFutureApps] = useState([])
-
-
-
+    const [appDeleted, setAppDeleted] = useState(false)
+    const info = localStorage.getItem('info')
 
     useEffect(async () => {
+        window.scrollTo(0, 0);
         await load_user();
         await getPastApps();
         await getFutureApps();
+        setAppDeleted(false)
 
-    }, [isAuthenticated])
+    }, [isAuthenticated, appDeleted])
 
+    //user id bug on reload
 
 
     const getPastApps = () => {
@@ -31,7 +33,7 @@ const UserAppointments = ({ isAuthenticated, user, load_user }) => {
             }
         };
 
-        const body = { client: user.id }
+        const body = { client: info }
 
         axios.post(`${baseURL}get-user-appointments-past/`, body, config)
             .then(res => {
@@ -50,7 +52,7 @@ const UserAppointments = ({ isAuthenticated, user, load_user }) => {
             }
         };
 
-        const body = { client: user.id }
+        const body = { client: info }
 
         axios.post(`${baseURL}get-user-appointments-future/`, body, config)
             .then(res => {
@@ -59,12 +61,37 @@ const UserAppointments = ({ isAuthenticated, user, load_user }) => {
             }).catch(err => console.log(err))
     }
 
-    if (!isAuthenticated) {
-        return <Redirect to='/' />
+    const deleteAppointment = (id) => {
+
+        if (window.confirm('Are you sure you wish to cancel this appointment?')) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${localStorage.getItem('access')}`,
+                    'Accept': 'application/json'
+                }
+            };
+            const body = { id: id, client: info }
+
+            axios.post(`${baseURL}delete-appointment/`, body, config)
+                .then(res => {
+                    alert("Your Appointment was successfully canceled!")
+                    setAppDeleted(true)
+
+                }).catch(err => {
+                    console.log(err)
+                    alert("Your appointment could not be canceled. Please try again.")
+                })
+        } else {
+            return null
+        }
+
+
     }
 
-
-
+    if (!info) {
+        return <Redirect to='/' />
+    }
 
     return <>
         <div className="user-outline">
@@ -77,41 +104,40 @@ const UserAppointments = ({ isAuthenticated, user, load_user }) => {
                         <h2>Citas Pasadas</h2>
                         <div>
                             <ul>
-                                {console.log(pastApps)}
-                                {pastApps ? pastApps.map((currentItem) => {
+                                {pastApps.length ? pastApps.map((currentItem) => {
                                     return (
                                         <li>
                                             <p>{currentItem.service.name}</p>
                                             <p>{currentItem.appointment_date}</p>
-                                            <p className="check-review"><i className="fa fa-check-circle" aria-hidden="true"></i></p>
-
-
-
+                                            <p className="check-review"><Link to="/reviews"><i className="fa fa-check-circle" aria-hidden="true"></i></Link></p>
                                         </li>
-
                                     )
-                                }) : <><h3>You currently don't have any appointments</h3></>}
+                                }) : <><h3>No Tienes Ninguna Citas</h3></>}
                             </ul>
                         </div>
                     </div>
                     <div className="upcom-user-apps">
-                        <h2>Próximo Citas</h2>
+                        <h2>Próximas Citas</h2>
                         <div>
                             <ul>
-                                {console.log(pastApps)}
-                                {futureApps ? futureApps.map((currentItem) => {
+                                {futureApps.length ? futureApps.map((currentItem) => {
+
                                     return (
                                         <li>
+
                                             <p>{currentItem.service.name}</p>
                                             <p>{currentItem.appointment_date}</p>
-                                            <p className="check-review"><i className="fa fa-trash" aria-hidden="true"></i></p>
-
-
-
+                                            <p>{currentItem.appointment_time.slice(0, 5)}</p>
+                                            <p className="check-review">
+                                                <i className="fa fa-trash" aria-hidden="true"
+                                                    onClick={(e) => deleteAppointment(currentItem.id)}
+                                                ></i>
+                                            </p>
                                         </li>
 
                                     )
-                                }) : <><h3>You currently don't have any appointments</h3></>}
+                                }) :
+                                    <><h3>No Tienes Ninguna Citas</h3></>}
                             </ul>
                         </div>
 

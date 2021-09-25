@@ -188,29 +188,33 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
         }
         const deleteHandler = () => {
 
-            if (localStorage.getItem('access')) {
-                try {
-                    const config = {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `JWT ${localStorage.getItem('access')}`,
-                            'Accept': 'application/json'
+            if (window.confirm('¿Estás seguro de que deseas eliminar esta reseña?')) {
+                if (localStorage.getItem('access')) {
+                    try {
+                        const config = {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                                'Accept': 'application/json'
+                            }
                         }
+
+                        const body = JSON.stringify({ id: review })
+                        axios.post(`${baseURL}delete-review/`, body, config)
+                            .then(res => {
+                                setIsDeleted(true)
+                            })
+                            .catch(err => console.log(err))
+
                     }
-
-                    const body = JSON.stringify({ id: review })
-                    axios.post(`${baseURL}delete-review/`, body, config)
-                        .then(res => {
-                            setIsDeleted(true)
-                        })
-                        .catch(err => console.log(err))
-
-                }
-                catch (err) {
-                    console.log(err)
+                    catch (err) {
+                        console.log(err)
+                    }
+                } else {
+                    return null;
                 }
             } else {
-                return null;
+                return null
             }
         }
 
@@ -245,7 +249,7 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
             <div className="main-holder">
                 {showModal()}
                 <div className="header">
-                    <h2>Reviews {isAuthenticated ? <span className="fa fa-plus" onClick={(e) => setModalIsOpen(true)}></span> : null}</h2>
+                    <h2>Reseñas {isAuthenticated ? <span className="fa fa-plus" onClick={(e) => setModalIsOpen(true)}></span> : null}</h2>
                 </div>
                 <div className="reviews-holder">
                     {reviews.map((currentItem, idx) => {

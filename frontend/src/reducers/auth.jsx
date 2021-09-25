@@ -65,6 +65,7 @@ export default function (state = initialState, action) {
         case LOGOUT:
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
+            localStorage.removeItem('info')
             return {
                 ...state,
                 access: null,

@@ -58,16 +58,26 @@ def create_appointment(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, ])
 def delete_appointment(request):
-    id = request.data['appointment']
+    id = request.data['id']
+    client = request.data['client']
+
     try:
-        appointment = Appointment.objects.find(id=id)
+        appointment = Appointment.objects.get(id=id)
+        day = appointment.appointment_date
+        time = appointment.appointment_time
+        clientInfo = UserAccount.objects.get(id=client)
+        print("^^^^^^^^^^^^^^^^")
+        print(clientInfo)
+
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "DELETE":
+    if request.method == "POST":
         operation = appointment.delete()
         data = {}
         if operation:
+            appointment_email_delete_owner(clientInfo, day, time)
+            appointment_email_delete_user(clientInfo.email)
             data['success'] = 'delete successfull'
             return Response(status=status.HTTP_200_OK, data=data)
         else:
@@ -188,18 +198,36 @@ def appointment_email_success_automation(request, user):
     # translate date time to local
     day = request.data['appointment_date']
     time = request.data['appointment_time']
+    timeStr = time.strftime("%H:%M:%S")
+    d = datetime.strptime(timeStr, "%H:%M:%S")
     send_mail(
         'Your Appointment has been confirmed!',
-        f'Hello {user.first_name},\nYour appointment is scheduled for {day} at {time}. \nThank you, see you soon!',
+        f'Hello {user.first_name},\nYour appointment is scheduled for {day} at {d.strftime("%I:%M %p")}. \nThank you, see you soon!',
         settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False
     )
 
 
-def appointment_email_delete_owner(request):
-    pass
+def appointment_email_delete_owner(user, day, time):
+    host = 'pharaohmanson@gmail.com'
+    timeStr = time.strftime("%H:%M:%S")
+    d = datetime.strptime(timeStr, "%H:%M:%S")
+    send_mail(
+        'Alguien Canceló Su Cita.',
+        f'Hola Alejandra, Un cliente cancled su cita para las {d.strftime("%I:%M %p")} el {day}',
+        settings.EMAIL_HOST_USER,
+        [host],
+        fail_silently=False
+    )
 
 
-def appointment_email_delete_user(request, user):
-    pass
+def appointment_email_delete_user(user):
+
+    send_mail(
+        'Tu Cita Ha Sido Cancelada',
+        f'Este correo electrónico le informa que ha cancelado correctamente su cita.\n¡Esperamos que vuelvas a visitarnos! Ten un día maravilloso.\n \n Del equipo de Patitas Limpias. ',
+        settings.EMAIL_HOST_USER,
+        [user],
+        fail_silently=False
+    )
