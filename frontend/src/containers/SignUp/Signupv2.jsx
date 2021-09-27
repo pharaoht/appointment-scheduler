@@ -99,7 +99,8 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
                                 value={password2}
                                 onChange={e => onChange2(e)}
                                 minLength='6'
-                                required />
+                                required
+                                title="Por favor complete esto" />
                             <input type="submit" value="Iniciar Sesión" />
                             <a className="forgot"><Link to='/rest_password'>Has olvidado tu contraseña?</Link></a>
                         </form>
