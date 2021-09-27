@@ -3,6 +3,7 @@ import axios from 'axios'
 import './appointment.css'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { } from 'react-loader-spinner';
 
 
 
@@ -27,14 +28,14 @@ const Appointment = ({ isAuthenticated, user }) => {
         e.preventDefault()
         if (isAuthenticated) {
             if (formData.client === "" || formData.service === "" || formData.animal === "" || formData.appointment_date === "" || formData.appointment_time === "") {
-                alert("Please make sure everything is filled out.")
+                alert("Asegúrese de ingresar la fecha, la hora y el tipo de mascota.")
             }
             else {
                 postFunction()
             }
         }
         else {
-            alert("You must be logged in to make an appointment")
+            alert("Debe iniciar sesión para hacer una cita.")
             document.getElementById('toggle').click()
         }
     }
@@ -148,14 +149,14 @@ const Appointment = ({ isAuthenticated, user }) => {
 
         axios.post(`${baseURL}create-appointment/`, formData, config)
             .then(res => {
-                alert("You appointment has been created!")
+                alert("Tu cita ha sido creada! ✔️")
                 resetbuttons()
                 setRefresh(true)
             })
             .catch(err => {
                 console.log(err)
                 resetbuttons()
-                alert("Your appointment could not be created, please try again.")
+                alert("No se pudo crear su cita. Vuelva a intentarlo. ❌")
             })
     }
 
@@ -221,7 +222,7 @@ const Appointment = ({ isAuthenticated, user }) => {
         <div id="outside">
             <div className="paper">
                 <div className="title-header">
-                    <h2 id="header-app">Book Appointment</h2>
+                    <h2 id="header-app">Reservar Citas</h2>
                 </div>
                 <div className="form-holder">
                     <div className="date-header">
@@ -316,7 +317,7 @@ const Appointment = ({ isAuthenticated, user }) => {
                             </div>
                         </div>
                         <div className="submit-button">
-                            <button type="submit">Schedule <i class="fa fa-paw" aria-hidden="true"></i> </button>
+                            <button type="submit">Reserva <i class="fa fa-paw" aria-hidden="true"></i> </button>
                         </div>
                     </form>
                 </div>

@@ -185,7 +185,10 @@ export const signup = (email, first_name, last_name, password, re_password) => a
         })
 
     } catch (err) {
-        console.log(err)
+        console.log(err.response.data)
+        if (err.response.data.email.length > 0) {
+            alert("Ya existe un usuario con este correo electrónico")
+        }
         dispatch({
             type: SIGNUP_FAIL
         })

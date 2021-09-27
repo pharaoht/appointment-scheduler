@@ -73,75 +73,76 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
             <div className="container1">
                 <div className="blueBg">
                     <div className="box signin">
-                        <h2>Already Have an Account?</h2>
-                        <button className="signinBtn" onClick={signinBtn}>Sign in</button>
+                        <h2>Ya Tienes una Cuenta?</h2>
+                        <button className="signinBtn" onClick={signinBtn}>Iniciar Sesión</button>
                     </div>
                     <div className="box signup">
-                        <h2>Don't Have an Account?</h2>
-                        <button className="signupBtn" onClick={signupBtn}>Sign up</button>
+                        <h2>No Tiene una Cuenta?</h2>
+                        <button className="signupBtn" onClick={signupBtn}>Registrarse</button>
                     </div>
                 </div>
                 <div className="formBx">
                     <div className="form signinForm">
                         <form onSubmit={e => onSubmit2(e)}>
-                            <h3>Sign In</h3>
+                            <h3>Iniciar Sesión</h3>
                             <input type="text" type='email'
-                                placeholder='Email *'
+                                placeholder='Correo Electrónico  *'
                                 name='email2'
                                 value={email2}
                                 onChange={e => onChange2(e)}
-                                required />
+                                required
+                                title="Por favor complete esto" />
                             <input type="password" className='form-control'
                                 type='password'
-                                placeholder='Password *'
+                                placeholder='Contraseña *'
                                 name='password2'
                                 value={password2}
                                 onChange={e => onChange2(e)}
                                 minLength='6'
                                 required />
-                            <input type="submit" value="Login" />
-                            <a className="forgot"><Link to='/rest_password'>Forgot Password</Link></a>
+                            <input type="submit" value="Iniciar Sesión" />
+                            <a className="forgot"><Link to='/rest_password'>Has olvidado tu contraseña?</Link></a>
                         </form>
                     </div>
                     <div className="form signupForm">
                         <form onSubmit={e => onSubmit(e)}>
-                            <h3>Sign Up</h3>
+                            <h3>Registrarse</h3>
 
                             <input type="text"
-                                placeholder="First Name *"
+                                placeholder="Nombre*"
                                 name='first_name'
                                 value={first_name}
                                 onChange={e => onChange(e)}
                                 required />
 
                             <input type='text'
-                                placeholder='Last Name*'
+                                placeholder='Apellido*'
                                 name='last_name'
                                 value={last_name}
                                 onChange={e => onChange(e)}
                                 required />
 
                             <input type='email'
-                                placeholder='Email *'
+                                placeholder='Correo Electrónico *'
                                 name='email'
                                 value={email}
                                 onChange={e => onChange(e)}
                                 required />
                             <input type='password'
-                                placeholder='Password *'
+                                placeholder='Constraseña *'
                                 name='password'
                                 value={password}
                                 onChange={e => onChange(e)}
                                 minLength='6'
                                 required />
                             <input type='password'
-                                placeholder='Confirm Password'
+                                placeholder='Confirmar Constraseña'
                                 name='re_password'
                                 value={re_password}
                                 onChange={e => onChange(e)}
                                 minLength='6'
                                 required />
-                            <input id="reg-btn" type="submit" value="Register" />
+                            <input id="reg-btn" type="submit" value="Registrarse" />
                         </form>
                     </div>
                 </div>

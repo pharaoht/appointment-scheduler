@@ -38,19 +38,19 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
+class AnimalType(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Service(models.Model):
     name = models.CharField(max_length=255, unique=True)
     price = models.DecimalField(max_digits=8, decimal_places=3)
     desc = models.TextField()
     photo1 = models.ImageField(upload_to='media/', blank=True)
     photo2 = models.ImageField(upload_to='media/', blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class AnimalType(models.Model):
-    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
