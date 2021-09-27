@@ -114,35 +114,40 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
                                 name='first_name'
                                 value={first_name}
                                 onChange={e => onChange(e)}
-                                required />
+                                required
+                                title="Por favor complete esto" />
 
                             <input type='text'
                                 placeholder='Apellido*'
                                 name='last_name'
                                 value={last_name}
                                 onChange={e => onChange(e)}
-                                required />
+                                required
+                                title="Por favor complete esto" />
 
                             <input type='email'
                                 placeholder='Correo Electrónico *'
                                 name='email'
                                 value={email}
                                 onChange={e => onChange(e)}
-                                required />
+                                required
+                                title="Por favor complete esto" />
                             <input type='password'
                                 placeholder='Constraseña *'
                                 name='password'
                                 value={password}
                                 onChange={e => onChange(e)}
                                 minLength='6'
-                                required />
+                                required
+                                title="Por favor complete esto" />
                             <input type='password'
                                 placeholder='Confirmar Constraseña'
                                 name='re_password'
                                 value={re_password}
                                 onChange={e => onChange(e)}
                                 minLength='6'
-                                required />
+                                required
+                                title="Por favor complete esto" />
                             <input id="reg-btn" type="submit" value="Registrarse" />
                         </form>
                     </div>
