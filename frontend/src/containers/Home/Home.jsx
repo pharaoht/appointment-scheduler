@@ -19,7 +19,7 @@ const Home = () => (
             <div className="content2">
                 <div className="mxw800p">
                     <h3>Quienes Somos</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                    <p>Nuestro objetivo es brindar un excelente cuidado de mascotas a un precio muy razonable. Debido a que los perros son parte de la familia de cada hogar, merecen el mejor tratamiento disponible. Mantenemos un ambiente seguro y amigable para los perros que asegura a nuestros clientes que sus mascotas están en buenas manos cuando las dejan en nuestro salón.</p>
                     <Link to='/about-us' className="btn">Lee Màs.</Link>
                 </div>
 
@@ -30,25 +30,16 @@ const Home = () => (
             <div className="content2">
                 <div className="mxw800p">
                     <h3>Qué Ofrecemos</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                    <p>Ofrecemos servicios que atenderán a su mascota y la harán sentir como en casa. ¡Todas las mascotas merecen tener un día de spa y tú te mereces una mascota feliz, limpia y agradable! ¡Tu mascota no solo nos dejará limpios, sino que también nos dejará felices!</p>
                     <a href="#" className="btn">Ver Precios</a>
                 </div>
                 <div className="services">
                     <div className="box">
                         <div className="iconBx">
-                            <img src={photo1} alt="image" />
-                        </div>
-                        <div>
-                            <h2>Service 1</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
-                        </div>
-                    </div>
-                    <div className="box">
-                        <div className="iconBx">
                             <img src={photo2} alt="image" />
                         </div>
                         <div>
-                            <h2>Service 2</h2>
+                            <h2>Peluquería</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
                         </div>
                     </div>
@@ -57,7 +48,16 @@ const Home = () => (
                             <img src={photo3} alt="image" />
                         </div>
                         <div>
-                            <h2>Service 3</h2>
+                            <h2>Baño</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                        </div>
+                    </div>
+                    <div className="box">
+                        <div className="iconBx">
+                            <img src={photo1} alt="image" />
+                        </div>
+                        <div>
+                            <h2>Guardería Diurna</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
                         </div>
                     </div>

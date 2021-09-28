@@ -3,12 +3,13 @@ import axios from 'axios'
 import './appointment.css'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { } from 'react-loader-spinner';
+import { BeatLoader } from 'react-spinners';
 
 
 
 const Appointment = ({ isAuthenticated, user }) => {
     const date = new Date()
+    const [loader, setLoader] = useState(false)
     const [userData, setUserData] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [dateUpdate, setDateUpdate] = useState(new Date())
@@ -26,9 +27,11 @@ const Appointment = ({ isAuthenticated, user }) => {
 
     const submitHandler = (e) => {
         e.preventDefault()
+
         if (isAuthenticated) {
             if (formData.client === "" || formData.service === "" || formData.animal === "" || formData.appointment_date === "" || formData.appointment_time === "") {
                 alert("Asegúrese de ingresar la fecha, la hora y el tipo de mascota.")
+
             }
             else {
                 postFunction()
@@ -139,6 +142,7 @@ const Appointment = ({ isAuthenticated, user }) => {
     }
 
     const postFunction = () => {
+        setLoader(true)
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -156,6 +160,7 @@ const Appointment = ({ isAuthenticated, user }) => {
             .catch(err => {
                 console.log(err)
                 resetbuttons()
+                setRefresh(true)
                 alert("No se pudo crear su cita. Vuelva a intentarlo. ❌")
             })
     }
@@ -203,9 +208,11 @@ const Appointment = ({ isAuthenticated, user }) => {
         updateDate()
     }, [days])
 
+
     useEffect(() => {
         window.scrollTo(0, 0);
         setRefresh(false)
+        setLoader(false)
         getAppointments()
         getServices()
         getAnimals()
@@ -317,8 +324,10 @@ const Appointment = ({ isAuthenticated, user }) => {
                             </div>
                         </div>
                         <div className="submit-button">
-                            <button type="submit">Reserva <i class="fa fa-paw" aria-hidden="true"></i> </button>
+                            {loader ? <button type="submit"><BeatLoader type="ThreeDots" color="#00BFFF" height={20} width={20} loading /></button>
+                                : <button type="submit">Reserva <i class="fa fa-paw" aria-hidden="true"></i> </button>}
                         </div>
+
                     </form>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './AboutUs.css'
-import photo1 from '../../media/Bubbles_HD.png'
+import photo1 from '../../media/aleja.jpg'
 
 const About = () => {
     return <>
@@ -10,7 +10,7 @@ const About = () => {
                 <div className="container">
                     <div className="contactInfo">
                         <div>
-                            <h2 className="about-us-text">Contact Info</h2>
+                            <h2 className="about-us-text">Información del contacto</h2>
                             <ul className="info">
                                 <li>
                                     <span><i className="fa fa-map-marker" aria-hidden="true"></i></span>
@@ -51,7 +51,7 @@ const About = () => {
                                 </div>
                                 <div className="info-holder">
                                     <p className="about-us-text">Alejandra Castillo</p>
-                                    <p className="about-us-text">Owner of</p>
+                                    <p className="about-us-text">Dueña de</p>
                                     <p className="about-us-text">Patitas Limpias</p>
                                 </div>
                             </div>

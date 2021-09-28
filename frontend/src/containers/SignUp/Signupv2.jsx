@@ -90,7 +90,7 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
                                 name='email2'
                                 value={email2}
                                 onChange={e => onChange2(e)}
-                                required
+
                                 title="Por favor complete esto" />
                             <input type="password" className='form-control'
                                 type='password'

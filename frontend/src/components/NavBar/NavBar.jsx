@@ -16,10 +16,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
         return (
             <Fragment>
                 <li className="links">
-                    <Link className="nav-link" to='/login'>Login</Link>
+                    <Link className="nav-link" to='/login'>Iniciar Sesión</Link>
                 </li>
                 <li className="links">
-                    <Link className="nav-link" to='/signup'>Sign Up</Link>
+                    <Link className="nav-link" to='/signup'>Registrarse</Link>
                 </li>
             </Fragment>
         )

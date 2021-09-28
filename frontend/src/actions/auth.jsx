@@ -97,7 +97,6 @@ export const login = (email, password) => async dispatch => {
 
     try {
         const res = await axios.post(`${url}auth/jwt/create/`, body, config)
-        console.log(res)
 
         dispatch({
             type: LOGIN_SUCCESS,
@@ -106,7 +105,17 @@ export const login = (email, password) => async dispatch => {
 
         dispatch(load_user())
     } catch (err) {
-        console.log(err.errors)
+        console.log(err.response.data)
+
+        if (err.response.data) {
+            if (err.response.data.email) {
+                alert("El correo electrónico no puede estar vacío.")
+            } else if (err.response.data.detail) {
+                alert('No se encontró ninguna cuenta activa con esas credenciales. Si olvidó su contraseña, haga clic en "Olvidó su contraseña" para restablecer su contraseña.')
+            }
+
+        }
+
         dispatch({
             type: LOGIN_FAIL
         })
@@ -185,7 +194,6 @@ export const signup = (email, first_name, last_name, password, re_password) => a
         })
 
     } catch (err) {
-        console.log(err.response.data)
         if (err.response.data.email.length > 0) {
             alert("Ya existe un usuario con este correo electrónico")
         }
