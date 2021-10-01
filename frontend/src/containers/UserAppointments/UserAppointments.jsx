@@ -130,7 +130,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                                     if (currentItem.services.length > 1) {
                                         let num = currentItem.services.length - 1
                                         const n = num.toString()
-                                        name = `${currentItem.services[0].name} +${n}`
+                                        name = `${currentItem.services[0].name}, +${n}`
                                     } else {
                                         name = currentItem.services[0].name
                                     }

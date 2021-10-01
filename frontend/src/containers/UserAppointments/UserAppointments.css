@@ -54,9 +54,6 @@
   display: flex;
 }
 
-.user-outline .holder-user-app .user-app .past-user-apps div ul li {
-}
-
 .user-outline .holder-user-app .user-app .past-user-apps div ul li p {
   width: 50%;
   padding: 5px;
@@ -191,5 +188,35 @@
 
   .user-outline {
     height: 100%;
+  }
+
+  .user-outline .holder-user-app .user-app .upcom-user-apps div ul li p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    width: 45%;
+    letter-spacing: 1px;
+  }
+  .user-outline
+    .holder-user-app
+    .user-app
+    .upcom-user-apps
+    div
+    ul
+    li
+    .check-review {
+    width: 10%;
+  }
+
+  .user-outline
+    .holder-user-app
+    .user-app
+    .past-user-apps
+    div
+    ul
+    li
+    .check-review {
+    width: 10%;
   }
 }
