@@ -65,7 +65,7 @@ class Appointment(models.Model):
     appointment_time = models.TimeField(auto_now=False, auto_now_add=False)
     services = models.ManyToManyField(Service, blank=False)
 
-    def services_requested(self):
+    def servicio_solicitado(self):
         return ",".join([str(p) for p in self.services.all()])
 
 

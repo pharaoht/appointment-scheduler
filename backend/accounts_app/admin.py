@@ -4,7 +4,7 @@ from .models import UserAccount, Service, Appointment, AnimalType, Review
 
 class AppointmentCustom(admin.ModelAdmin):
     list_display = ('client', 'appointment_time',
-                    'appointment_date', 'animal', 'services_requested')
+                    'appointment_date', 'animal', 'servicio_solicitado')
     list_filter = ('appointment_date',  'client',)
 
 
@@ -16,6 +16,10 @@ class ReviewCustom(admin.ModelAdmin):
     list_display = ('client', 'title', 'date_posted', 'rating')
     list_filter = ('date_posted', 'client')
 
+
+admin.site.site_header = "Patitas Limpias Admin"
+admin.site.site_title = "Patitas Limpias Admin"
+admin.site.index_title = "Patitas Limpias Admin"
 
 admin.site.register(UserAccount, UserAccountCustom)
 admin.site.register(Service)

@@ -38,10 +38,15 @@ def create_appointment(request):
     client = Appointment(client=user, animal=animal)
 
     if request.method == "POST":
+        if len(request.data['multiservices']) == 0:
+            data = {}
+            data['error'] = "Por favor seleccione un servicio."
+            return Response(status=status.HTTP_409_CONFLICT, data=data)
+
         if Appointment.objects.filter(
                 appointment_date=request.data['appointment_date'], appointment_time=request.data['appointment_time']).exists():
             data = {}
-            data['error'] = "That time is taken, this happens when two or more users submit at the same time."
+            data['error'] = "Ese tiempo se toma, esto sucede cuando dos o más usuarios envían al mismo tiempo."
             return Response(status=status.HTTP_409_CONFLICT, data=data)
         serializer = AppointmentCreateSerializer(
             client, data=request.data)
@@ -198,10 +203,11 @@ def appointment_email_success_automation(request, user):
     # translate date time to local
     day = request.data['appointment_date']
     time = request.data['appointment_time']
+    hr_tweleve = convert12(time)
 
     send_mail(
-        'Your Appointment has been confirmed!',
-        f'Hello {user.first_name},\nYour appointment is scheduled for {day} at {time}. \nThank you, see you soon!',
+        'Su cita ha sido confirmada!',
+        f'Hola {user.first_name},\nSu cita está programada para el {day} a las {hr_tweleve}. \nGracias, hasta pronto! \nDel equipo de Patitas Limpias.',
         settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False
@@ -225,8 +231,30 @@ def appointment_email_delete_user(user):
 
     send_mail(
         'Tu Cita Ha Sido Cancelada',
-        f'Este correo electrónico le informa que ha cancelado correctamente su cita.\n¡Esperamos que vuelvas a visitarnos! Ten un día maravilloso.\n \n Del equipo de Patitas Limpias. ',
+        f'Este correo electrónico le informa que ha cancelado correctamente su cita.\n¡Esperamos que vuelvas a visitarnos! Ten un día maravilloso.\n \nDel equipo de Patitas Limpias. ',
         settings.EMAIL_HOST_USER,
         [user],
         fail_silently=False
     )
+
+
+def convert12(str1):
+
+    # Get Hours
+    h1 = ord(str1[0]) - ord('0')
+    h2 = ord(str1[1]) - ord('0')
+
+    hh = h1 * 10 + h2
+
+    # Finding out the Meridien of time
+    # ie. AM or PM
+    Meridien = ""
+    if (hh < 12):
+        Meridien = "AM"
+    else:
+        Meridien = "PM"
+
+    hh %= 12
+    converted_num = str(hh)
+
+    return f"{converted_num}:00 {Meridien}"

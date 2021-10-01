@@ -10,21 +10,26 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
     const [pastApps, setPastApps] = useState([])
     const [futureApps, setFutureApps] = useState([])
     const [appDeleted, setAppDeleted] = useState(false)
+    const [services, setServices] = useState([])
     const info = localStorage.getItem('info')
 
     useEffect(async () => {
         window.scrollTo(0, 0);
         await load_user();
-        await getPastApps();
-        await getFutureApps();
+        await getServices()
+        getPastApps();
+        getFutureApps();
         setAppDeleted(false)
 
     }, [isAuthenticated, appDeleted])
 
-    //user id bug on reload
+    const getServices = async () => {
+        axios.get(`${baseURL}get-services/`)
+            .then((res) => { setServices(res.data) })
+            .catch((err) => console.log(err))
+    }
 
-
-    const getPastApps = () => {
+    const getPastApps = async () => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -43,7 +48,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
 
     }
 
-    const getFutureApps = () => {
+    const getFutureApps = async () => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -59,35 +64,51 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                 setFutureApps(res.data.results)
 
             }).catch(err => console.log(err))
+
     }
 
     const deleteAppointment = (id) => {
 
-        if (window.confirm('Are you sure you wish to cancel this appointment?')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${localStorage.getItem('access')}`,
-                    'Accept': 'application/json'
-                }
-            };
-            const body = { id: id, client: info }
+        if (localStorage.getItem('access')) {
+            if (window.confirm('Estás seguro de que deseas cancelar esta cita?')) {
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `JWT ${localStorage.getItem('access')}`,
+                        'Accept': 'application/json'
+                    }
+                };
+                const body = { id: id, client: info }
 
-            axios.post(`${baseURL}delete-appointment/`, body, config)
-                .then(res => {
-                    alert("Your Appointment was successfully canceled!")
-                    setAppDeleted(true)
+                axios.post(`${baseURL}delete-appointment/`, body, config)
+                    .then(res => {
+                        alert("Su cita fue cancelada con éxito!")
+                        setAppDeleted(true)
 
-                }).catch(err => {
-                    console.log(err)
-                    alert("Your appointment could not be canceled. Please try again.")
-                })
-        } else {
-            return null
+                    }).catch(err => {
+                        console.log(err)
+                        alert("No se pudo cancelar su cita. Inténtalo de nuevo.")
+                    })
+            } else {
+                return null
+            }
         }
 
 
     }
+
+    function tConvert(time) {
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1);  // Remove full string match value
+            time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join('');
+    }
+
+
 
     if (!info) {
         return <Redirect to='/' />
@@ -105,9 +126,18 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                         <div>
                             <ul>
                                 {pastApps.length ? pastApps.map((currentItem) => {
+                                    let name = ""
+                                    if (currentItem.services.length > 1) {
+                                        let num = currentItem.services.length - 1
+                                        const n = num.toString()
+                                        name = `${currentItem.services[0].name} +${n}`
+                                    } else {
+                                        name = currentItem.services[0].name
+                                    }
                                     return (
                                         <li>
-                                            <p>{currentItem.service.name}</p>
+
+                                            <p>{name}</p>
                                             <p>{currentItem.appointment_date}</p>
                                             <p className="check-review"><Link to="/reviews"><i className="fa fa-check-circle" aria-hidden="true"></i></Link></p>
                                         </li>
@@ -120,14 +150,20 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                         <h2>Próximas Citas</h2>
                         <div>
                             <ul>
-                                {futureApps.length ? futureApps.map((currentItem) => {
-
+                                {futureApps.length ? futureApps.map((currentItem, i) => {
+                                    let name = ""
+                                    if (currentItem.services.length > 1) {
+                                        let num = currentItem.services.length - 1
+                                        const n = num.toString()
+                                        name = `${currentItem.services[0].name} +${n}`
+                                    } else {
+                                        name = currentItem.services[0].name
+                                    }
                                     return (
                                         <li>
-
-                                            <p>{currentItem.service.name}</p>
+                                            <p>{name}</p>
                                             <p>{currentItem.appointment_date}</p>
-                                            <p>{currentItem.appointment_time.slice(0, 5)}</p>
+                                            <p>{tConvert(currentItem.appointment_time.slice(0, 5))}</p>
                                             <p className="check-review">
                                                 <i className="fa fa-trash" aria-hidden="true"
                                                     onClick={(e) => deleteAppointment(currentItem.id)}

@@ -29,10 +29,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
         return (
             <Fragment>
                 <li className="links">
-                    <a> Welcome, {userData ? userData.first_name : ""} </a>
+                    <a> Bienvenido, {userData ? userData.first_name : ""} </a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#!" onClick={logoutHandler}>Logout</a>
+                    <a className="nav-link" href="#!" onClick={logoutHandler}>Cerrar sesión</a>
                 </li>
             </Fragment>
         )
@@ -56,7 +56,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
             <div id="toggle" onClick={toggleBtn}></div>
             <div id="navbar">
                 <ul>
-                    <li><a>Translate</a></li>
+                    <li><a></a></li>
                     {isAuthenticated ? authLinks() : guestLinks()}
                 </ul>
             </div>

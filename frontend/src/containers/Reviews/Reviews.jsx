@@ -278,8 +278,8 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                     })}
                 </div>
                 <div className="pagenum">
-                    <div><Link className="pageinfo" to="#" onClick={(e) => pageincrementer(1, prevPage)}>Previous</Link></div>
-                    <div><Link className="pageinfo" to="#" onClick={(e) => pageincrementer(2, nextPage)}>Next</Link></div>
+                    <div><Link className="pageinfo" to="#" onClick={(e) => pageincrementer(1, prevPage)}>Previo</Link></div>
+                    <div><Link className="pageinfo" to="#" onClick={(e) => pageincrementer(2, nextPage)}>Siguiente</Link></div>
                 </div>
             </div>
         </div>
