@@ -147,6 +147,17 @@
   background-color: #f43648;
 }
 
+.formBx.active .signupForm button {
+  background-color: #f43648;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  outline: none;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 0%;
+}
+
 @media (max-width: 991px) {
   .container1 {
     max-width: 400px;

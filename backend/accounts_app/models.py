@@ -59,12 +59,14 @@ class Service(models.Model):
 class Appointment(models.Model):
     client = models.ForeignKey(
         UserAccount, related_name='user', on_delete=models.CASCADE)
-    service = models.ForeignKey(
-        Service, related_name='service', on_delete=models.CASCADE)
     animal = models.ForeignKey(
         AnimalType, related_name='animal', on_delete=models.CASCADE)
     appointment_date = models.DateField(auto_now=False, auto_now_add=False)
     appointment_time = models.TimeField(auto_now=False, auto_now_add=False)
+    services = models.ManyToManyField(Service, blank=False)
+
+    def services_requested(self):
+        return ",".join([str(p) for p in self.services.all()])
 
 
 class Review(models.Model):

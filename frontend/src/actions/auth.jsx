@@ -187,6 +187,7 @@ export const signup = (email, first_name, last_name, password, re_password) => a
 
     try {
         const res = await axios.post(`${url}auth/users/`, body, config)
+        alert('Por favor, revisa tu e-mail para activar tu cuenta.')
 
         dispatch({
             type: SIGNUP_SUCCESS,

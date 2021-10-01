@@ -15,8 +15,8 @@ const Appointment = ({ isAuthenticated, user }) => {
     const [dateUpdate, setDateUpdate] = useState(new Date())
     const [formData, setFormData] = useState({
         client: "",
-        service: "",
         animal: "",
+        multiservices: [],
         appointment_time: "",
         appointment_date: dateUpdate.toLocaleDateString().slice(0, 10),
     })
@@ -29,7 +29,7 @@ const Appointment = ({ isAuthenticated, user }) => {
         e.preventDefault()
 
         if (isAuthenticated) {
-            if (formData.client === "" || formData.service === "" || formData.animal === "" || formData.appointment_date === "" || formData.appointment_time === "") {
+            if (formData.client === "" || formData.multiservices === "" || formData.animal === "" || formData.appointment_date === "" || formData.appointment_time === "") {
                 alert("Asegúrese de ingresar la fecha, la hora y el tipo de mascota.")
 
             }
@@ -46,8 +46,21 @@ const Appointment = ({ isAuthenticated, user }) => {
     const changeHandler = (e) => {
         if (isAuthenticated) {
             if (e.target.type === 'checkbox') {
-                if (e.target.checked) setFormData({ ...formData, [e.target.name]: e.target.value })
-                else setFormData({ ...formData, [e.target.name]: "" })
+                if (e.target.checked) {
+                    let multiservices = [...formData.multiservices]
+                    const key = "id"
+                    const val = e.target.value;
+                    const test = { [key]: val }
+                    multiservices.push(test)
+                    setFormData(prevState => {
+                        return { ...prevState, multiservices }
+                    })
+                }
+                else {
+                    setFormData(prevState => {
+                        return { ...prevState, multiservices: prevState.multiservices.filter((curr, i) => curr.id !== e.target.value) }
+                    })
+                }
             }
             else {
                 setFormData({ ...formData, client: userData.id, [e.target.name]: e.target.value })
@@ -168,7 +181,7 @@ const Appointment = ({ isAuthenticated, user }) => {
     const cardHandler = (e, idx) => {
         const cbx = document.getElementById(idx)
         const tab = document.getElementById(`tab${idx}`)
-        console.log(cbx)
+
         if (e.target.type === 'checkbox') {
             if (cbx.checked) {
                 tab.style.border = 'solid 3px blue'
@@ -180,14 +193,26 @@ const Appointment = ({ isAuthenticated, user }) => {
             }
         } else if (e.target.nodeName === "DIV") {
             if (cbx.checked) {
-                setFormData({ ...formData, [cbx.name]: "" })
+                setFormData(prevState => {
+                    return { ...prevState, multiservices: prevState.multiservices.filter((curr, i) => curr.id !== cbx.value) }
+                })
                 cbx.checked = false
                 tab.style.border = 'none'
                 tab.style.borderRadius = '0px'
 
 
             } else {
-                setFormData({ ...formData, [cbx.name]: cbx.value })
+                let multiservices = [...formData.multiservices]
+                const key = "id"
+                const val = cbx.value;
+                const test = { [key]: val }
+
+                multiservices.push(test)
+
+                setFormData(prevState => {
+                    return { ...prevState, multiservices }
+                })
+
                 cbx.checked = true
                 tab.style.border = 'solid 3px blue'
                 tab.style.borderRadius = '5px'
@@ -307,14 +332,13 @@ const Appointment = ({ isAuthenticated, user }) => {
                                     {services.map((currentItem, idx) => {
                                         return (
                                             <>
-                                                {/* {onClick = {(e) => cardHandler(e, idx)} } */}
                                                 <div className="service" key={idx} id={`tab${idx}`} onClick={(e) => cardHandler(e, idx)}>
                                                     <div className="service-tab" >
                                                         <div>{currentItem.name} - ${currentItem.price}</div>
                                                         <div className="more-info-holder"><i className="more-info-service"><Link to="/services">more-info</Link></i></div>
                                                     </div>
-                                                    <div className="service-input">
-                                                        <input className="cbx" type="checkbox" name="service" id={idx} value={currentItem.id} onChange={changeHandler} />
+                                                    <div className="service-input" id="services">
+                                                        <input className="cbx" type="checkbox" name="multiservices" id={idx} value={currentItem.id} onChange={changeHandler} />
                                                     </div>
                                                 </div>
                                             </>

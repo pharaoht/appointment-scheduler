@@ -116,7 +116,7 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                         }
                     }>
                     <div className="modal-top-1">
-                        <h3>Add a review <i class="fa fa-times" aria-hidden="true" onClick={() => {
+                        <h3>Agrega una Reseña <i class="fa fa-times" aria-hidden="true" onClick={() => {
                             setModalIsOpen(false)
                             setFormData("")
                         }}></i></h3>
@@ -124,16 +124,16 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
                             <form onSubmit={(e) => createReview(e)}>
                                 <div className="modal-form-holder">
                                     <div className="form-input">
-                                        <input name="title" type="text" onChange={changeHandler} maxLength="25" placeholder=" title *" required />
+                                        <input name="title" type="text" onChange={changeHandler} maxLength="25" placeholder=" título *" required />
                                     </div>
                                     <div className="form-input">
-                                        <input name="rating" type="number" onChange={changeHandler} placeholder=" rating *" required min='0' max='5' /><span className="num-max">/5</span>
+                                        <input name="rating" type="number" onChange={changeHandler} placeholder=" clasificación *" required min='0' max='5' /><span className="num-max">/5</span>
                                     </div>
                                     <div className="form-input">
-                                        <textarea name="desc" onChange={changeHandler} placeholder=" describe your experience *" required></textarea>
+                                        <textarea name="desc" onChange={changeHandler} placeholder=" describe tu experiencia *" required></textarea>
                                     </div>
                                     <div className="form-input">
-                                        <button type="submit">Create Review <i class="fa fa-paw" aria-hidden="true"></i></button>
+                                        <button type="submit">Crear Reseña <i class="fa fa-paw" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </form>

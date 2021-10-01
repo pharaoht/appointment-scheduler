@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { signup, login } from '../../actions/auth';
-
+import { BeatLoader } from 'react-spinners';
 import './Signup.css'
 
 const Signupv2 = ({ signup, isAuthenticated, login }) => {
+    const [loader, setLoader] = useState(false)
     const [accountCreated, setAccountCreated] = useState(false)
     const [formData, setFormData] = useState({
         first_name: "",
@@ -16,16 +17,24 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
         is_staff: 0
     });
 
+    useEffect(() => {
+        setLoader(false)
+        setAccountCreated(false)
+
+    }, [accountCreated])
+
     const { first_name, last_name, email, password, re_password, is_staff } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault()
 
         if (password === re_password) {
-            signup(email, first_name, last_name, password, re_password, is_staff)
+            setLoader(true)
+            await signup(email, first_name, last_name, password, re_password, is_staff)
             setAccountCreated(true)
+
         } else {
             alert("Las contraseñas no coinciden")
         }
@@ -68,6 +77,9 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
         body.classList.add('active')
         formBx.classList.add('active')
     }
+
+
+
     return (
         <div className="body-im">
             <div className="container1">
@@ -148,7 +160,9 @@ const Signupv2 = ({ signup, isAuthenticated, login }) => {
                                 minLength='6'
                                 required
                                 title="Por favor complete esto" />
-                            <input id="reg-btn" type="submit" value="Registrarse" />
+                            {loader ? <button id="reg-btn" type="submit"> <BeatLoader type="ThreeDots" color="#00BFFF" height={20} width={20} loading /></button> :
+                                <input id="reg-btn" type="submit" value="Registrarse" />
+                            }
                         </form>
                     </div>
                 </div>

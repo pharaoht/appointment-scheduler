@@ -15,17 +15,6 @@ class UserCreateSerializer(UserCreateSerializer):
                   'last_name', 'password')
 
 
-class AppointmentCreateSerializer(ModelSerializer):
-    class Meta():
-        model = Appointment
-
-        fields = [
-            'id', 'service', 'appointment_date', 'appointment_time'
-        ]
-
-        depth = 1
-
-
 class ServiceCreateSerializer(ModelSerializer):
     class Meta():
         model = Service
@@ -42,6 +31,19 @@ class AnimalCreateSerializer(ModelSerializer):
         fields = [
             'id', 'name'
         ]
+
+
+class AppointmentCreateSerializer(ModelSerializer):
+    services = ServiceCreateSerializer(many=True, read_only=True)
+
+    class Meta():
+        model = Appointment
+
+        fields = [
+            'id', 'appointment_date', 'appointment_time', 'services', 'animal', 'client'
+        ]
+
+        depth = 1
 
 
 class ReviewsCreateSerializier(serializers.ModelSerializer):

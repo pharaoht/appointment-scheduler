@@ -32,12 +32,11 @@ def get_appointments(request):
 def create_appointment(request):
     # get user object model
     user = UserAccount.objects.get(id=request.data['client'])
-    # get service object model
-    service = Service.objects.get(id=request.data['service'])
     # get animal object model
     animal = AnimalType.objects.get(id=request.data['animal'])
     # for foreign key constaints have to pass both service and user
-    client = Appointment(client=user, service=service, animal=animal)
+    client = Appointment(client=user, animal=animal)
+
     if request.method == "POST":
         if Appointment.objects.filter(
                 appointment_date=request.data['appointment_date'], appointment_time=request.data['appointment_time']).exists():
@@ -48,6 +47,9 @@ def create_appointment(request):
             client, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            for serviceID in request.data['multiservices']:
+                service = Service.objects.get(id=serviceID['id'])
+                client.services.add(service)
             # logic for email confirmation
             appointment_email_success_automation(request, user)
 
@@ -66,8 +68,6 @@ def delete_appointment(request):
         day = appointment.appointment_date
         time = appointment.appointment_time
         clientInfo = UserAccount.objects.get(id=client)
-        print("^^^^^^^^^^^^^^^^")
-        print(clientInfo)
 
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)

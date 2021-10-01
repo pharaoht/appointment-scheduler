@@ -4,8 +4,8 @@ from .models import UserAccount, Service, Appointment, AnimalType, Review
 
 class AppointmentCustom(admin.ModelAdmin):
     list_display = ('client', 'appointment_time',
-                    'service', 'appointment_date', 'animal')
-    list_filter = ('appointment_date', 'service', 'client',)
+                    'appointment_date', 'animal', 'services_requested')
+    list_filter = ('appointment_date',  'client',)
 
 
 class UserAccountCustom(admin.ModelAdmin):
