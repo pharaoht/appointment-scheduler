@@ -16,11 +16,17 @@ const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
 
     const onSubmit = e => {
         e.preventDefault()
-        const uid = match.params.uid;
-        const token = match.params.token;
+        if (new_password !== re_new_password) {
+            alert("Tu contraseña debe coincidir")
 
-        reset_password_confirm(uid, token, new_password, re_new_password)
-        setRequestSent(true)
+        } else {
+            const uid = match.params.uid;
+            const token = match.params.token;
+            reset_password_confirm(uid, token, new_password, re_new_password)
+            alert("Se le envió un correo electrónico")
+            setRequestSent(true)
+
+        }
 
     }
 
@@ -32,13 +38,13 @@ const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
         <>
             <div className='container mt-5'>
 
-                <h1>Reset Password Confirmation</h1>
+                <h1>Confirmación de restablecimiento de contraseña</h1>
                 <form onSubmit={e => onSubmit(e)}>
                     <div className='form-group'>
                         <input
                             className='form-control'
                             type='password'
-                            placeholder='New Password'
+                            placeholder='Nueva contraseña *'
                             name='new_password'
                             value={new_password}
                             onChange={e => onChange(e)}
@@ -50,7 +56,7 @@ const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
                         <input
                             className='form-control'
                             type='password'
-                            placeholder='Confirm New Password'
+                            placeholder='confirmar nueva contraseña *'
                             name='re_new_password'
                             value={re_new_password}
                             onChange={e => onChange(e)}
@@ -58,7 +64,7 @@ const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
                             required
                         />
                     </div>
-                    <button className='btn btn-primary' type='submit'>Reset Password</button>
+                    <button className='btn btn-primary' type='submit'>Restablecer la contraseña</button>
                 </form>
 
             </div>

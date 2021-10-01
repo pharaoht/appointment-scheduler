@@ -20,12 +20,12 @@ const Activate = ({ verify, match }) => {
     return (
         <div className="container">
             <div className="d-flex flex-column justify-content-center align-items-center">
-                <h1>Verify your account:</h1>
+                <h1>Verificar Cuenta:</h1>
                 <button
                     onClick={verify_account}
                     type="button"
                     className="btn btn-primary"
-                >Verify</button>
+                >Verificar</button>
 
             </div>
         </div>

@@ -27,20 +27,21 @@ const ResetPassword = ({ reset_password }) => {
     return (
         <>
             <div className='container mt-5'>
-                <h1>Request to Rest Password</h1>
+                <h1>Solicitud para restablecer la contraseña</h1>
                 <form onSubmit={e => onSubmit(e)}>
                     <div className='form-group'>
                         <input
                             className='form-control'
                             type='email'
-                            placeholder='email'
+                            placeholder='correo electrónico *'
                             name='email'
                             value={email}
                             onChange={e => onChange(e)}
                             required
                         />
                     </div>
-                    <button className='btn btn-primary' type='submit'>Reset Password</button>
+                    <br></br>
+                    <button className='btn btn-primary' type='submit'>Restablecer la contraseña</button>
                 </form>
             </div>
         </>
