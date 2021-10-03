@@ -58,7 +58,7 @@ const Home = () => (
                         </div>
                         <div>
                             <h2>Guardería Diurna</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                            <p>contamos con un servicio de guardería diurna por horas de 8am a 5 o 6pm </p>
                         </div>
                     </div>
                 </div>
