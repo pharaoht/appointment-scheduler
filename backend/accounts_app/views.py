@@ -204,6 +204,7 @@ def appointment_email_success_automation(request, user):
     day = request.data['appointment_date']
     time = request.data['appointment_time']
     hr_tweleve = convert12(time)
+    print(time)
 
     send_mail(
         'Su cita ha sido confirmada!',
