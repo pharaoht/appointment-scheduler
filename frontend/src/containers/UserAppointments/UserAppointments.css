@@ -219,7 +219,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   .user-outline .holder-user-app .user-app .upcom-user-apps div ul li p {
     width: 43%;
     letter-spacing: 0px;

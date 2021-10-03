@@ -182,7 +182,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   .fa-times {
     display: none;
   }
