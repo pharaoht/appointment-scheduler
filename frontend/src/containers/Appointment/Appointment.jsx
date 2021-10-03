@@ -25,6 +25,11 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [days, setDays] = useState(0)
 
+    const { REACT_APP_BACKEND_URL } = process.env;
+
+    console.log(REACT_APP_BACKEND_URL)
+
+
     const submitHandler = (e) => {
         e.preventDefault()
 

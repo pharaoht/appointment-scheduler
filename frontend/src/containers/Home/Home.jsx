@@ -40,7 +40,7 @@ const Home = () => (
                         </div>
                         <div>
                             <h2>Peluquería</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                            <p>Corte según la raza y el gusto del cliente</p>
                         </div>
                     </div>
                     <div className="box">
@@ -49,7 +49,7 @@ const Home = () => (
                         </div>
                         <div>
                             <h2>Baño</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, Aliquam ut porttitor leo a diam sollicitudin. Et leo duis ut diam quam nulla porttitor massa id.</p>
+                            <p>Espumoso baño para tu mascota,  el baño incluye : limpieza de dientes , limpieza de oídos , corte y limado de uñas , glándulas paranales  (si así se desea) </p>
                         </div>
                     </div>
                     <div className="box">
