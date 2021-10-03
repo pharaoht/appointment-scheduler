@@ -27,7 +27,7 @@ const Sidebar = ({ isAuthenticated, }) => {
             <li className="sidebar-li">
                 <Link to={`/user-appointments`}>
                     <span className="icon"><i className="fa fa-user" aria-hidden="true"></i></span>
-                    <span className="title">Tus Citas</span>
+                    <span className="title">Tus citas</span>
                 </Link>
             </li>
         </>
@@ -39,13 +39,13 @@ const Sidebar = ({ isAuthenticated, }) => {
                     <li className="sidebar-li">
                         <Link to='/services'>
                             <span className="icon"><i className="fa fa-wrench" aria-hidden="true"></i></span>
-                            <span className="title">Los Servicios</span>
+                            <span className="title">Servicios</span>
                         </Link>
                     </li>
                     <li className="sidebar-li">
                         <Link to='/appointments'>
                             <span className="icon"><i className="fa fa-calendar" aria-hidden="true"></i></span>
-                            <span className="title">Citas</span>
+                            <span className="title">Reserva</span>
                         </Link>
                     </li>
                     <li className="sidebar-li">

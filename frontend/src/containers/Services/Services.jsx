@@ -21,7 +21,7 @@ const Services = () => {
     return <>
         <div className="services-outline">
             <div className="service">
-                <h2 className="text-reflect">Los Servicios</h2>
+                <h2 className="text-reflect">Servicios</h2>
                 <div className="service-holder">
                     {services.map((currentItem, idx) => {
                         return (
