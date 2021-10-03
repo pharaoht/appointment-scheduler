@@ -128,3 +128,19 @@ html {
   padding-top: 250px;
   margin-top: -250px;
 }
+
+@media (max-width: 400px) {
+  .content2 .services {
+    display: flex;
+    flex-direction: column;
+  }
+  .services .box {
+    width: 100%;
+  }
+  .services .box .iconBx img {
+    width: 100%;
+  }
+  #services {
+    padding: 50px;
+  }
+}

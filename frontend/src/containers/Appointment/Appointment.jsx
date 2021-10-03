@@ -346,7 +346,7 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
                                                         <div>{currentItem.name} - ${currentItem.price}</div>
                                                         <div className="more-info-holder"><i className="more-info-service"><Link to="/services">more-info</Link></i></div>
                                                     </div>
-                                                    <div className="service-input" id="services">
+                                                    <div className="service-input">
                                                         <input className="cbx" type="checkbox" name="multiservices" id={idx} value={currentItem.id} onChange={changeHandler} />
                                                     </div>
                                                 </div>

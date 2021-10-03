@@ -1,6 +1,7 @@
 .user-outline {
   background: #03a9f4;
   padding: 15px;
+
   height: 100vh;
 }
 
@@ -215,5 +216,29 @@
     li
     .check-review {
     width: 10%;
+  }
+}
+
+@media (max-width: 400px) {
+  .user-outline .holder-user-app .user-app .upcom-user-apps div ul li p {
+    width: 43%;
+    letter-spacing: 0px;
+  }
+  .user-outline
+    .holder-user-app
+    .user-app
+    .upcom-user-apps
+    div
+    ul
+    li
+    .check-review {
+    width: 15%;
+  }
+  #up-app-time {
+    width: 25%;
+    padding: 4px;
+  }
+  .user-outline .holder-user-app .user-app .past-user-apps div ul li p {
+    letter-spacing: 0px;
   }
 }

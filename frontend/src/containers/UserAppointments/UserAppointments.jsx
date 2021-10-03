@@ -171,7 +171,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                                         <li key={i}>
                                             <p>{name}</p>
                                             <p>{currentItem.appointment_date}</p>
-                                            <p>{tConvert(currentItem.appointment_time.slice(0, 5))}</p>
+                                            <p id="up-app-time">{tConvert(currentItem.appointment_time.slice(0, 5))}</p>
                                             <p className="check-review">
                                                 <i className="fa fa-trash" aria-hidden="true"
                                                     onClick={(e) => deleteAppointment(currentItem.id)}

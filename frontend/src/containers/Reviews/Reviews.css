@@ -181,3 +181,19 @@
     grid-gap: 15px;
   }
 }
+
+@media (max-width: 400px) {
+  .fa-times {
+    display: none;
+  }
+  .modal-holder .modal-form-holder .form-input input[type="text"] {
+    width: 100%;
+  }
+  .modal-holder .modal-form-holder .form-input input[type="text"] {
+    width: 100%;
+  }
+  .modal-holder .modal-form-holder .form-input textarea {
+    width: 100%;
+    height: 200px;
+  }
+}

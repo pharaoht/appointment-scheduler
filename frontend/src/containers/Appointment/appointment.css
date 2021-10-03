@@ -148,9 +148,6 @@
   font-size: small;
 }
 
-.more-info-holder {
-}
-
 .form-holder .submit-button {
   text-align: center;
   margin-top: 25px;
@@ -266,5 +263,37 @@
     user-select: none;
     overflow: hidden;
     justify-content: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-info .times-left {
+    width: 100%;
+  }
+  .times {
+    padding-left: 5px;
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+    grid-gap: 10px;
+    text-align: center;
+  }
+
+  .animal-type-holder {
+    display: grid;
+    grid-template-columns: 4fr 4fr;
+    grid-gap: 10px;
+    text-align: center;
+  }
+  .service-right {
+    width: 100%;
+    margin-top: 5%;
+  }
+  #outside {
+    height: 100vh;
   }
 }
