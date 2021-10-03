@@ -26,11 +26,15 @@ const Reviews = ({ user, isAuthenticated, load_user }) => {
     const [errFormData, setErrFormData] = useState([])
 
 
-    useEffect(async () => {
-        window.scrollTo(0, 0);
-        await load_user()
-        getReviews()
-        setIsDeleted(false)
+    useEffect(() => {
+        async function fetchData() {
+            window.scrollTo(0, 0);
+            await load_user()
+            getReviews()
+            setIsDeleted(false)
+        }
+
+        fetchData()
     }, [isDelete, isAuthenticated])
 
     const changeHandler = (e) => {

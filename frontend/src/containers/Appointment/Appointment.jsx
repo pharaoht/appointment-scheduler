@@ -4,10 +4,10 @@ import './appointment.css'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
+import { load_user } from '../../actions/auth';
 
 
-
-const Appointment = ({ isAuthenticated, user }) => {
+const Appointment = ({ isAuthenticated, user, load_user }) => {
     const date = new Date()
     const [loader, setLoader] = useState(false)
     const [userData, setUserData] = useState([])
@@ -100,7 +100,6 @@ const Appointment = ({ isAuthenticated, user }) => {
 
         axios.post(`${baseURL}get-appointments/`, body, config)
             .then((res) => {
-                console.log(res)
                 radioButtonFilter(res.data)
             })
             .catch((err) => console.log(err))
@@ -209,10 +208,11 @@ const Appointment = ({ isAuthenticated, user }) => {
 
                 multiservices.push(test)
 
-                setFormData(prevState => {
-                    return { ...prevState, multiservices }
-                })
-
+                if (isAuthenticated) {
+                    setFormData(prevState => {
+                        return { ...prevState, multiservices }
+                    })
+                }
                 cbx.checked = true
                 tab.style.border = 'solid 3px blue'
                 tab.style.borderRadius = '5px'
@@ -235,18 +235,22 @@ const Appointment = ({ isAuthenticated, user }) => {
 
 
     useEffect(() => {
-        window.scrollTo(0, 0);
-        setRefresh(false)
-        setLoader(false)
-        getAppointments()
-        getServices()
-        getAnimals()
-        let yourDate = dateUpdate
-        const offset = yourDate.getTimezoneOffset()
-        yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000))
-        let dateNew = yourDate.toISOString().split('T')[0]
-        setFormData({ ...formData, appointment_date: dateNew })
-        setUserData(user)
+        async function fetchData() {
+            window.scrollTo(0, 0);
+            await load_user();
+            setRefresh(false)
+            setLoader(false)
+            getAppointments()
+            getServices()
+            getAnimals()
+            let yourDate = dateUpdate
+            const offset = yourDate.getTimezoneOffset()
+            yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000))
+            let dateNew = yourDate.toISOString().split('T')[0]
+            setFormData({ ...formData, appointment_date: dateNew })
+            setUserData(user)
+        }
+        fetchData()
     }, [dateUpdate, refresh])
 
 
@@ -363,10 +367,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user
 })
-export default connect(mapStateToProps, {})(Appointment);
-
-
-{/* <div>
-    <input type="radio" name="animal" id={`a${idx}`} value={currentItem.id} onChange={changeHandler} />
-    <label for={`a${idx}`}>{currentItem.name}</label>
-</div > */}
+export default connect(mapStateToProps, { load_user })(Appointment);

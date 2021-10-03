@@ -7,7 +7,11 @@ import { load_user } from '../../actions/auth';
 const Sidebar = ({ isAuthenticated, }) => {
 
     useEffect(async () => {
-        await load_user()
+        async function fetchData() {
+            await load_user()
+        }
+        fetchData()
+
     }, [isAuthenticated])
 
     const toggle = () => {

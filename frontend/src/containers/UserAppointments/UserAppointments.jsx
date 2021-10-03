@@ -4,6 +4,7 @@ import './UserAppointments.css';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { load_user } from '../../actions/auth';
+import { BeatLoader } from 'react-spinners';
 
 const UserAppointments = ({ isAuthenticated, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
@@ -11,16 +12,19 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
     const [futureApps, setFutureApps] = useState([])
     const [appDeleted, setAppDeleted] = useState(false)
     const [services, setServices] = useState([])
+    const [loader, setLoader] = useState(false)
     const info = localStorage.getItem('info')
 
     useEffect(async () => {
-        window.scrollTo(0, 0);
-        await load_user();
-        await getServices()
-        getPastApps();
-        getFutureApps();
-        setAppDeleted(false)
-
+        async function fetchData() {
+            window.scrollTo(0, 0);
+            await load_user();
+            await getServices()
+            getPastApps();
+            getFutureApps();
+            setAppDeleted(false)
+        }
+        fetchData();
     }, [isAuthenticated, appDeleted])
 
     const getServices = async () => {
@@ -71,6 +75,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
 
         if (localStorage.getItem('access')) {
             if (window.confirm('Estás seguro de que deseas cancelar esta cita?')) {
+                setLoader(true)
                 const config = {
                     headers: {
                         'Content-Type': 'application/json',
@@ -84,10 +89,12 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                     .then(res => {
                         alert("Su cita fue cancelada con éxito!")
                         setAppDeleted(true)
+                        setLoader(false)
 
                     }).catch(err => {
                         console.log(err)
                         alert("No se pudo cancelar su cita. Inténtalo de nuevo.")
+                        setLoader(false)
                     })
             } else {
                 return null
@@ -125,7 +132,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                         <h2>Citas Pasadas</h2>
                         <div>
                             <ul>
-                                {pastApps.length ? pastApps.map((currentItem) => {
+                                {pastApps.length ? pastApps.map((currentItem, idx) => {
                                     let name = ""
                                     if (currentItem.services.length > 1) {
                                         let num = currentItem.services.length - 1
@@ -135,7 +142,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                                         name = currentItem.services[0].name
                                     }
                                     return (
-                                        <li>
+                                        <li key={idx}>
 
                                             <p>{name}</p>
                                             <p>{currentItem.appointment_date}</p>
@@ -146,6 +153,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                             </ul>
                         </div>
                     </div>
+
                     <div className="upcom-user-apps">
                         <h2>Próximas Citas</h2>
                         <div>
@@ -160,7 +168,7 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                                         name = currentItem.services[0].name
                                     }
                                     return (
-                                        <li>
+                                        <li key={i}>
                                             <p>{name}</p>
                                             <p>{currentItem.appointment_date}</p>
                                             <p>{tConvert(currentItem.appointment_time.slice(0, 5))}</p>
@@ -174,6 +182,8 @@ const UserAppointments = ({ isAuthenticated, load_user }) => {
                                     )
                                 }) :
                                     <><h3>No Tienes Ninguna Citas</h3></>}
+                                {loader ? <BeatLoader type="ThreeDots" color="#00BFFF" height={20} width={20} loading /> : null}
+
                             </ul>
                         </div>
 
