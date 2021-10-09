@@ -216,7 +216,9 @@ def appointment_email_success_automation(request, user):
 
 
 def appointment_email_delete_owner(user, day, time):
-    host = 'aleja201970@hotmail.com'
+    email = config("HOST")
+    print(email)
+    host = email
     timeStr = time.strftime("%H:%M:%S")
     d = datetime.strptime(timeStr, "%H:%M:%S")
     send_mail(

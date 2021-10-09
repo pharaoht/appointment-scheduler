@@ -198,6 +198,9 @@ export const signup = (email, first_name, last_name, password, re_password) => a
         if (err.response.data.email.length > 0) {
             alert("Ya existe un usuario con este correo electrónico")
         }
+        if (err.response.data.password.length > 0) {
+            alert("Su contraseña debe tener al menos 8 dígitos y no puede contener todos los números.")
+        }
         dispatch({
             type: SIGNUP_FAIL
         })
