@@ -22,9 +22,16 @@ const Sidebar = ({ isAuthenticated, }) => {
 
     }
 
+    const closeBtn = () => {
+        const slidebar = document.querySelector('.navigation')
+        const toggle = document.querySelector('.toggle')
+        slidebar.classList.remove('active')
+        toggle.classList.remove('active')
+    }
+
     const authLinks = () => {
         return <>
-            <li className="sidebar-li">
+            <li className="sidebar-li" onClick={closeBtn}>
                 <Link to={`/user-appointments`}>
                     <span className="icon"><i className="fa fa-user" aria-hidden="true"></i></span>
                     <span className="title">Tus citas</span>
@@ -36,25 +43,25 @@ const Sidebar = ({ isAuthenticated, }) => {
         <>
             <div className="navigation">
                 <ul className="sidebar-ul">
-                    <li className="sidebar-li">
+                    <li className="sidebar-li" onClick={closeBtn}>
                         <Link to='/services'>
                             <span className="icon"><i className="fa fa-wrench" aria-hidden="true"></i></span>
                             <span className="title">Servicios</span>
                         </Link>
                     </li>
-                    <li className="sidebar-li">
+                    <li className="sidebar-li" onClick={closeBtn}>
                         <Link to='/appointments'>
                             <span className="icon"><i className="fa fa-calendar" aria-hidden="true"></i></span>
                             <span className="title">Reserva</span>
                         </Link>
                     </li>
-                    <li className="sidebar-li">
+                    <li className="sidebar-li" onClick={closeBtn}>
                         <Link to='/about-us'>
                             <span className="icon"><i className="fa fa-id-card-o" aria-hidden="true"></i></span>
                             <span className="title">Sobre nosotros</span>
                         </Link>
                     </li>
-                    <li className="sidebar-li">
+                    <li className="sidebar-li" onClick={closeBtn}>
                         <Link to='/reviews'>
                             <span className="icon"><i className="fa fa-check-circle" aria-hidden="true"></i></span>
                             <span className="title">Reseñas</span>

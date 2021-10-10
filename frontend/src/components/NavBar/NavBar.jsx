@@ -15,10 +15,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
     const guestLinks = () => {
         return (
             <Fragment>
-                <li className="links">
+                <li className="links" onClick={closebtn}>
                     <Link className="nav-link" to='/login'>Iniciar Sesión</Link>
                 </li>
-                <li className="links">
+                <li className="links" onClick={closebtn}>
                     <Link className="nav-link" to='/signup'>Registrarse</Link>
                 </li>
             </Fragment>
@@ -31,7 +31,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
                 <li className="links">
                     <a> Bienvenido, {userData ? userData.first_name : ""} </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" onClick={closebtn}>
                     <a className="nav-link" href="#!" onClick={logoutHandler}>Cerrar sesión</a>
                 </li>
             </Fragment>
@@ -50,13 +50,20 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
 
     }
 
+    const closebtn = () => {
+        const togglebtn = document.getElementById('toggle');
+        const navbar = document.getElementById('navbar')
+        togglebtn.classList.remove('active')
+        navbar.classList.remove('active')
+
+    }
+
     return (
         <header id="header" >
             <a href="/" className="logo">Patitas Limpias</a>
             <div id="toggle" onClick={toggleBtn}></div>
             <div id="navbar">
                 <ul>
-                    <li><a></a></li>
                     {isAuthenticated ? authLinks() : guestLinks()}
                 </ul>
             </div>
