@@ -204,7 +204,9 @@ def appointment_email_success_automation(request, user):
     day = request.data['appointment_date']
     time = request.data['appointment_time']
     hr_tweleve = convert12(time)
-    print(time)
+    print(hr_tweleve)
+    if hr_tweleve == '0:00 PM':
+        hr_tweleve = '12:00 PM'
 
     send_mail(
         'Su cita ha sido confirmada!',
@@ -216,9 +218,7 @@ def appointment_email_success_automation(request, user):
 
 
 def appointment_email_delete_owner(user, day, time):
-    email = config("HOST")
-    print(email)
-    host = email
+    host = 'pharaohmanson@gmail.com'
     timeStr = time.strftime("%H:%M:%S")
     d = datetime.strptime(timeStr, "%H:%M:%S")
     send_mail(

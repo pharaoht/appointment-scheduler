@@ -25,10 +25,6 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
     const baseURL = 'http://localhost:8000/api/'
     const [days, setDays] = useState(0)
 
-    const { REACT_APP_BACKEND_URL } = process.env;
-
-    console.log(REACT_APP_BACKEND_URL)
-
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -93,7 +89,7 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
     }
 
     function getAppointments() {
-        let dateSearch = dateUpdate.toISOString().slice(0, 10)
+        let dateSearch = timeZoneConvert(dateUpdate)
 
         const config = {
             headers: {
@@ -110,19 +106,32 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
             .catch((err) => console.log(err))
     }
 
+    const timeZoneConvert = (datetoconvert) => {
+        let yourDate = datetoconvert
+        const offset = yourDate.getTimezoneOffset()
+        yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000))
+        let dateNew = yourDate.toISOString().split('T')[0]
+        return dateNew;
+    }
+
     const radioButtonFilter = (data) => {
+
         let date = new Date()
         const element = document.getElementById('times')
         const labels = element.querySelectorAll('label')
         const radiobuttons = element.querySelectorAll('input[type=radio]')
 
+        let datecompare = timeZoneConvert(dateUpdate)
+        console.log(data)
         for (let i = 0; i < radiobuttons.length; i++) {
+
             labels[i].classList.remove('disabled')
             radiobuttons[i].classList.remove('disabled')
             radiobuttons[i].disabled = false
 
             data.map((currentItem, index) => {
-                if (currentItem.appointment_date === dateUpdate.toISOString().slice(0, 10)) {
+                console.log(currentItem.appointment_date === datecompare)
+                if (currentItem.appointment_date === datecompare) {
                     if (currentItem.appointment_time === radiobuttons[i].value) {
                         radiobuttons[i].disabled = true
                         radiobuttons[i].className = 'disabled'
@@ -243,19 +252,16 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
         async function fetchData() {
             window.scrollTo(0, 0);
             await load_user();
-            setRefresh(false)
-            setLoader(false)
-            getAppointments()
-            getServices()
-            getAnimals()
-            let yourDate = dateUpdate
-            const offset = yourDate.getTimezoneOffset()
-            yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000))
-            let dateNew = yourDate.toISOString().split('T')[0]
-            setFormData({ ...formData, appointment_date: dateNew })
-            setUserData(user)
-        }
-        fetchData()
+            setRefresh(false);
+            setLoader(false);
+            getAppointments();
+            getServices();
+            getAnimals();
+            let dateNew = timeZoneConvert(dateUpdate);
+            setFormData({ ...formData, appointment_date: dateNew });
+            setUserData(user);
+        };
+        fetchData();
     }, [dateUpdate, refresh])
 
 

@@ -1,7 +1,8 @@
 .reviews-outline {
   background: #03a9f4;
   padding: 15px;
-  height: 100vh;
+  padding-bottom: 20px;
+  min-height: 97vh;
 }
 .reviews-outline .main-holder {
   animation: fadeIn 0.9s;
@@ -166,14 +167,12 @@
 @media (max-width: 1050px) {
   .reviews-outline {
     height: auto;
-    padding-bottom: 600px;
   }
 }
 
 @media (max-width: 767px) {
   .reviews-outline {
-    height: auto;
-    padding-bottom: 600px;
+    min-height: 97vh;
   }
   .reviews-outline .reviews-holder {
     display: grid;

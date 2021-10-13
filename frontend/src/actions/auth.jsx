@@ -164,6 +164,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
             type: PASSWORD_REST_CONFIRM_SUCCESS
         });
     } catch (err) {
+        alert("Ocurrió un error, inténtelo de nuevo.")
         dispatch({
             type: PASSWORD_REST_CONFIRM_FAIL
         })
@@ -195,11 +196,15 @@ export const signup = (email, first_name, last_name, password, re_password) => a
         })
 
     } catch (err) {
-        if (err.response.data.email.length > 0) {
+        if (err.response.data.email) {
             alert("Ya existe un usuario con este correo electrónico")
         }
-        if (err.response.data.password.length > 0) {
-            alert("Su contraseña debe tener al menos 8 dígitos y no puede contener todos los números.")
+        if (err.response.data.password) {
+            if (err.response.data.password[1]) {
+                alert("Esta contraseña es demasiado común. Pruebe con una contraseña diferente con al menos 8 dígitos y 1 letra")
+            } else {
+                alert("Su contraseña debe tener al menos 8 dígitos y no puede contener todos los números.")
+            }
         }
         dispatch({
             type: SIGNUP_FAIL
