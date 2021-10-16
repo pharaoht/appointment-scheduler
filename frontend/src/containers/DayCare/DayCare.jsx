@@ -9,6 +9,7 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
 
 
     return <>
+
         <div>
             hi
         </div>

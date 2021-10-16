@@ -48,8 +48,7 @@ def create_appointment(request):
             data = {}
             data['error'] = "Ese tiempo se toma, esto sucede cuando dos o más usuarios envían al mismo tiempo."
             return Response(status=status.HTTP_409_CONFLICT, data=data)
-        serializer = AppointmentCreateSerializer(
-            client, data=request.data)
+        serializer = AppointmentCreateSerializer(client, data=request.data)
         if serializer.is_valid():
             serializer.save()
             for serviceID in request.data['multiservices']:
@@ -118,7 +117,7 @@ def get_user_appointments_future(request):
 
     try:
         appointments_future = Appointment.objects.filter(
-            client=clientID, appointment_date__gte=datetime.today())
+            client=clientID, appointment_date__gte=datetime.now()).order_by('appointment_date')
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
