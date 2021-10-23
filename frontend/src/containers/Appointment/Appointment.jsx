@@ -19,6 +19,8 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
         multiservices: [],
         appointment_time: "",
         appointment_date: dateUpdate.toLocaleDateString().slice(0, 10),
+        daycare_start_time: "",
+        daycare_end_time: "",
     })
     const [services, setServices] = useState([])
     const [animals, setAnimals] = useState([])
@@ -45,6 +47,7 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
     }
 
     const changeHandler = (e) => {
+        console.log(e)
         if (isAuthenticated) {
             if (e.target.type === 'checkbox') {
                 if (e.target.checked) {
@@ -61,6 +64,13 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
                     setFormData(prevState => {
                         return { ...prevState, multiservices: prevState.multiservices.filter((curr, i) => curr.id !== e.target.value) }
                     })
+                }
+            }
+            else if (e.target.type === 'select-one') {
+                if (e.target.value === '') {
+                    setFormData({ ...formData, daycare_start_time: "", daycare_end_time: "" })
+                } else {
+                    setFormData({ ...formData, [e.target.name]: e.target.value })
                 }
             }
             else {
@@ -122,7 +132,7 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
         const radiobuttons = element.querySelectorAll('input[type=radio]')
 
         let datecompare = timeZoneConvert(dateUpdate)
-        console.log(data)
+
         for (let i = 0; i < radiobuttons.length; i++) {
 
             labels[i].classList.remove('disabled')
@@ -130,7 +140,7 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
             radiobuttons[i].disabled = false
 
             data.map((currentItem, index) => {
-                console.log(currentItem.appointment_date === datecompare)
+
                 if (currentItem.appointment_date === datecompare) {
                     if (currentItem.appointment_time === radiobuttons[i].value) {
                         radiobuttons[i].disabled = true
@@ -339,6 +349,8 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
                                             )
                                         })}
                                     </div>
+                                    <hr></hr>
+
                                 </div>
 
                             </div>
