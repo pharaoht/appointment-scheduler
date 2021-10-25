@@ -87,3 +87,13 @@ class Review(models.Model):
     desc = models.TextField()
     rating = models.IntegerField()
     date_posted = models.DateField(auto_now_add=True)
+
+
+class Daycare(models.Model):
+    client = models.ForeignKey(
+        UserAccount, related_name='client', on_delete=models.CASCADE)
+    animal = models.ForeignKey(
+        AnimalType, related_name='animaltype', on_delete=models.CASCADE)
+    appointment_date = models.DateField(auto_now=False, auto_now_add=False)
+    start_time = models.DateField(auto_now=False, auto_now_add=False)
+    end_time = models.DateField(auto_now=False, auto_now_add=False)

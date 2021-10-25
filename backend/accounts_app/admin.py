@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserAccount, Service, Appointment, AnimalType, Review
+from .models import UserAccount, Service, Appointment, AnimalType, Review, Daycare
 
 
 class AppointmentCustom(admin.ModelAdmin):
@@ -26,3 +26,4 @@ admin.site.register(Service)
 admin.site.register(Appointment, AppointmentCustom)
 admin.site.register(AnimalType)
 admin.site.register(Review, ReviewCustom)
+admin.site.register(Daycare)
