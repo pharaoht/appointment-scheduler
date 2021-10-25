@@ -40,7 +40,7 @@ class AppointmentCreateSerializer(ModelSerializer):
         model = Appointment
 
         fields = [
-            'id', 'appointment_date', 'appointment_time', 'services', 'animal', 'daycare_start_time', 'daycare_end_time',
+            'id', 'appointment_date', 'appointment_time', 'services', 'animal',
         ]
 
         depth = 1

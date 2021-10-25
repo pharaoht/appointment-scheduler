@@ -177,22 +177,6 @@
   transform: scale(1.5);
 }
 
-.daycare-times {
-  outline: 1px solid black;
-}
-
-select {
-  border: #9051ff 3px solid;
-  border-radius: 3px;
-}
-
-.daycare-hours {
-  display: flex;
-  justify-content: space-around;
-}
-.daycare-title {
-  text-align: center;
-}
 /* animal type section */
 .animal-type-holder {
   display: flex;

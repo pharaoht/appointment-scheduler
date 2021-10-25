@@ -56,6 +56,12 @@ const Sidebar = ({ isAuthenticated, }) => {
                         </Link>
                     </li>
                     <li className="sidebar-li" onClick={closeBtn}>
+                        <Link to='/day-care'>
+                            <span className="icon"><i className="fa fa-paw" aria-hidden="true"></i></span>
+                            <span className="title">Guardería</span>
+                        </Link>
+                    </li>
+                    <li className="sidebar-li" onClick={closeBtn}>
                         <Link to='/about-us'>
                             <span className="icon"><i className="fa fa-id-card-o" aria-hidden="true"></i></span>
                             <span className="title">Sobre nosotros</span>
