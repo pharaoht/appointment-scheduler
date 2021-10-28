@@ -63,6 +63,12 @@ def create_appointment(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, ])
+def create_daycare_appointment(request):
+    pass
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
 def delete_appointment(request):
     id = request.data['id']
     client = request.data['client']

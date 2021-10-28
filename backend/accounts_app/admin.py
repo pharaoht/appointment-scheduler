@@ -17,6 +17,12 @@ class ReviewCustom(admin.ModelAdmin):
     list_filter = ('date_posted', 'client')
 
 
+class DaycareCustoms(admin.ModelAdmin):
+    list_display = ('client', 'animal', 'appointment_date',
+                    'start_time', 'end_time')
+    list_filter = ('appointment_date', 'client')
+
+
 admin.site.site_header = "Patitas Limpias Admin"
 admin.site.site_title = "Patitas Limpias Admin"
 admin.site.index_title = "Patitas Limpias Admin"
@@ -26,4 +32,4 @@ admin.site.register(Service)
 admin.site.register(Appointment, AppointmentCustom)
 admin.site.register(AnimalType)
 admin.site.register(Review, ReviewCustom)
-admin.site.register(Daycare)
+admin.site.register(Daycare, DaycareCustoms)

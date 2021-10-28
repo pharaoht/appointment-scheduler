@@ -2,7 +2,7 @@ from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.db import models
-from .models import Appointment, Service, AnimalType, Review, UserAccount
+from .models import Appointment, Service, AnimalType, Review, UserAccount, Daycare
 from rest_framework.serializers import ModelSerializer
 User = get_user_model()
 
@@ -71,3 +71,13 @@ class ReviewsCreateSerializier(serializers.ModelSerializer):
         }
 
         depth = 1
+
+
+class DaycareCreateSerializier(serializers.ModelSerializer):
+
+    class Meta():
+        model = Daycare
+
+        fields = [
+            'id', 'client', 'animal', 'start_time', 'end_time', 'appointment_date'
+        ]
