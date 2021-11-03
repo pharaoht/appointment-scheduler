@@ -8,6 +8,21 @@ import '../DayCare/DayCare.css'
 
 const DayCare = ({ isAuthenticated, user, load_user }) => {
 
+    const [formData, setFormData] = useState({
+        client: "",
+        animal: "",
+        appointment_date: "",
+        start_time: "",
+        end_time: ""
+    })
+
+    const submitHandler = () => {
+
+    }
+
+    const changeHandler = () => {
+
+    }
 
     return <>
         <div id="outside-day">
@@ -27,7 +42,6 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                                 <option value="14:00:00">2:00 PM</option>
                                 <option value="15:00:00">3:00 PM</option>
                                 <option value="16:00:00">4:00 PM</option>
-                                <option value="">Ninguno</option>
                             </select>
 
                         </div>

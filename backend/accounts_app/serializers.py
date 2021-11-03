@@ -79,5 +79,5 @@ class DaycareCreateSerializier(serializers.ModelSerializer):
         model = Daycare
 
         fields = [
-            'id', 'client', 'animal', 'start_time', 'end_time', 'appointment_date'
+            'id', 'animal', 'start_time', 'end_time', 'appointment_date'
         ]

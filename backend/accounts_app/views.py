@@ -1,10 +1,10 @@
 from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-from .models import Appointment, UserAccount, Service, AnimalType, Review
-from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier, User
+from .models import Appointment, UserAccount, Service, AnimalType, Review, Daycare
+from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier, DaycareCreateSerializier
 from rest_framework.decorators import api_view, permission_classes
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from rest_framework.permissions import IsAuthenticated
 import json
 from django.core.mail import EmailMessage, send_mail
@@ -64,7 +64,22 @@ def create_appointment(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, ])
 def create_daycare_appointment(request):
-    pass
+    try:
+        user = UserAccount.objects.get(id=request.data['client'])
+        animal = AnimalType.objects.get(id=request.data['animal'])
+        client = Daycare(client=user, animal=animal)
+    except:
+        data = {}
+        data['errors'] = "The information you provided does not match any of our records."
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
+
+    if request.method == "POST":
+        serializer = DaycareCreateSerializier(client, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            appointment_email_success_automation(request, user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
 
 @api_view(['POST'])
@@ -266,3 +281,9 @@ def convert12(str1):
     converted_num = str(hh)
 
     return f"{converted_num}:00 {Meridien}"
+
+
+def testHourly():
+    today = date.today()
+    print(today)
+    print("hi")
