@@ -7,7 +7,9 @@ from rest_framework.decorators import api_view, permission_classes
 from datetime import timedelta, datetime, date
 from rest_framework.permissions import IsAuthenticated
 import json
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import EmailMessage, send_mail, EmailMultiAlternatives
+from django.template.loader import get_template
+from django.contrib import messages
 from django.conf import settings
 from rest_framework.pagination import PageNumberPagination
 
@@ -283,7 +285,12 @@ def convert12(str1):
     return f"{converted_num}:00 {Meridien}"
 
 
-def testHourly():
+def testHourly(request, user):
     today = date.today()
     print(today)
-    print("hi")
+
+    messages.success(request, "Email submitted",
+                     'alert alert-success alert-dismissible')
+    subject = "Test Email Test"
+    from_email = settings.EMAIL_HOST_USER
+    to_email = user.email

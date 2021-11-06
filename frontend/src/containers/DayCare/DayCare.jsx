@@ -7,7 +7,10 @@ import { load_user } from '../../actions/auth';
 import '../DayCare/DayCare.css'
 
 const DayCare = ({ isAuthenticated, user, load_user }) => {
-
+    const date = new Date();
+    const URL = ''
+    const [days, setDays] = useState(0)
+    const [dateUpdate, setDateUpdate] = useState(new Date())
     const [formData, setFormData] = useState({
         client: "",
         animal: "",
@@ -17,11 +20,44 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
     })
 
     const submitHandler = () => {
-
+        if (isAuthenticated) {
+            //do something
+        }
     }
 
     const changeHandler = () => {
+        if (isAuthenticated) {
+            //do something
+        } else {
+            return null;
+        }
 
+    }
+
+    const updateDate = () => {
+        setDateUpdate(prevState => new Date(Date.now() + days * 24 * 60 * 60 * 1000))
+    }
+
+    const incrementDate = () => {
+        setDays(prevState => prevState + 1)
+    };
+
+    const decrementDate = () => {
+        setDays(prevState => prevState - 1)
+    };
+
+    const timeZoneConvert = (datetoconvert) => {
+        let yourDate = datetoconvert
+        const offset = yourDate.getTimezoneOffset()
+        yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000))
+        let dateNew = yourDate.toISOString().split('T')[0]
+        return dateNew;
+    }
+
+    const postFUnction = () => {
+        if (isAuthenticated) {
+            //do something
+        }
     }
 
     return <>
