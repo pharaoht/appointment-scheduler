@@ -95,5 +95,5 @@ class Daycare(models.Model):
     animal = models.ForeignKey(
         AnimalType, related_name='animaltype', on_delete=models.CASCADE)
     appointment_date = models.DateField(auto_now=False, auto_now_add=False)
-    start_time = models.DateField(auto_now=False, auto_now_add=False)
-    end_time = models.DateField(auto_now=False, auto_now_add=False)
+    start_time = models.TimeField(auto_now=False, auto_now_add=False)
+    end_time = models.TimeField(auto_now=False, auto_now_add=False)

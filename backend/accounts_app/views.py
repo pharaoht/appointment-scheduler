@@ -1,17 +1,17 @@
-from rest_framework import status, generics
-from rest_framework.response import Response
-from rest_framework.serializers import Serializer
-from .models import Appointment, UserAccount, Service, AnimalType, Review, Daycare
 from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier, DaycareCreateSerializier
-from rest_framework.decorators import api_view, permission_classes
-from datetime import timedelta, datetime, date
-from rest_framework.permissions import IsAuthenticated
-import json
+from .models import Appointment, UserAccount, Service, AnimalType, Review, Daycare
 from django.core.mail import EmailMessage, send_mail, EmailMultiAlternatives
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import Serializer
 from django.template.loader import get_template
+from datetime import timedelta, datetime, date
+from rest_framework.response import Response
+from rest_framework import status, generics
 from django.contrib import messages
 from django.conf import settings
-from rest_framework.pagination import PageNumberPagination
+import json
 
 
 @api_view(['POST'])
@@ -66,16 +66,21 @@ def create_appointment(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, ])
 def create_daycare_appointment(request):
+    data = {}
     try:
         user = UserAccount.objects.get(id=request.data['client'])
         animal = AnimalType.objects.get(id=request.data['animal'])
         client = Daycare(client=user, animal=animal)
     except:
-        data = {}
+
         data['errors'] = "The information you provided does not match any of our records."
         return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
 
     if request.method == "POST":
+        if Daycare.objects.filter(id=request.data['client'], appointment_date=request.data['appointment_date']).exists():
+            data['errors'] = "You can only schdule one daycare appointment per day."
+            return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
+
         serializer = DaycareCreateSerializier(client, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -285,12 +290,27 @@ def convert12(str1):
     return f"{converted_num}:00 {Meridien}"
 
 
-def testHourly(request, user):
+# this function will run once a day at 7am to send host email with today's appointmnets
+def testHourly():
+    # today's date
     today = date.today()
-    print(today)
 
-    messages.success(request, "Email submitted",
-                     'alert alert-success alert-dismissible')
-    subject = "Test Email Test"
-    from_email = settings.EMAIL_HOST_USER
-    to_email = user.email
+    apps = Appointment.objects.filter(appointment_date=today)
+    serializer = AppointmentCreateSerializer(apps, many=True)
+    appointments = serializer.data
+
+    daycare_apps = Daycare.objects.filter(appointment_date=today)
+    serializer = DaycareCreateSerializier(daycare_apps, many=True)
+    daycare_appointments = serializer.data
+
+    # message = EmailMultiAlternatives(
+    #     subject=f'Appointments for {today}',
+    #     body='Here are your appointments for today.',
+    #     from_email=settings.EMAIL_HOST_USER,
+    #     to_email='pharaohmanson@gmail.com',
+    # )
+    # messages.success(request, "Email submitted",
+    #                  'alert alert-success alert-dismissible')
+    # subject = "Test Email Test"
+    # from_email = settings.EMAIL_HOST_USER
+    # # to_email = user.email
