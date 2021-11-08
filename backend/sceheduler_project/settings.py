@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from datetime import timedelta
 
+DIRNAME = os.path.abspath(os.path.dirname(__file__))
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,7 +81,7 @@ TEMPLATES = [
 ]
 
 TEMPLATE_DIRS = (
-    os.path.join(SETTINGS_PATH, 'templates'),
+    os.path.join(DIRNAME, 'templates/'),
 )
 
 WSGI_APPLICATION = 'sceheduler_project.wsgi.application'

@@ -25,9 +25,12 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         }
     }
 
-    const changeHandler = () => {
+    const changeHandler = (e) => {
+
         if (isAuthenticated) {
             //do something
+            setFormData({ ...formData, client: user.id, [e.target.name]: e.target.value })
+
         } else {
             return null;
         }
@@ -60,44 +63,65 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         }
     }
 
+    useEffect(() => {
+        async function fetchData() {
+            let dateNew = timeZoneConvert(dateUpdate);
+            setFormData({ ...formData, appointment_date: dateNew });
+        }
+
+        fetchData()
+    }, [dateUpdate])
+
     return <>
         <div id="outside-day">
             <div className="">
-                <h2 id="daycare-title">Horas de Guardería</h2>
-                <div className="daycare-times">
-                    <div className="daycare-hours">
-                        <div>
-                            <div>Desde las</div>
-                            <select name="daycare_start_time">
-                                <option value="08:00:00">8:00 AM</option>
-                                <option value="09:00:00">9:00 AM</option>
-                                <option value="10:00:00">10:00 AM</option>
-                                <option value="11:00:00">11:00 AM</option>
-                                <option value="12:00:00">12:00 PM</option>
-                                <option value="13:00:00">1:00 PM</option>
-                                <option value="14:00:00">2:00 PM</option>
-                                <option value="15:00:00">3:00 PM</option>
-                                <option value="16:00:00">4:00 PM</option>
-                            </select>
+                <div>
+                    <h2 id="daycare-title">Horas de Guardería</h2>
+                </div>
+                <form>
+                    <div className="date-daycare-header">
+                        <h3>
+                            {dateUpdate < date ? null : <button className="arrow-btn" onClick={decrementDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
+                            {dateUpdate.toLocaleDateString().slice(0, 10)}
+                            <button className="arrow-btn" onClick={incrementDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                        </h3>
+                    </div>
+                    <div className="daycare-times">
+                        <div className="daycare-hours">
+                            <div>
+                                <div>Desde las</div>
+                                <select name="start_time" onChange={changeHandler}>
+                                    <option value="08:00:00">8:00 AM</option>
+                                    <option value="09:00:00">9:00 AM</option>
+                                    <option value="10:00:00">10:00 AM</option>
+                                    <option value="11:00:00">11:00 AM</option>
+                                    <option value="12:00:00">12:00 PM</option>
+                                    <option value="13:00:00">1:00 PM</option>
+                                    <option value="14:00:00">2:00 PM</option>
+                                    <option value="15:00:00">3:00 PM</option>
+                                    <option value="16:00:00">4:00 PM</option>
+                                </select>
 
-                        </div>
-                        <div>
-                            <div>Hasta las</div>
-                            <select name="daycare_end_time">
-                                <option value="09:00:00">9:00 AM</option>
-                                <option value="10:00:00">10:00 AM</option>
-                                <option value="11:00:00">11:00 AM</option>
-                                <option value="12:00:00">12:00 PM</option>
-                                <option value="13:00:00">1:00 PM</option>
-                                <option value="14:00:00">2:00 PM</option>
-                                <option value="15:00:00">3:00 PM</option>
-                                <option value="16:00:00">4:00 PM</option>
+                            </div>
+                            <div>
+                                <div>Hasta las</div>
+                                <select name="end_time" onChange={changeHandler}>
+                                    <option value="09:00:00">9:00 AM</option>
+                                    <option value="10:00:00">10:00 AM</option>
+                                    <option value="11:00:00">11:00 AM</option>
+                                    <option value="12:00:00">12:00 PM</option>
+                                    <option value="13:00:00">1:00 PM</option>
+                                    <option value="14:00:00">2:00 PM</option>
+                                    <option value="15:00:00">3:00 PM</option>
+                                    <option value="16:00:00">4:00 PM</option>
 
-                            </select>
+                                </select>
 
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </>

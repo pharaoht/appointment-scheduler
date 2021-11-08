@@ -2,16 +2,23 @@ from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, A
 from .models import Appointment, UserAccount, Service, AnimalType, Review, Daycare
 from django.core.mail import EmailMessage, send_mail, EmailMultiAlternatives
 from rest_framework.decorators import api_view, permission_classes
+from django.template.loader import get_template, render_to_string
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import Serializer
-from django.template.loader import get_template
 from datetime import timedelta, datetime, date
 from rest_framework.response import Response
 from rest_framework import status, generics
 from django.contrib import messages
 from django.conf import settings
 import json
+
+
+from django.core.mail import EmailMessage
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template import Context
+from django.template.loader import get_template
 
 
 @api_view(['POST'])
@@ -32,6 +39,7 @@ def get_appointments(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, ])
 def create_appointment(request):
+    data = {}
     # get user object model
     user = UserAccount.objects.get(id=request.data['client'])
     # get animal object model
@@ -41,16 +49,17 @@ def create_appointment(request):
 
     if request.method == "POST":
         if len(request.data['multiservices']) == 0:
-            data = {}
             data['error'] = "Por favor seleccione un servicio."
             return Response(status=status.HTTP_409_CONFLICT, data=data)
 
         if Appointment.objects.filter(
                 appointment_date=request.data['appointment_date'], appointment_time=request.data['appointment_time']).exists():
-            data = {}
+
             data['error'] = "Ese tiempo se toma, esto sucede cuando dos o más usuarios envían al mismo tiempo."
             return Response(status=status.HTTP_409_CONFLICT, data=data)
+
         serializer = AppointmentCreateSerializer(client, data=request.data)
+
         if serializer.is_valid():
             serializer.save()
             for serviceID in request.data['multiservices']:
@@ -78,10 +87,11 @@ def create_daycare_appointment(request):
 
     if request.method == "POST":
         if Daycare.objects.filter(id=request.data['client'], appointment_date=request.data['appointment_date']).exists():
-            data['errors'] = "You can only schdule one daycare appointment per day."
+            data['errors'] = "You can only schedule one daycare appointment per day."
             return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
 
         serializer = DaycareCreateSerializier(client, data=request.data)
+
         if serializer.is_valid():
             serializer.save()
             appointment_email_success_automation(request, user)
@@ -269,7 +279,6 @@ def appointment_email_delete_user(user):
 
 
 def convert12(str1):
-
     # Get Hours
     h1 = ord(str1[0]) - ord('0')
     h2 = ord(str1[1]) - ord('0')
@@ -292,8 +301,12 @@ def convert12(str1):
 
 # this function will run once a day at 7am to send host email with today's appointmnets
 def testHourly():
-    # today's date
+    print("sending")
     today = date.today()
+    subject = f'Patitas Limpias Appointments for {today}'
+    from_email = settings.EMAIL_HOST_USER
+    to_email = 'pharaohmanson@gmail.com'
+    body = 'Your appointments for today'
 
     apps = Appointment.objects.filter(appointment_date=today)
     serializer = AppointmentCreateSerializer(apps, many=True)
@@ -303,14 +316,14 @@ def testHourly():
     serializer = DaycareCreateSerializier(daycare_apps, many=True)
     daycare_appointments = serializer.data
 
-    # message = EmailMultiAlternatives(
-    #     subject=f'Appointments for {today}',
-    #     body='Here are your appointments for today.',
-    #     from_email=settings.EMAIL_HOST_USER,
-    #     to_email='pharaohmanson@gmail.com',
-    # )
-    # messages.success(request, "Email submitted",
-    #                  'alert alert-success alert-dismissible')
-    # subject = "Test Email Test"
-    # from_email = settings.EMAIL_HOST_USER
-    # # to_email = user.email
+    message = get_template("templates/daily_email_tracker.html").render(Context({
+        'appointments': appointments
+    }))
+    mail = EmailMessage(
+        subject=subject,
+        body=body,
+        from_email=from_email,
+        to=[to_email],
+    )
+    mail.content_subtype = "html"
+    return mail.send()
