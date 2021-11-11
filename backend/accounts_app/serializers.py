@@ -29,7 +29,7 @@ class AnimalCreateSerializer(ModelSerializer):
         model = AnimalType
 
         fields = [
-            'id', 'name'
+            'name'
         ]
 
 
@@ -40,7 +40,7 @@ class AppointmentCreateSerializer(ModelSerializer):
         model = Appointment
 
         fields = [
-            'id', 'appointment_date', 'appointment_time', 'services', 'animal',
+            'appointment_date', 'appointment_time', 'services', 'animal',
         ]
 
         depth = 1
@@ -79,5 +79,16 @@ class DaycareCreateSerializier(serializers.ModelSerializer):
         model = Daycare
 
         fields = [
-            'id', 'animal', 'start_time', 'end_time', 'appointment_date'
+            'animal', 'start_time', 'end_time', 'appointment_date'
         ]
+
+
+class DayCareSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = Daycare
+
+        fields = [
+            'id', 'client', 'animal', 'start_time', 'end_time', 'appointment_date'
+        ]
+
+        depth = 1

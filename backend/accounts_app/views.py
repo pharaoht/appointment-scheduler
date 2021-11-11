@@ -1,23 +1,18 @@
 from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier, DaycareCreateSerializier
 from .models import Appointment, UserAccount, Service, AnimalType, Review, Daycare
-from django.core.mail import EmailMessage, send_mail, EmailMultiAlternatives
 from rest_framework.decorators import api_view, permission_classes
 from django.template.loader import get_template, render_to_string
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.serializers import Serializer
+from django.core.mail import EmailMessage, send_mail
 from datetime import timedelta, datetime, date
 from rest_framework.response import Response
-from rest_framework import status, generics
-from django.contrib import messages
+from rest_framework import status
 from django.conf import settings
 import json
 
-
+from collections import OrderedDict
 from django.core.mail import EmailMessage
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.template import Context
 from django.template.loader import get_template
 
 
@@ -306,24 +301,53 @@ def testHourly():
     subject = f'Patitas Limpias Appointments for {today}'
     from_email = settings.EMAIL_HOST_USER
     to_email = 'pharaohmanson@gmail.com'
-    body = 'Your appointments for today'
 
     apps = Appointment.objects.filter(appointment_date=today)
     serializer = AppointmentCreateSerializer(apps, many=True)
     appointments = serializer.data
+    frontend_data = {}
+
+    newda = json.loads(json.dumps(appointments))
+
+    for userapp in newda:
+        for key in userapp:
+            print(userapp[key])
 
     daycare_apps = Daycare.objects.filter(appointment_date=today)
-    serializer = DaycareCreateSerializier(daycare_apps, many=True)
-    daycare_appointments = serializer.data
+    serializer1 = DaycareCreateSerializier(daycare_apps, many=True)
+    daycare_appointments = serializer1.data
 
-    message = get_template("templates/daily_email_tracker.html").render(Context({
-        'appointments': appointments
-    }))
-    mail = EmailMessage(
-        subject=subject,
-        body=body,
-        from_email=from_email,
-        to=[to_email],
-    )
-    mail.content_subtype = "html"
-    return mail.send()
+    newdata = json.loads(json.dumps(daycare_appointments))
+
+    for dict in newdata:
+        for item, val in dict.items():
+            if item == "animal":
+                if val == 3:
+                    dict[item] = "Perro"
+
+            if item == "start_time":
+                newtime = convert12(val)
+                if newtime == '0:00 PM':
+                    newtime = '12:00 PM'
+                dict[item] = newtime
+
+            if item == "end_time":
+                endtime = convert12(val)
+                if endtime == "0:00 PM":
+                    endtime = "12:00 PM"
+                dict[item] = endtime
+
+    message = get_template("daily_email_tracker.html").render(
+        {'info': newdata, 'today': today})
+
+    subject2 = f'Patitas Limpias Citas de guardería para hoy {today}'
+
+    # mail = EmailMessage(
+    #     subject=subject2,
+    #     body=message,
+    #     from_email=from_email,
+    #     to=[to_email],
+    # )
+
+    # mail.content_subtype = "html"
+    # return mail.send()
