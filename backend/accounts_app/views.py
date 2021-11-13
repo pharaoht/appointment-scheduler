@@ -297,23 +297,57 @@ def convert12(str1):
 # this function will run once a day at 7am to send host email with today's appointmnets
 def testHourly():
     print("sending")
+    frontend_data = []
     today = date.today()
-    subject = f'Patitas Limpias Appointments for {today}'
+    subject1 = f'Patitas Limpias Citas por {today}'
     from_email = settings.EMAIL_HOST_USER
     to_email = 'pharaohmanson@gmail.com'
 
-    apps = Appointment.objects.filter(appointment_date=today)
+    apps = Appointment.objects.filter(
+        appointment_date=today).order_by('appointment_time')
     serializer = AppointmentCreateSerializer(apps, many=True)
     appointments = serializer.data
-    frontend_data = {}
 
     newda = json.loads(json.dumps(appointments))
 
     for userapp in newda:
+        row = {}
         for key in userapp:
-            print(userapp[key])
+            if key == "appointment_date":
+                row.update({"appointment_date": userapp[key]})
 
-    daycare_apps = Daycare.objects.filter(appointment_date=today)
+            if key == "appointment_time":
+                newtime = convert12(userapp[key])
+                if newtime == '0:00 PM':
+                    newtime = '12:00 PM'
+                row.update({"appointment_time": newtime})
+
+            if key == "services":
+                for item in userapp[key]:
+                    row.update({"services": item["name"]})
+
+            if key == "animal":
+                for item1, val in userapp[key].items():
+                    if item1 == "name":
+                        row.update({"animal": val})
+
+        frontend_data.append(row)
+
+    message1 = get_template("app.html").render(
+        {'info': frontend_data, 'today': today})
+
+    mail1 = EmailMessage(
+        subject=subject1,
+        body=message1,
+        from_email=from_email,
+        to=[to_email],
+    )
+
+    mail1.content_subtype = "html"
+    mail1.send()
+
+    daycare_apps = Daycare.objects.filter(
+        appointment_date=today).order_by('-start_time')
     serializer1 = DaycareCreateSerializier(daycare_apps, many=True)
     daycare_appointments = serializer1.data
 
@@ -342,12 +376,12 @@ def testHourly():
 
     subject2 = f'Patitas Limpias Citas de guardería para hoy {today}'
 
-    # mail = EmailMessage(
-    #     subject=subject2,
-    #     body=message,
-    #     from_email=from_email,
-    #     to=[to_email],
-    # )
+    mail = EmailMessage(
+        subject=subject2,
+        body=message,
+        from_email=from_email,
+        to=[to_email],
+    )
 
-    # mail.content_subtype = "html"
-    # return mail.send()
+    mail.content_subtype = "html"
+    return mail.send()

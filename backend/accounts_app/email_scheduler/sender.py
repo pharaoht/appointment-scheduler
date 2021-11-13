@@ -8,4 +8,4 @@ def start():
     scheduler.start()
 
 
-# scheduler.add_job(testHourly, trigger='cron', hour='05', minute='39')
+# scheduler.add_job(testHourly, trigger='cron', hour='07', minute='30')

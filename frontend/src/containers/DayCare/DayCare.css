@@ -7,13 +7,16 @@
 #daycare-title {
   text-align: center;
   color: #fff;
-  font-weight: 900;
-  font-size: 4em;
-  text-decoration: none;
-  letter-spacing: 3px;
   text-shadow: 2px 5px rgba(0, 0, 0, 0.55);
+  font-size: 3em;
+  font-weight: 900;
 }
 
 .daycare-times {
   outline: 1px solid black;
+}
+
+.date-daycare-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
