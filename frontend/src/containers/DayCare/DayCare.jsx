@@ -8,6 +8,7 @@ import '../DayCare/DayCare.css'
 
 const DayCare = ({ isAuthenticated, user, load_user }) => {
     const date = new Date();
+    const [loader, setLoader] = useState(false)
     const URL = ''
     const [days, setDays] = useState(0)
     const [dateUpdate, setDateUpdate] = useState(new Date())
@@ -91,9 +92,10 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                 </div>
                 <form>
                     <div className="daycare-times">
+                        <h4>En Patitas Limpias, puedes dejar a tu mascota en nuestra guardería. Nosotros velaremos por ellos y nos ocuparemos de ellos mientras tú te ocupas de tus recados. El precio comienza en $ 3.000 por hora.</h4>
                         <div className="daycare-hours">
-                            <div>
-                                <div>Desde las</div>
+                            <div className="client-time">
+                                <div className='client-re'>Cuándo llegarás</div>
                                 <select name="start_time" onChange={changeHandler}>
                                     <option value="08:00:00">8:00 AM</option>
                                     <option value="09:00:00">9:00 AM</option>
@@ -107,8 +109,8 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                                 </select>
 
                             </div>
-                            <div>
-                                <div>Hasta las</div>
+                            <div className='client-time'>
+                                <div className='client-re'>Cuándo regresarás</div>
                                 <select name="end_time" onChange={changeHandler}>
                                     <option value="09:00:00">9:00 AM</option>
                                     <option value="10:00:00">10:00 AM</option>
@@ -118,10 +120,13 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                                     <option value="14:00:00">2:00 PM</option>
                                     <option value="15:00:00">3:00 PM</option>
                                     <option value="16:00:00">4:00 PM</option>
-
+                                    <option value="17:00:00">5:00 PM</option>
                                 </select>
-
                             </div>
+                        </div>
+                        <div className="submit-button">
+                            {loader ? <button type="submit" ><BeatLoader type="ThreeDots" color="#00BFFF" height={20} width={20} loading /></button>
+                                : <button type="submit">Reserva <i class="fa fa-paw" aria-hidden="true"></i> </button>}
                         </div>
                     </div>
                 </form>

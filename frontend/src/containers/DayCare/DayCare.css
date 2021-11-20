@@ -13,10 +13,96 @@
 }
 
 .daycare-times {
-  outline: 1px solid black;
+  margin: 5%;
+  padding: 2%;
+  background-color: #fff;
+  box-shadow: 20px 20px 25px rgba(0, 0, 0, 0.15);
 }
 
 .date-daycare-header {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.daycare-hours {
+  display: flex;
+  justify-content: center;
+}
+
+h4 {
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.client-time {
+  margin: 2%;
+}
+
+select {
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  background-image: linear-gradient(#6f42c1, #9051ff);
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 20px 20px 25px rgba(0, 0, 0, 0.13);
+  border-radius: 5px;
+}
+option {
+  color: black;
+}
+
+.client-re {
+  text-align: center;
+  font-weight: 600;
+}
+
+.submit-button {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.submit-button button {
+  background: #9051ff;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 10px;
+  border: none;
+  box-shadow: 0px 4px 12px -4px rgba(0, 0, 0, 0.55);
+}
+
+.arrow-btn .fa-arrow-circle-right {
+  color: #3e0748;
+  font-size: xx-large;
+}
+
+.arrow-btn {
+  border: none;
+  background-color: #03a9f4;
+}
+
+.arrow-btn .fa-arrow-circle-left {
+  color: #3e0748;
+  font-size: xx-large;
+}
+
+.arrow-btn .fa-arrow-circle-right:hover {
+  color: #6f42c1;
+  transform: scale(1.1);
+  transition: 88ms;
+}
+
+.arrow-btn .fa-arrow-circle-right:active {
+  transform: scale(0.8);
+  transition: 88ms;
+}
+.arrow-btn .fa-arrow-circle-left:hover {
+  color: #6f42c1;
+  transform: scale(1.1);
+  transition: 100ms;
+}
+.arrow-btn .fa-arrow-circle-left:active {
+  transform: scale(0.8);
+  transition: 88ms;
 }
