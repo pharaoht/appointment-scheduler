@@ -64,12 +64,16 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
     }
 
     useEffect(() => {
+        updateDate();
+    }, [days])
+
+    useEffect(() => {
         async function fetchData() {
             let dateNew = timeZoneConvert(dateUpdate);
             setFormData({ ...formData, appointment_date: dateNew });
         }
 
-        fetchData()
+        fetchData();
     }, [dateUpdate])
 
     return <>
@@ -78,14 +82,14 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                 <div>
                     <h2 id="daycare-title">Horas de Guardería</h2>
                 </div>
+                <div className="date-daycare-header">
+                    <h3>
+                        {dateUpdate < date ? null : <button className="arrow-btn" onClick={decrementDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
+                        {dateUpdate.toLocaleDateString().slice(0, 10)}
+                        <button className="arrow-btn" onClick={incrementDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                    </h3>
+                </div>
                 <form>
-                    <div className="date-daycare-header">
-                        <h3>
-                            {dateUpdate < date ? null : <button className="arrow-btn" onClick={decrementDate}><i className="fa fa-arrow-circle-left" aria-hidden="true"></i></button>}
-                            {dateUpdate.toLocaleDateString().slice(0, 10)}
-                            <button className="arrow-btn" onClick={incrementDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
-                        </h3>
-                    </div>
                     <div className="daycare-times">
                         <div className="daycare-hours">
                             <div>
