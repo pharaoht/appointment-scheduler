@@ -1,19 +1,17 @@
-from .serializers import AppointmentCreateSerializer, ServiceCreateSerializer, AnimalCreateSerializer, ReviewsCreateSerializier, DaycareCreateSerializier
-from .models import Appointment, UserAccount, Service, AnimalType, Review, Daycare
 from rest_framework.decorators import api_view, permission_classes
 from django.template.loader import get_template, render_to_string
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from django.core.mail import EmailMessage, send_mail
+from django.template.loader import get_template
 from datetime import timedelta, datetime, date
 from rest_framework.response import Response
+from collections import OrderedDict
 from rest_framework import status
 from django.conf import settings
+from .serializers import *
+from .models import *
 import json
-
-from collections import OrderedDict
-from django.core.mail import EmailMessage
-from django.template.loader import get_template
 
 
 @api_view(['POST'])
@@ -89,7 +87,7 @@ def create_daycare_appointment(request):
 
         if serializer.is_valid():
             serializer.save()
-            appointment_email_success_automation(request, user)
+            daycare_appointment_email(request, user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
@@ -230,7 +228,6 @@ def delete_review(request):
 
 
 # helper methods
-
 def appointment_email_success_automation(request, user):
     # translate date time to local
     day = request.data['appointment_date']
@@ -247,6 +244,10 @@ def appointment_email_success_automation(request, user):
         [user.email],
         fail_silently=False
     )
+
+
+def daycare_appointment_email(request, user):
+    return
 
 
 def appointment_email_delete_owner(user, day, time):

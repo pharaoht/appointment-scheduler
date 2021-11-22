@@ -14,5 +14,6 @@ urlpatterns = [
     path('create-review/', views.create_review),
     path('get-user-appointments-past/', views.get_user_appointments_past),
     path('get-user-appointments-future/', views.get_user_appointments_future),
+    path('create-daycare-appointment/', views.create_daycare_appointment),
 
 ]
