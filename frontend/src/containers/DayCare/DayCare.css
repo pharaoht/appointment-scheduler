@@ -15,6 +15,7 @@
 .daycare-times {
   margin: 5%;
   padding: 2%;
+  padding-bottom: 5%;
   background-color: #fff;
   box-shadow: 20px 20px 25px rgba(0, 0, 0, 0.15);
 }
@@ -105,4 +106,17 @@ option {
 .arrow-btn .fa-arrow-circle-left:active {
   transform: scale(0.8);
   transition: 88ms;
+}
+
+.none {
+  color: lightgray !important;
+}
+
+@media (max-width: 767px) {
+  .daycare-hours {
+    flex-direction: column;
+  }
+  .client-time {
+    text-align: center;
+  }
 }

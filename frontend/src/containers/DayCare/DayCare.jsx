@@ -9,9 +9,10 @@ import '../DayCare/DayCare.css'
 const DayCare = ({ isAuthenticated, user, load_user }) => {
     const date = new Date();
     const [loader, setLoader] = useState(false)
-    const URL = ''
+    const baseURL = 'http://localhost:8000/api/'
     const [days, setDays] = useState(0)
     const [dateUpdate, setDateUpdate] = useState(new Date())
+    const [animals, setAnimals] = useState([])
     const [formData, setFormData] = useState({
         client: "",
         animal: "",
@@ -23,12 +24,21 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
     const submitHandler = () => {
         if (isAuthenticated) {
             //do something
+        } else {
+            alert("Debes iniciar sesión para hacer una cita")
         }
     }
 
     const changeHandler = (e) => {
 
         if (isAuthenticated) {
+            if (document.getElementById("start").value !== '') {
+                postTimeCheck();
+            } else {
+                removeDisabled();
+            }
+
+
             //do something
             setFormData({ ...formData, client: user.id, [e.target.name]: e.target.value })
 
@@ -36,6 +46,12 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
             return null;
         }
 
+    }
+
+    const getAnimals = () => {
+        axios.get(`${baseURL}get-animals/`)
+            .then((res) => { setAnimals(res.data) })
+            .catch(err => console.log(err))
     }
 
     const updateDate = () => {
@@ -64,6 +80,56 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         }
     }
 
+    const timeChecker = () => {
+        let arriveTimes = document.getElementsByClassName("arrive-time");
+        let now = new Date()
+        let now1 = now.toLocaleString('en-US', { hour: 'numeric', hour12: false })
+        document.getElementById("start").selectedIndex = 0;
+        document.getElementById("end").selectedIndex = 0;
+
+        if (dateUpdate <= now) {
+            for (let key of arriveTimes) {
+                let startTime = key.value.split(":")
+
+                if (startTime[0] < now1) {
+                    key.setAttribute("disabled", true)
+                    key.classList.add("none")
+                } else {
+                    key.removeAttribute("disabled")
+                    key.classList.remove("none")
+                }
+            }
+        } else {
+            for (let key1 of arriveTimes) {
+                key1.removeAttribute("disabled")
+                key1.classList.remove("none")
+            }
+        }
+    }
+
+    const postTimeCheck = () => {
+        let pickupTimes = document.getElementsByClassName("pickup-time");
+        let start = document.getElementById("start").value
+
+        for (let key of pickupTimes) {
+            if (key.value <= start) {
+                key.setAttribute("disabled", true)
+                key.classList.add("none")
+            } else {
+                key.removeAttribute("disabled")
+                key.classList.remove("none")
+            }
+        }
+    }
+
+    const removeDisabled = () => {
+        let pickupTimes = document.getElementsByClassName("pickup-time");
+        for (let key of pickupTimes) {
+            key.removeAttribute("disabled")
+            key.classList.remove("none")
+        }
+    }
+
     useEffect(() => {
         updateDate();
     }, [days])
@@ -72,6 +138,8 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         async function fetchData() {
             let dateNew = timeZoneConvert(dateUpdate);
             setFormData({ ...formData, appointment_date: dateNew });
+            getAnimals();
+            timeChecker();
         }
 
         fetchData();
@@ -96,31 +164,45 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                         <div className="daycare-hours">
                             <div className="client-time">
                                 <div className='client-re'>Cuándo llegarás</div>
-                                <select name="start_time" onChange={changeHandler}>
-                                    <option value="08:00:00">8:00 AM</option>
-                                    <option value="09:00:00">9:00 AM</option>
-                                    <option value="10:00:00">10:00 AM</option>
-                                    <option value="11:00:00">11:00 AM</option>
-                                    <option value="12:00:00">12:00 PM</option>
-                                    <option value="13:00:00">1:00 PM</option>
-                                    <option value="14:00:00">2:00 PM</option>
-                                    <option value="15:00:00">3:00 PM</option>
-                                    <option value="16:00:00">4:00 PM</option>
+                                <select id="start" name="start_time" onChange={changeHandler}>
+                                    <option className="" value="" selected >Escoge la hora</option>
+                                    <option className="arrive-time" value="08:00:00">8:00 AM</option>
+                                    <option className="arrive-time" value="09:00:00">9:00 AM</option>
+                                    <option className="arrive-time" value="10:00:00">10:00 AM</option>
+                                    <option className="arrive-time" value="11:00:00">11:00 AM</option>
+                                    <option className="arrive-time" value="12:00:00">12:00 PM</option>
+                                    <option className="arrive-time" value="13:00:00">1:00 PM</option>
+                                    <option className="arrive-time" value="14:00:00">2:00 PM</option>
+                                    <option className="arrive-time" value="15:00:00">3:00 PM</option>
+                                    <option className="arrive-time" value="16:00:00">4:00 PM</option>
                                 </select>
-
                             </div>
                             <div className='client-time'>
                                 <div className='client-re'>Cuándo regresarás</div>
-                                <select name="end_time" onChange={changeHandler}>
-                                    <option value="09:00:00">9:00 AM</option>
-                                    <option value="10:00:00">10:00 AM</option>
-                                    <option value="11:00:00">11:00 AM</option>
-                                    <option value="12:00:00">12:00 PM</option>
-                                    <option value="13:00:00">1:00 PM</option>
-                                    <option value="14:00:00">2:00 PM</option>
-                                    <option value="15:00:00">3:00 PM</option>
-                                    <option value="16:00:00">4:00 PM</option>
-                                    <option value="17:00:00">5:00 PM</option>
+                                <select id="end" name="end_time" onChange={changeHandler}>
+                                    <option className="" value="" selected >Escoge la hora</option>
+                                    <option className="pickup-time" value="09:00:00">9:00 AM</option>
+                                    <option className="pickup-time" value="10:00:00">10:00 AM</option>
+                                    <option className="pickup-time" value="11:00:00">11:00 AM</option>
+                                    <option className="pickup-time" value="12:00:00">12:00 PM</option>
+                                    <option className="pickup-time" value="13:00:00">1:00 PM</option>
+                                    <option className="pickup-time" value="14:00:00">2:00 PM</option>
+                                    <option className="pickup-time" value="15:00:00">3:00 PM</option>
+                                    <option className="pickup-time" value="16:00:00">4:00 PM</option>
+                                    <option className="pickup-time" value="17:00:00">5:00 PM</option>
+                                </select>
+                            </div>
+                            <div className='client-time'>
+                                <div className='client-re'>Mascota</div>
+                                <select name="animal" onChange={changeHandler}>
+                                    {animals.map((item) => {
+                                        return (
+                                            <>
+                                                <option value={item.id}>{item.name}</option>
+                                            </>
+                                        )
+                                    })}
+
                                 </select>
                             </div>
                         </div>
