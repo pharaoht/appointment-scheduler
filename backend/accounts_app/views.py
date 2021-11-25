@@ -75,19 +75,21 @@ def create_daycare_appointment(request):
         client = Daycare(client=user, animal=animal)
     except:
 
-        data['errors'] = "The information you provided does not match any of our records."
+        data['errors'] = "La información que ingresó. No coincide con ninguno de nuestros registros."
         return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
 
     if request.method == "POST":
-        if Daycare.objects.filter(id=request.data['client'], appointment_date=request.data['appointment_date']).exists():
-            data['errors'] = "You can only schedule one daycare appointment per day."
+        if Daycare.objects.filter(client=request.data['client'], appointment_date=request.data['appointment_date']).exists():
+            data['errors'] = "Solo puede reservar 1 cita de guardería por día."
             return Response(status=status.HTTP_400_BAD_REQUEST, data=data)
 
         serializer = DaycareCreateSerializier(client, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            daycare_appointment_email(request, user)
+            print(request.data)
+            print(user)
+            daycare_appointment_email(request.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
@@ -246,7 +248,8 @@ def appointment_email_success_automation(request, user):
     )
 
 
-def daycare_appointment_email(request, user):
+def daycare_appointment_email(info):
+
     return
 
 

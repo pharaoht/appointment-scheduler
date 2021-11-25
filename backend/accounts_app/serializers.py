@@ -29,7 +29,7 @@ class AnimalCreateSerializer(ModelSerializer):
         model = AnimalType
 
         fields = [
-            'name'
+            'id', 'name'
         ]
 
 

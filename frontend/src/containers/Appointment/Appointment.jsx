@@ -64,6 +64,7 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
                 }
             }
             else {
+
                 setFormData({ ...formData, client: userData.id, [e.target.name]: e.target.value })
             }
 
@@ -143,7 +144,6 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
 
             const curhours = date.getHours()
             const appTime = radiobuttons[i].value.split(":")
-
 
             if (dateUpdate.toLocaleDateString() === date.toLocaleDateString()) {
 

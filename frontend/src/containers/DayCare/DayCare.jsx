@@ -21,11 +21,22 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         end_time: ""
     })
 
-    const submitHandler = () => {
+    const submitHandler = (e) => {
+        e.preventDefault();
         if (isAuthenticated) {
             //do something
+            if (formData.animal === "" || formData.appointment_date === "" || formData.start_time === "" || formData.end_time === "") {
+
+                alert("please fill everything out.");
+                return false;
+            } else {
+
+                postFunction();
+            }
         } else {
             alert("Debes iniciar sesión para hacer una cita")
+            document.getElementById('toggle').click();
+            return false;
         }
     }
 
@@ -37,11 +48,8 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
             } else {
                 removeDisabled();
             }
-
-
             //do something
             setFormData({ ...formData, client: user.id, [e.target.name]: e.target.value })
-
         } else {
             return null;
         }
@@ -74,24 +82,47 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         return dateNew;
     }
 
-    const postFUnction = () => {
-        if (isAuthenticated) {
-            //do something
-        }
+    const postFunction = () => {
+        setLoader(true);
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json'
+            }
+        };
+
+        axios.post(`${baseURL}create-daycare-appointment/`, formData, config)
+            .then(res => {
+                alert("Tu cita ha sido creada! ✔️");
+                setLoader(false);
+            }).catch(err => {
+                console.log(err.response);
+                if (err.response.data.errors) {
+                    alert(err.response.data.errors)
+                } else {
+                    alert("No se pudo crear su cita. Vuelva a intentarlo. ❌");
+                }
+                setLoader(false);
+            });
     }
 
-    const timeChecker = () => {
+    const timeChecker = (date) => {
         let arriveTimes = document.getElementsByClassName("arrive-time");
+        let endTimes = document.getElementsByClassName("pickup-time");
         let now = new Date()
         let now1 = now.toLocaleString('en-US', { hour: 'numeric', hour12: false })
         document.getElementById("start").selectedIndex = 0;
         document.getElementById("end").selectedIndex = 0;
+        document.getElementById("pet-dc").selectedIndex = 0;
+        setFormData({ ...formData, start_time: '', appointment_date: date, animal: '', end_time: '' })
 
-        if (dateUpdate <= now) {
+        if (dateUpdate < now) {
             for (let key of arriveTimes) {
-                let startTime = key.value.split(":")
+                let startTime = key.value.split(":");
 
-                if (startTime[0] < now1) {
+                if (startTime[0] <= now1) {
                     key.setAttribute("disabled", true)
                     key.classList.add("none")
                 } else {
@@ -99,10 +130,27 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                     key.classList.remove("none")
                 }
             }
+
+            for (let key2 of endTimes) {
+                let endTime = key2.value.split(":");
+
+                if (endTime[0] <= now1) {
+                    key2.setAttribute("disabled", true);
+                    key2.classList.add("none");
+                } else {
+                    key2.removeAttribute("disabled")
+                    key2.classList.remove("none")
+                }
+            }
         } else {
             for (let key1 of arriveTimes) {
                 key1.removeAttribute("disabled")
                 key1.classList.remove("none")
+            }
+
+            for (let key2 of endTimes) {
+                key2.removeAttribute("disabled")
+                key2.classList.remove("none")
             }
         }
     }
@@ -137,9 +185,8 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
     useEffect(() => {
         async function fetchData() {
             let dateNew = timeZoneConvert(dateUpdate);
-            setFormData({ ...formData, appointment_date: dateNew });
             getAnimals();
-            timeChecker();
+            timeChecker(dateNew);
         }
 
         fetchData();
@@ -158,7 +205,7 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                         <button className="arrow-btn" onClick={incrementDate}><i className="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
                     </h3>
                 </div>
-                <form>
+                <form onSubmit={submitHandler}>
                     <div className="daycare-times">
                         <h4>En Patitas Limpias, puedes dejar a tu mascota en nuestra guardería. Nosotros velaremos por ellos y nos ocuparemos de ellos mientras tú te ocupas de tus recados. El precio comienza en $ 3.000 por hora.</h4>
                         <div className="daycare-hours">
@@ -194,7 +241,8 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                             </div>
                             <div className='client-time'>
                                 <div className='client-re'>Mascota</div>
-                                <select name="animal" onChange={changeHandler}>
+                                <select id="pet-dc" name="animal" onChange={changeHandler}>
+                                    <option className="" value="" selected >Escoge...</option>
                                     {animals.map((item) => {
                                         return (
                                             <>
@@ -202,7 +250,6 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                                             </>
                                         )
                                     })}
-
                                 </select>
                             </div>
                         </div>
