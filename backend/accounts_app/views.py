@@ -87,9 +87,7 @@ def create_daycare_appointment(request):
 
         if serializer.is_valid():
             serializer.save()
-            print(request.data)
-            print(user)
-            daycare_appointment_email(request.data)
+            daycare_appointment_email(request.data, user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
@@ -232,31 +230,49 @@ def delete_review(request):
 # helper methods
 def appointment_email_success_automation(request, user):
     # translate date time to local
-    day = request.data['appointment_date']
+    day = request.data['appointment_date'].split('-')
+    convertedDate = f'{day[2]}-{day[1]}-{day[0]}'
+
     time = request.data['appointment_time']
     hr_tweleve = convert12(time)
-    print(hr_tweleve)
     if hr_tweleve == '0:00 PM':
         hr_tweleve = '12:00 PM'
 
     send_mail(
         'Su cita ha sido confirmada!',
-        f'Hola {user.first_name},\nSu cita está programada para el {day} a las {hr_tweleve}. \nGracias, hasta pronto! \nDel equipo de Patitas Limpias.',
+        f'Hola {user.first_name},\nSu cita está programada para el {convertedDate} a las {hr_tweleve}. \nGracias, hasta pronto! \nDel equipo de Patitas Limpias.',
         settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False
     )
 
 
-def daycare_appointment_email(info):
+def daycare_appointment_email(info, user):
+    start_time = convert12(info['start_time'])
+    if start_time == '0:00 PM':
+        start_time = '12:00 PM'
 
-    return
+    end_time = convert12(info['end_time'])
+    if end_time == '0:00 PM':
+        end_time = '12:00 PM'
+
+    day1 = info['appointment_date'].split('-')
+    convertedDate = f'{day1[2]}-{day1[1]}-{day1[0]}'
+
+    send_mail(
+        'Su cita ha sido confirmada!',
+        f'Hola {user.first_name}, \nSu cita está programada para el {convertedDate} a las {start_time} - {end_time}. \nGracias, hasta pronto! \nDel equipo de Patitas Limpias.',
+        settings.EMAIL_HOST_USER,
+        [user.email],
+        fail_silently=False
+    )
 
 
 def appointment_email_delete_owner(user, day, time):
     host = 'pharaohmanson@gmail.com'
     timeStr = time.strftime("%H:%M:%S")
     d = datetime.strptime(timeStr, "%H:%M:%S")
+    print(day)
     send_mail(
         'Alguien Canceló Su Cita.',
         f'Hola Alejandra, Un cliente cancled su cita para las {d.strftime("%I:%M %p")} el {day}',

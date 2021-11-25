@@ -98,7 +98,6 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
                 alert("Tu cita ha sido creada! ✔️");
                 setLoader(false);
             }).catch(err => {
-                console.log(err.response);
                 if (err.response.data.errors) {
                     alert(err.response.data.errors)
                 } else {
