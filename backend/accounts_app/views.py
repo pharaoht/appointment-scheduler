@@ -261,7 +261,7 @@ def daycare_appointment_email(info, user):
 
     send_mail(
         'Su cita ha sido confirmada!',
-        f'Hola {user.first_name}, \nSu cita está programada para el {convertedDate} a las {start_time} - {end_time}. \nGracias, hasta pronto! \nDel equipo de Patitas Limpias.',
+        f'Hola {user.first_name}, \nSu cita en la guardería ha sido confirmada para el {convertedDate} a las {start_time} - {end_time}. \nGracias, hasta pronto! \nDel equipo de Patitas Limpias.',
         settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False

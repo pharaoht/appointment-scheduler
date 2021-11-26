@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import { load_user } from '../../actions/auth';
+import { logout } from '../../actions/auth';
 
-
-const Appointment = ({ isAuthenticated, user, load_user }) => {
+const Appointment = ({ isAuthenticated, user, load_user, logout }) => {
     const date = new Date()
     const [loader, setLoader] = useState(false)
     const [userData, setUserData] = useState([])
@@ -243,6 +243,15 @@ const Appointment = ({ isAuthenticated, user, load_user }) => {
         }
     }
 
+    const checkLogIn = () => {
+        if (!localStorage.getItem('access')) {
+            console.log("logging out")
+            logout();
+        }
+    }
+
+    setInterval(checkLogIn, 300000);
+
     useEffect(() => {
         updateDate()
     }, [days])
@@ -380,4 +389,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user
 })
-export default connect(mapStateToProps, { load_user })(Appointment);
+export default connect(mapStateToProps, { load_user, logout })(Appointment);

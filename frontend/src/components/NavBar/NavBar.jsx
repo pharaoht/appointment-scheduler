@@ -39,7 +39,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
     }
 
     const logoutHandler = () => {
-        logout()
+        logout();
     }
 
     const toggleBtn = () => {

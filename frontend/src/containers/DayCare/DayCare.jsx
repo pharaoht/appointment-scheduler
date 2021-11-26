@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import { load_user } from '../../actions/auth';
+import { logout } from '../../actions/auth';
 import '../DayCare/DayCare.css'
 
-const DayCare = ({ isAuthenticated, user, load_user }) => {
+const DayCare = ({ isAuthenticated, user, load_user, logout }) => {
     const date = new Date();
     const [loader, setLoader] = useState(false)
     const baseURL = 'http://localhost:8000/api/'
@@ -51,7 +52,10 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
             //do something
             setFormData({ ...formData, client: user.id, [e.target.name]: e.target.value })
         } else {
-            return null;
+            if (document.getElementById("start").value !== '') {
+                postTimeCheck();
+            };
+            return null
         }
 
     }
@@ -159,6 +163,7 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
         let start = document.getElementById("start").value
 
         for (let key of pickupTimes) {
+            console.log(key.value <= start)
             if (key.value <= start) {
                 key.setAttribute("disabled", true)
                 key.classList.add("none")
@@ -176,6 +181,15 @@ const DayCare = ({ isAuthenticated, user, load_user }) => {
             key.classList.remove("none")
         }
     }
+
+    const checkLogIn = () => {
+        if (!localStorage.getItem('access')) {
+            console.log("logging out")
+            logout();
+        }
+    }
+
+    setInterval(checkLogIn, 300000);
 
     useEffect(() => {
         updateDate();
@@ -268,6 +282,6 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user
 })
-export default connect(mapStateToProps, { load_user })(DayCare)
+export default connect(mapStateToProps, { load_user, logout })(DayCare)
 
 

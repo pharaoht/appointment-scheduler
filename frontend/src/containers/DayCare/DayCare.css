@@ -120,3 +120,12 @@ option {
     text-align: center;
   }
 }
+
+@media (max-width: 450px) {
+  #outside-day {
+    padding-top: 60px;
+    background: #03a9f4;
+    padding-bottom: 50px;
+    height: 100%;
+  }
+}

@@ -24,6 +24,7 @@ const Services = () => {
                 <h2 className="text-reflect">Servicios</h2>
                 <div className="service-holder">
                     {services.map((currentItem, idx) => {
+                        console.log(currentItem.desc)
                         return (
                             <>
                                 <div className="service-item">
@@ -33,7 +34,7 @@ const Services = () => {
                                     <div className="detail-service">
                                         <h4>{currentItem.name}</h4>
                                         <div className="service-info">
-                                            <p>{currentItem.desc}</p>
+                                            <p id='p_wrap'>{currentItem.desc}</p>
                                             <div className="service-price">
                                                 <div className="price">${currentItem.price}</div>
                                                 <div><Link to="/appointments"><button id="service-btn">Calendario <i class="fa fa-paw" aria-hidden="true"></i> </button> </Link></div>
