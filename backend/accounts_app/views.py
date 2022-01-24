@@ -58,7 +58,7 @@ def create_appointment(request):
             for serviceID in request.data['multiservices']:
                 service = Service.objects.get(id=serviceID['id'])
                 client.services.add(service)
-            # logic for email confirmation
+                # logic for email confirmation
             appointment_email_success_automation(request, user)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
