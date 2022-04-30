@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import Navbar from '../components/NavBar/NavBar';
 import { connect } from 'react-redux'
-import { checkAuthenticated, load_user } from '../actions/auth';
+import { checkAuthenticated, load_user, logout } from '../actions/auth';
 import './Layout.css'
 import Sidebar from '../components/Sidebar/SideBar';
+
 
 
 const Layout = (props) => {
@@ -11,6 +12,10 @@ const Layout = (props) => {
         props.checkAuthenticated();
         props.load_user();
     }, [])
+
+    setTimeout(() => {
+        props.logout()
+    }, 900000);
 
     return (
         <div className="main-container">
@@ -25,4 +30,4 @@ const Layout = (props) => {
 
 }
 
-export default connect(null, { checkAuthenticated, load_user })(Layout);
+export default connect(null, { checkAuthenticated, load_user, logout })(Layout);

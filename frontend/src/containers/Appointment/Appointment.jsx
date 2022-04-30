@@ -8,7 +8,7 @@ import { load_user } from '../../actions/auth';
 import { logout } from '../../actions/auth';
 
 const Appointment = ({ isAuthenticated, user, load_user, logout }) => {
-    const date = new Date()
+    const date = new Date();
     const [loader, setLoader] = useState(false)
     const [userData, setUserData] = useState([])
     const [refresh, setRefresh] = useState(false)
@@ -74,28 +74,21 @@ const Appointment = ({ isAuthenticated, user, load_user, logout }) => {
 
     }
 
-    const incrementDate = (() => {
-        setDays(prevState => prevState + 1)
+    const incrementDate = (() => setDays(prevState => prevState + 1))
 
-    })
+    const decrementDate = (() => setDays(prevState => prevState - 1))
 
-    const decrementDate = (() => {
-        setDays(prevState => prevState - 1)
-
-
-    })
-
-    const updateDate = () => {
-        setDateUpdate(prevState => new Date(Date.now() + days * 24 * 60 * 60 * 1000))
-    }
+    const updateDate = () => setDateUpdate(prevState => new Date(Date.now() + days * 24 * 60 * 60 * 1000))
 
     function getAppointments() {
-        let dateSearch = timeZoneConvert(dateUpdate)
+        let dateSearch = timeZoneConvert(dateUpdate);
 
         const config = {
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: dateSearch,
+
         }
 
         const body = JSON.stringify({ dateSearch });

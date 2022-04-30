@@ -18,7 +18,7 @@ import Modal from 'react-modal'
 import UserAppointments from './containers/UserAppointments/UserAppointments.jsx';
 
 Modal.setAppElement('#root')
-const App = () => (
+const App = () => ( 
     <Provider store={store}>
         <Router>
             <Layout>

@@ -20,9 +20,7 @@ const Login = ({ login, isAuthenticated }) => {
 
     }
 
-    if (isAuthenticated) {
-        window.location.href = "/"
-    }
+    if (isAuthenticated) { <Redirect to={'/'} /> }
 
     return (
         <>
