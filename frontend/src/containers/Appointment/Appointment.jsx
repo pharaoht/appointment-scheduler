@@ -13,13 +13,7 @@ const Appointment = ({ isAuthenticated, user, load_user, logout }) => {
     const [userData, setUserData] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [dateUpdate, setDateUpdate] = useState(new Date())
-    const [formData, setFormData] = useState({
-        client: "",
-        animal: "",
-        multiservices: [],
-        appointment_time: "",
-        appointment_date: dateUpdate.toLocaleDateString().slice(0, 10),
-    })
+    const [formData, setFormData] = useState({ client: "", animal: "", multiservices: [], appointment_time: "", appointment_date: dateUpdate.toLocaleDateString().slice(0, 10), })
     const [services, setServices] = useState([])
     const [animals, setAnimals] = useState([])
     const baseURL = 'http://localhost:8000/api/'
